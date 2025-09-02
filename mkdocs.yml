@@ -2,3 +2,14 @@ site_name: Knowledge Base
 repo_url: https://github.com/jacbaile/knowledgeBase
 theme:
   name: material
+nav:
+  - Home: index.md
+  - Departments:
+    - Rocket League Operations: departments/rocket-league-operations.md
+    - Trackmania Operations: departments/trackmania-operations.md
+    - Community: departments/community.md
+    - Development:
+      - Overview: departments/development.md
+      - Systems Overview: departments/systems-overview.md
+    - Marketing: departments/marketing.md
+    - Production: departments/production.md
