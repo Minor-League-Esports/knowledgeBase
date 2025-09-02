@@ -1,5 +1,5 @@
 site_name: Knowledge Base
-repo_url: https://github.com/jacbaile/knowledgeBase
+repo_url: https://github.com/minor-league-esports/knowledgeBase
 theme:
   name: material
 nav:
