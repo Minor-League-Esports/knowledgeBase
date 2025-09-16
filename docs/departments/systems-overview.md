@@ -24,3 +24,14 @@ This document provides an overview of the various software systems used in MLE's
 ## Harmony
 - **Description:** A scheduling platform currently in development.
 - **Status:** In Development
+
+## Modmail
+- **Project Owner:** Keegabyte (Keegan Scott)
+- **Contributors:** Icy_Fatal99
+- **Description:** The primary contact for the general MLE community to contact the staff.
+- **Status:** Rebuilding
+
+## Evidence
+- **Project Owners:** Ol Dirty Dirty, OwnerOfTheWhiteSedan
+- **Description:** The primary data endpoint for MLE.
+- **Repository:** [https://github.com/Minor-League-Esports/evidence](https://github.com/Minor-League-Esports/evidence)
