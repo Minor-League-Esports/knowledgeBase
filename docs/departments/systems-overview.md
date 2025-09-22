@@ -14,6 +14,7 @@ This document provides an overview of the various software systems used in MLE's
 - **Repository:** [github.com/minor-league-esports/MLEDB](https://github.com/minor-league-esports/MLEDB)
 
 ## MLE Website
+- **Product Owners:** Fatality, Mallow
 - **Description:** The official website for Minor League Esports.
 - **URL:** [mlesports.gg](https://mlesports.gg)
 
@@ -22,6 +23,7 @@ This document provides an overview of the various software systems used in MLE's
 - **Repository:** [github.com/minor-league-esports/MLEBB](https://github.com/minor-league-esports/MLEBB)
 
 ## Harmony
+- **Project Owner:** AptFox
 - **Description:** A scheduling platform currently in development.
 - **Status:** In Development
 
