@@ -21,6 +21,11 @@ This document provides an overview of the various software systems used in MLE's
 - **Description:** The official website for Minor League Esports.
 - **URL:** [mlesports.gg](https://mlesports.gg)
 
+## Trackmania League Operations
+- **Project Manager:** Smallant
+- **Contributors:** Keegabyte (Keegan Scott), ScaryBadger245
+- **Description:** The collection of applications and databases that make the Trackmania league run.
+
 ## MLEBB
 - **Product Owner:** Nigel Thornbrake
 - **Description:** A Discord bot for MLE's fantasy league.
