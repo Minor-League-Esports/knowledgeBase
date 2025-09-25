@@ -3,13 +3,16 @@
 This document provides an overview of the various software systems used in MLE's day-to-day operations.
 
 ## Sprocket
+- **Product Owner:** Nigel Thornbrake
 - **Description:** A multi-feature Discord bot for managing MLE servers.
 - **Repository:** [github.com/Sprocketbot/sprocket](https://github.com/Sprocketbot/sprocket)
 
 ## SprocketDB
+- **Product Owner:** Nigel Thornbrake
 - **Description:** The database backend for Sprocket.
 
 ## Emilio and Emilia Bots
+- **Product Owner:** Nigel Thornbrake
 - **Description:** Discord bots for various tasks within the MLE community.
 - **Repository:** [github.com/minor-league-esports/MLEDB](https://github.com/minor-league-esports/MLEDB)
 
@@ -19,6 +22,7 @@ This document provides an overview of the various software systems used in MLE's
 - **URL:** [mlesports.gg](https://mlesports.gg)
 
 ## MLEBB
+- **Product Owner:** Nigel Thornbrake
 - **Description:** A Discord bot for MLE's fantasy league.
 - **Repository:** [github.com/minor-league-esports/MLEBB](https://github.com/minor-league-esports/MLEBB)
 
