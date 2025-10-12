@@ -40,7 +40,8 @@ This document provides an overview of the various software systems used in MLE's
 - **Project Owner:** Keegabyte (Keegan Scott)
 - **Contributors:** Icy_Fatal99
 - **Description:** The primary contact for the general MLE community to contact the staff.
-- **Status:** Rebuilding
+- **Status:** Rebuilding (80% complete)
+- **Knowledge Base Page:** [Modmail](modmail.md)
 
 ## Evidence
 - **Project Owners:** Ol Dirty Dirty, OwnerOfTheWhiteSedan
