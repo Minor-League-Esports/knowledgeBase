@@ -14,11 +14,13 @@ you can either get to work right away OR see what you need to learn to be of ass
 
 ## General Skills
 These are some skills that are used practically everywhere.
+
 - **Google Suite:** It's always a good idea to be knowledgeable with the Google Suite. We use a LOT of **Google Sheets**.
 - **Github:** Learning how to colaborate on a team in Github is important to what we do here.
 
 ## In-Demand Skills
 These are our current needs...
+
 - **Database Design:** Several projects are in need of database designers. SQL, Sheets, and data analysis skills will be required.
 - **Python:** Most of our Discord bots run on Python, more specifically the [Discord.py](https://discordpy.readthedocs.io/en/stable/index.html) module. We also have several applications that are programmed in Python.
 - **Web development:** Many of our current and future applications rely on web interfaces. Javascript, HTML, and CSS are required.
