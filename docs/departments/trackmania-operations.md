@@ -2,8 +2,15 @@
 
 ## Important Info
 
-- *Add important information here.*
+- *Add important information here.
 
 ## Contacts
 
-- *Add contact information here.*
+- Director of Trackmania Operations
+    Ant - Discord: @Ant Email: ant@mlesports.gg
+- Head of Trackmania LO
+    OkBoomer - Discord: @okboomer
+- Trackmania LO Team Leads
+    Zyta - Discord: @zytabyte
+- CIC Coordinator
+    Arunos - @wyntahfox
