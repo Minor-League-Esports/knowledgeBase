@@ -4,6 +4,9 @@
 Welcome to the MLE Development team. We understand it can be overwhelming getting used to a new development environment, ESPECIALLY in this case. No matter how much experience you have, you can help here. Below you'll see what skills we mostly use and where they are used. This way, 
 you can either get to work right away OR see what you need to learn to be of assistance.
 
+## Code Ownership: Disclaimer
+All code and tools developed for Minor League Esports ("MLE") are owned and controlled by MLE. Credit will be apportioned for whatever you work on, and you may use code created in other places. You are also free to use projects created for MLE on your own personal resumes/CVs. However, all code written for MLE is property of the organization and should be treated as such.
+
 ## Getting Started
 - **DM Keegabyte for Click Up access:** We use Click Up for our project management and a lot of information sharing. DM Keegabyte for access to the clickup workspace. He will need an email that you would be willing to make a Click Up account under.
 - **Introduce yourself:** Introduce yourself to the team. I promise, we're friendly.
@@ -14,11 +17,13 @@ you can either get to work right away OR see what you need to learn to be of ass
 
 ## General Skills
 These are some skills that are used practically everywhere.
+
 - **Google Suite:** It's always a good idea to be knowledgeable with the Google Suite. We use a LOT of **Google Sheets**.
 - **Github:** Learning how to colaborate on a team in Github is important to what we do here.
 
 ## In-Demand Skills
 These are our current needs...
+
 - **Database Design:** Several projects are in need of database designers. SQL, Sheets, and data analysis skills will be required.
 - **Python:** Most of our Discord bots run on Python, more specifically the [Discord.py](https://discordpy.readthedocs.io/en/stable/index.html) module. We also have several applications that are programmed in Python.
 - **Web development:** Many of our current and future applications rely on web interfaces. Javascript, HTML, and CSS are required.

@@ -1,5 +1,8 @@
 # Development
 
+## Code Ownership: Disclaimer
+All code and tools developed for Minor League Esports ("MLE") are owned and controlled by MLE. Credit will be apportioned for whatever you work on, and you may use code created in other places. You are also free to use projects created for MLE on your own personal resumes/CVs. However, all code written for MLE is property of the organization and should be treated as such.
+
 ## Important Info
 - [Systems Overview](systems-overview.md)
 ### You can also reference the systems overview for documentation for specific systems!
