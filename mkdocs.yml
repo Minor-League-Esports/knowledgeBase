@@ -9,12 +9,11 @@ nav:
     - Trackmania Operations: departments/trackmania-operations.md
     - Community: departments/community.md
     - Development:
-      - Overview: departments/development.md
-      - New Team Members: departments/new-team-members.md
-      - Sprocket Identity System: departments/sprocket-identity-system.md
+      - Overview: departments/development/development.md
+      - New Team Members: departments/development/new-team-members.md
       - Systems:
-        - Overview: departments/systems-overview.md
-        - Trackmania Operations KB: departments/trackmania-operations.md
-        - Modmail KB: departments/modmail.md
+        - Overview: departments/development/systems/systems-overview.md
+        - Modmail KB: departments/development/systems/modmail.md
+        - Sprocket Identity System: departments/development/systems/sprocket-identity-system.md
     - Marketing: departments/marketing.md
     - Production: departments/production.md

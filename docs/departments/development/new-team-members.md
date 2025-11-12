@@ -10,7 +10,7 @@ All code and tools developed for Minor League Esports ("MLE") are owned and cont
 ## Getting Started
 - **DM Keegabyte for Click Up access:** We use Click Up for our project management and a lot of information sharing. DM Keegabyte for access to the clickup workspace. He will need an email that you would be willing to make a Click Up account under.
 - **Introduce yourself:** Introduce yourself to the team. I promise, we're friendly.
-- **Consult the [Systems Overview](systems-overview.md):** Here you can see what systems we manage and who to contact about getting involved in those systems.
+- **Consult the [Systems Overview](systems/systems-overview.md):** Here you can see what systems we manage and who to contact about getting involved in those systems.
 - **Take a look at the general skills:** These are just some skills that get used everywhere. You can learn these on the job. See them below.
 - **Figure out how you want to help:** Check below for what skills we currently need help with.
 
