@@ -11,7 +11,9 @@ nav:
     - Development:
       - Overview: departments/development.md
       - New Team Members: departments/new-team-members.md
-      - Systems Overview: departments/systems-overview.md
+      - Sprocket Identity System: departments/sprocket-identity-system.md
+      - Systems:
+        - Overview: departments/systems-overview.md
         - Trackmania Operations KB: departments/trackmania-operations.md
         - Modmail KB: departments/modmail.md
     - Marketing: departments/marketing.md
