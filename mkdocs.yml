@@ -15,6 +15,31 @@ nav:
         - Overview: departments/development/systems/systems-overview.md
         - Modmail KB: departments/development/systems/modmail.md
         - Sprocket Identity System: departments/development/systems/sprocket-identity-system.md
+        - Production Infrastructure:
+          - Overview: departments/development/systems/production-infrastructure/index.md
+          - Getting Started:
+            - Quick Start: departments/development/systems/production-infrastructure/00-START-HERE.md
+            - README: departments/development/systems/production-infrastructure/README.md
+            - Context Summary: departments/development/systems/production-infrastructure/CONTEXT_SUMMARY.md
+          - Architecture & Design:
+            - Architecture: departments/development/systems/production-infrastructure/ARCHITECTURE.md
+            - Glossary: departments/development/systems/production-infrastructure/GLOSSARY.md
+          - Deployment & Operations:
+            - Deployment Guide: departments/development/systems/production-infrastructure/DEPLOYMENT_GUIDE.md
+            - Operations Runbook: departments/development/systems/production-infrastructure/OPERATIONS_RUNBOOK.md
+            - Externalities & Dependencies: departments/development/systems/production-infrastructure/EXTERNALITIES_AND_DEPENDENCIES.md
+          - Project History:
+            - Postmortem: departments/development/systems/production-infrastructure/POSTMORTEM.md
+            - Technical Challenges: departments/development/systems/production-infrastructure/TECHNICAL_CHALLENGES.md
+            - Git History Analysis: departments/development/systems/production-infrastructure/GIT_HISTORY_ANALYSIS.md
+            - Claude Conversations Summary: departments/development/systems/production-infrastructure/CLAUDE_CONVERSATIONS_SUMMARY.md
+            - Claude Conversation Analysis: departments/development/systems/production-infrastructure/CLAUDE_CONVERSATION_ANALYSIS.md
+            - Technical Challenges from Claude: departments/development/systems/production-infrastructure/TECHNICAL_CHALLENGES_FROM_CLAUDE_CONVERSATIONS.md
+          - Meta Documentation:
+            - Documentation Review: departments/development/systems/production-infrastructure/DOCUMENTATION_REVIEW_RECOMMENDATIONS.md
+            - Transfer Instructions: departments/development/systems/production-infrastructure/TRANSFER_INSTRUCTIONS.md
+          - Templates:
+            - Incident Postmortem Template: departments/development/systems/production-infrastructure/INCIDENT_POSTMORTEM_TEMPLATE.md
       - Features and Designs:
         - Sprocket v2 Unified Matchmaking: departments/development/features-and-designs/sprocket-v2-unified-matchmaking-proposal.md
     - Marketing: departments/marketing.md
