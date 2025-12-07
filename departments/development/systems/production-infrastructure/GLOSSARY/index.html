@@ -1,0 +1,4043 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://minor-league-esports.github.io/knowledgeBase/departments/development/systems/production-infrastructure/GLOSSARY/">
+      
+      
+        <link rel="prev" href="../ARCHITECTURE/">
+      
+      
+        <link rel="next" href="../DEPLOYMENT_GUIDE/">
+      
+      
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.18">
+    
+    
+      
+        <title>Glossary - Knowledge Base</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="yellow" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sprocket-infrastructure-glossary" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../.." title="Knowledge Base" class="md-header__button md-logo" aria-label="Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Knowledge Base
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Glossary
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/minor-league-esports/knowledgeBase" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="Knowledge Base" class="md-nav__button md-logo" aria-label="Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Knowledge Base
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/minor-league-esports/knowledgeBase" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Departments
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Departments
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../rocket-league-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Rocket League Operations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../trackmania-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Trackmania Operations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../community/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Community
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Development
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../development/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../new-team-members/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    New Team Members
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3" id="__nav_2_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Systems
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Systems
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../systems-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modmail/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Modmail KB
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sprocket-identity-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprocket Identity System
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4" id="__nav_2_4_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Production Infrastructure
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_4_3_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_4_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            Production Infrastructure
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_2" id="__nav_2_4_3_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-START-HERE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Quick Start
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../README.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    README
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CONTEXT_SUMMARY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Context Summary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_3" id="__nav_2_4_3_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Architecture & Design
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_4_3_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Architecture & Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ARCHITECTURE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Architecture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-use-this-glossary" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to Use This Glossary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#core-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Concepts
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Core Concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#infrastructure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Infrastructure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloud-computing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cloud Computing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#production" class="md-nav__link">
+    <span class="md-ellipsis">
+      Production
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deployment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#high-availability-ha" class="md-nav__link">
+    <span class="md-ellipsis">
+      High Availability (HA)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scalability" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scalability
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#infrastructure-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Infrastructure Concepts
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Infrastructure Concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Docker
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docker-swarm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Docker Swarm
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#container" class="md-nav__link">
+    <span class="md-ellipsis">
+      Container
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-docker-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      Service (Docker Service)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replica" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#image-docker-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      Image (Docker Image)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#volume-docker-volume" class="md-nav__link">
+    <span class="md-ellipsis">
+      Volume (Docker Volume)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#network-overlay-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      Network (Overlay Network)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bind-mount" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bind Mount
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#node" class="md-nav__link">
+    <span class="md-ellipsis">
+      Node
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#networking-security-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Networking &amp; Security Concepts
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Networking &amp; Security Concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dns-domain-name-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      DNS (Domain Name System)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#https-http" class="md-nav__link">
+    <span class="md-ellipsis">
+      HTTPS / HTTP
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tls-transport-layer-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      TLS (Transport Layer Security)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#certificate-tlsssl-certificate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Certificate (TLS/SSL Certificate)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lets-encrypt" class="md-nav__link">
+    <span class="md-ellipsis">
+      Let's Encrypt
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#port" class="md-nav__link">
+    <span class="md-ellipsis">
+      Port
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#firewall" class="md-nav__link">
+    <span class="md-ellipsis">
+      Firewall
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reverse-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reverse Proxy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load-balancer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Load Balancer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ingress-controller" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ingress Controller
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#oauth" class="md-nav__link">
+    <span class="md-ellipsis">
+      OAuth
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jwt-json-web-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      JWT (JSON Web Token)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#storage-data-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Storage &amp; Data Concepts
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Storage &amp; Data Concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#database" class="md-nav__link">
+    <span class="md-ellipsis">
+      Database
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#postgresql-postgres" class="md-nav__link">
+    <span class="md-ellipsis">
+      PostgreSQL (Postgres)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#managed-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      Managed Database
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#redis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Redis
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#s3-simple-storage-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      S3 (Simple Storage Service)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#object-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Object Storage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bucket" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bucket
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Backup
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#retention" class="md-nav__link">
+    <span class="md-ellipsis">
+      Retention
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#application-architecture-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Application Architecture Concepts
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Application Architecture Concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#microservices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Microservices
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api-application-programming-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      API (Application Programming Interface)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#graphql" class="md-nav__link">
+    <span class="md-ellipsis">
+      GraphQL
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#message-queue" class="md-nav__link">
+    <span class="md-ellipsis">
+      Message Queue
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rabbitmq" class="md-nav__link">
+    <span class="md-ellipsis">
+      RabbitMQ
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pubsub-publishsubscribe" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pub/Sub (Publish/Subscribe)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment-operations-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deployment &amp; Operations Tools
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deployment &amp; Operations Tools">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#infrastructure-as-code-iac" class="md-nav__link">
+    <span class="md-ellipsis">
+      Infrastructure as Code (IaC)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pulumi" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pulumi
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stack-pulumi-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stack (Pulumi Stack)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#terraform" class="md-nav__link">
+    <span class="md-ellipsis">
+      Terraform
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cicd-continuous-integration-continuous-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      CI/CD (Continuous Integration / Continuous Deployment)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#git" class="md-nav__link">
+    <span class="md-ellipsis">
+      Git
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#github" class="md-nav__link">
+    <span class="md-ellipsis">
+      GitHub
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#monitoring-observability" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitoring &amp; Observability
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Monitoring &amp; Observability">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Metrics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Logs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#monitoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitoring
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dashboard" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dashboard
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alert" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alert
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uptime" class="md-nav__link">
+    <span class="md-ellipsis">
+      Uptime
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sla-service-level-agreement" class="md-nav__link">
+    <span class="md-ellipsis">
+      SLA (Service Level Agreement)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-secrets-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security &amp; Secrets Management
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Security &amp; Secrets Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#secrets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Secrets
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vault-hashicorp-vault" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vault (HashiCorp Vault)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unseal-seal-vault" class="md-nav__link">
+    <span class="md-ellipsis">
+      Unseal / Seal (Vault)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#doppler" class="md-nav__link">
+    <span class="md-ellipsis">
+      Doppler
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#environment-variable" class="md-nav__link">
+    <span class="md-ellipsis">
+      Environment Variable
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docker-secret" class="md-nav__link">
+    <span class="md-ellipsis">
+      Docker Secret
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sprocket-specific-terms" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sprocket-Specific Terms
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sprocket-Specific Terms">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sprocket" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sprocket
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mle-minor-league-esports" class="md-nav__link">
+    <span class="md-ellipsis">
+      MLE (Minor League Esports)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ballchasing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ballchasing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replay" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replay
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#elo" class="md-nav__link">
+    <span class="md-ellipsis">
+      ELO
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#matchmaking" class="md-nav__link">
+    <span class="md-ellipsis">
+      Matchmaking
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#service-specific-terms" class="md-nav__link">
+    <span class="md-ellipsis">
+      Service-Specific Terms
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Service-Specific Terms">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#traefik" class="md-nav__link">
+    <span class="md-ellipsis">
+      Traefik
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ingress-egress" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ingress / Egress
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#influxdb" class="md-nav__link">
+    <span class="md-ellipsis">
+      InfluxDB
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grafana" class="md-nav__link">
+    <span class="md-ellipsis">
+      Grafana
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#loki" class="md-nav__link">
+    <span class="md-ellipsis">
+      Loki
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gatus" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gatus
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#n8n" class="md-nav__link">
+    <span class="md-ellipsis">
+      N8n
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#neo4j" class="md-nav__link">
+    <span class="md-ellipsis">
+      Neo4j
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#telegraf" class="md-nav__link">
+    <span class="md-ellipsis">
+      Telegraf
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#technology-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      Technology Stack
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Technology Stack">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nodejs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Node.js
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nextjs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Next.js
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nestjs" class="md-nav__link">
+    <span class="md-ellipsis">
+      NestJS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typescript" class="md-nav__link">
+    <span class="md-ellipsis">
+      TypeScript
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#acronyms-quick-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Acronyms Quick Reference
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-units-measurements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Units &amp; Measurements
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Units &amp; Measurements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Storage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#computing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Computing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#network" class="md-nav__link">
+    <span class="md-ellipsis">
+      Network
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#time" class="md-nav__link">
+    <span class="md-ellipsis">
+      Time
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      Related Resources
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_4" id="__nav_2_4_3_4_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Deployment & Operations
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            Deployment & Operations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DEPLOYMENT_GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Deployment Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OPERATIONS_RUNBOOK/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Operations Runbook
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../EXTERNALITIES_AND_DEPENDENCIES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Externalities & Dependencies
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_5" id="__nav_2_4_3_4_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Project History
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            Project History
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../POSTMORTEM/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Postmortem
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TECHNICAL_CHALLENGES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Technical Challenges
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GIT_HISTORY_ANALYSIS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Git History Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CLAUDE_CONVERSATIONS_SUMMARY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Claude Conversations Summary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CLAUDE_CONVERSATION_ANALYSIS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Claude Conversation Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TECHNICAL_CHALLENGES_FROM_CLAUDE_CONVERSATIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Technical Challenges from Claude
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_6" id="__nav_2_4_3_4_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Meta Documentation
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            Meta Documentation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DOCUMENTATION_REVIEW_RECOMMENDATIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Documentation Review
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TRANSFER_INSTRUCTIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Transfer Instructions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_7" id="__nav_2_4_3_4_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Templates
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            Templates
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../INCIDENT_POSTMORTEM_TEMPLATE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Incident Postmortem Template
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_4" id="__nav_2_4_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Features and Designs
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            Features and Designs
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../features-and-designs/sprocket-v2-unified-matchmaking-proposal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprocket v2 Unified Matchmaking
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../marketing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Marketing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../production/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Production
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-use-this-glossary" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to Use This Glossary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#core-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Concepts
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Core Concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#infrastructure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Infrastructure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloud-computing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cloud Computing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#production" class="md-nav__link">
+    <span class="md-ellipsis">
+      Production
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deployment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#high-availability-ha" class="md-nav__link">
+    <span class="md-ellipsis">
+      High Availability (HA)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scalability" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scalability
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#infrastructure-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Infrastructure Concepts
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Infrastructure Concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Docker
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docker-swarm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Docker Swarm
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#container" class="md-nav__link">
+    <span class="md-ellipsis">
+      Container
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-docker-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      Service (Docker Service)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replica" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replica
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#image-docker-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      Image (Docker Image)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#volume-docker-volume" class="md-nav__link">
+    <span class="md-ellipsis">
+      Volume (Docker Volume)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#network-overlay-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      Network (Overlay Network)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bind-mount" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bind Mount
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#node" class="md-nav__link">
+    <span class="md-ellipsis">
+      Node
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#networking-security-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Networking &amp; Security Concepts
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Networking &amp; Security Concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dns-domain-name-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      DNS (Domain Name System)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#https-http" class="md-nav__link">
+    <span class="md-ellipsis">
+      HTTPS / HTTP
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tls-transport-layer-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      TLS (Transport Layer Security)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#certificate-tlsssl-certificate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Certificate (TLS/SSL Certificate)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lets-encrypt" class="md-nav__link">
+    <span class="md-ellipsis">
+      Let's Encrypt
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#port" class="md-nav__link">
+    <span class="md-ellipsis">
+      Port
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#firewall" class="md-nav__link">
+    <span class="md-ellipsis">
+      Firewall
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reverse-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reverse Proxy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load-balancer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Load Balancer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ingress-controller" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ingress Controller
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#oauth" class="md-nav__link">
+    <span class="md-ellipsis">
+      OAuth
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jwt-json-web-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      JWT (JSON Web Token)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#storage-data-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Storage &amp; Data Concepts
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Storage &amp; Data Concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#database" class="md-nav__link">
+    <span class="md-ellipsis">
+      Database
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#postgresql-postgres" class="md-nav__link">
+    <span class="md-ellipsis">
+      PostgreSQL (Postgres)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#managed-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      Managed Database
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#redis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Redis
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#s3-simple-storage-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      S3 (Simple Storage Service)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#object-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Object Storage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bucket" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bucket
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Backup
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#retention" class="md-nav__link">
+    <span class="md-ellipsis">
+      Retention
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#application-architecture-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Application Architecture Concepts
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Application Architecture Concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#microservices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Microservices
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api-application-programming-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      API (Application Programming Interface)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#graphql" class="md-nav__link">
+    <span class="md-ellipsis">
+      GraphQL
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#message-queue" class="md-nav__link">
+    <span class="md-ellipsis">
+      Message Queue
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rabbitmq" class="md-nav__link">
+    <span class="md-ellipsis">
+      RabbitMQ
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pubsub-publishsubscribe" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pub/Sub (Publish/Subscribe)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment-operations-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deployment &amp; Operations Tools
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deployment &amp; Operations Tools">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#infrastructure-as-code-iac" class="md-nav__link">
+    <span class="md-ellipsis">
+      Infrastructure as Code (IaC)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pulumi" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pulumi
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stack-pulumi-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stack (Pulumi Stack)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#terraform" class="md-nav__link">
+    <span class="md-ellipsis">
+      Terraform
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cicd-continuous-integration-continuous-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      CI/CD (Continuous Integration / Continuous Deployment)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#git" class="md-nav__link">
+    <span class="md-ellipsis">
+      Git
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#github" class="md-nav__link">
+    <span class="md-ellipsis">
+      GitHub
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#monitoring-observability" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitoring &amp; Observability
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Monitoring &amp; Observability">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Metrics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Logs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#monitoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitoring
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dashboard" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dashboard
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alert" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alert
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uptime" class="md-nav__link">
+    <span class="md-ellipsis">
+      Uptime
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sla-service-level-agreement" class="md-nav__link">
+    <span class="md-ellipsis">
+      SLA (Service Level Agreement)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-secrets-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security &amp; Secrets Management
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Security &amp; Secrets Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#secrets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Secrets
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vault-hashicorp-vault" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vault (HashiCorp Vault)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unseal-seal-vault" class="md-nav__link">
+    <span class="md-ellipsis">
+      Unseal / Seal (Vault)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#doppler" class="md-nav__link">
+    <span class="md-ellipsis">
+      Doppler
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#environment-variable" class="md-nav__link">
+    <span class="md-ellipsis">
+      Environment Variable
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docker-secret" class="md-nav__link">
+    <span class="md-ellipsis">
+      Docker Secret
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sprocket-specific-terms" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sprocket-Specific Terms
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sprocket-Specific Terms">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sprocket" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sprocket
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mle-minor-league-esports" class="md-nav__link">
+    <span class="md-ellipsis">
+      MLE (Minor League Esports)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ballchasing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ballchasing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replay" class="md-nav__link">
+    <span class="md-ellipsis">
+      Replay
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#elo" class="md-nav__link">
+    <span class="md-ellipsis">
+      ELO
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#matchmaking" class="md-nav__link">
+    <span class="md-ellipsis">
+      Matchmaking
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#service-specific-terms" class="md-nav__link">
+    <span class="md-ellipsis">
+      Service-Specific Terms
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Service-Specific Terms">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#traefik" class="md-nav__link">
+    <span class="md-ellipsis">
+      Traefik
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ingress-egress" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ingress / Egress
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#influxdb" class="md-nav__link">
+    <span class="md-ellipsis">
+      InfluxDB
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grafana" class="md-nav__link">
+    <span class="md-ellipsis">
+      Grafana
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#loki" class="md-nav__link">
+    <span class="md-ellipsis">
+      Loki
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gatus" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gatus
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#n8n" class="md-nav__link">
+    <span class="md-ellipsis">
+      N8n
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#neo4j" class="md-nav__link">
+    <span class="md-ellipsis">
+      Neo4j
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#telegraf" class="md-nav__link">
+    <span class="md-ellipsis">
+      Telegraf
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#technology-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      Technology Stack
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Technology Stack">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nodejs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Node.js
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nextjs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Next.js
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nestjs" class="md-nav__link">
+    <span class="md-ellipsis">
+      NestJS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typescript" class="md-nav__link">
+    <span class="md-ellipsis">
+      TypeScript
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#acronyms-quick-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Acronyms Quick Reference
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-units-measurements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Units &amp; Measurements
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Units &amp; Measurements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Storage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#computing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Computing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#network" class="md-nav__link">
+    <span class="md-ellipsis">
+      Network
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#time" class="md-nav__link">
+    <span class="md-ellipsis">
+      Time
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      Related Resources
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="sprocket-infrastructure-glossary">Sprocket Infrastructure Glossary</h1>
+<p><strong>Version</strong>: 1.0
+<strong>Last Updated</strong>: November 8, 2025
+<strong>Audience</strong>: Everyone - from non-technical managers to junior engineers</p>
+<hr />
+<h2 id="how-to-use-this-glossary">How to Use This Glossary</h2>
+<p>This glossary defines all technical terms used throughout the Sprocket infrastructure documentation. Terms are organized alphabetically within categories for easy reference.</p>
+<p><strong>For Non-Technical Readers</strong>: Start with "Core Concepts" to understand the basics.
+<strong>For Junior Engineers</strong>: Read through "Infrastructure Concepts" and "Deployment Tools" sections.
+<strong>For Everyone</strong>: Use Ctrl+F / Cmd+F to search for specific terms.</p>
+<hr />
+<h2 id="core-concepts">Core Concepts</h2>
+<h3 id="infrastructure">Infrastructure</h3>
+<p>The collection of hardware (computers, servers) and software (databases, web servers) needed to run an application. Think of it like the foundation, plumbing, and electrical systems of a building - users don't see it, but nothing works without it.</p>
+<h3 id="cloud-computing">Cloud Computing</h3>
+<p>Renting computer resources (servers, storage, databases) from companies like Digital Ocean or AWS instead of buying and maintaining your own physical servers. Like renting an apartment instead of buying a house.</p>
+<h3 id="production">Production</h3>
+<p>The "real" environment where actual users interact with the application. As opposed to "development" (where engineers test) or "staging" (where you test before going live). When something is "in production," it means real users depend on it.</p>
+<h3 id="deployment">Deployment</h3>
+<p>The process of taking application code and making it run on servers so users can access it. Like publishing a book - writing it is development, but deployment is printing and distributing it to readers.</p>
+<h3 id="high-availability-ha">High Availability (HA)</h3>
+<p>A system designed to keep running even if individual parts fail. Like having backup generators in a hospital - if main power fails, backups take over automatically.</p>
+<h3 id="scalability">Scalability</h3>
+<p>The ability to handle more users or traffic by adding more resources. Two types:
+- <strong>Vertical Scaling</strong>: Making a single server bigger (more CPU, more RAM) - like adding more floors to a building
+- <strong>Horizontal Scaling</strong>: Adding more servers - like building more buildings</p>
+<hr />
+<h2 id="infrastructure-concepts">Infrastructure Concepts</h2>
+<h3 id="docker">Docker</h3>
+<p>Software that packages applications and all their dependencies into "containers" - standardized units that run the same way everywhere. Think of it like shipping containers: whether you're shipping toys or electronics, the container format is the same, making transport easier.</p>
+<p><strong>Real-world analogy</strong>: Instead of saying "this app needs Python 3.9, library X version 2.1, library Y version 3.0..." you package everything together. The container runs the same on your laptop and on the production server.</p>
+<h3 id="docker-swarm">Docker Swarm</h3>
+<p>Docker's built-in tool for managing containers across multiple servers. It handles:
+- Running multiple copies of an application for reliability
+- Distributing containers across servers
+- Restarting containers if they crash
+- Load balancing traffic between copies</p>
+<p><strong>Why we use it</strong>: Provides redundancy and easier management than running containers manually on each server.</p>
+<h3 id="container">Container</h3>
+<p>A running instance of a Docker image. It's isolated from other containers - has its own filesystem, network, and processes. Like apartments in a building - each has its own space but they share the building's infrastructure.</p>
+<h3 id="service-docker-service">Service (Docker Service)</h3>
+<p>In Docker Swarm, a service is a definition of how to run containers:
+- Which image to use
+- How many copies (replicas) to run
+- What ports to expose
+- What networks to connect to</p>
+<p><strong>Example</strong>: The "Sprocket Web" service says "run 1 copy of the sprocket-web image, expose port 3000, connect to the ingress network."</p>
+<h3 id="replica">Replica</h3>
+<p>A copy of a container. If a service has 3 replicas, it means 3 identical containers are running, usually for redundancy and load balancing.</p>
+<p><strong>Why multiple replicas?</strong> If one crashes, the others keep serving users. Also spreads traffic across multiple containers for better performance.</p>
+<h3 id="image-docker-image">Image (Docker Image)</h3>
+<p>A template for creating containers. Contains the application code plus everything needed to run it. Like a blueprint for a house - you can build multiple houses (containers) from one blueprint (image).</p>
+<p><strong>Example</strong>: <code>asaxplayinghorse/sprocket-web:main</code> is an image stored in Docker Hub that contains the Sprocket web application.</p>
+<h3 id="volume-docker-volume">Volume (Docker Volume)</h3>
+<p>Persistent storage for containers. Containers are temporary - when they stop, their data disappears. Volumes persist data even when containers are destroyed.</p>
+<p><strong>Real-world analogy</strong>: Like an external hard drive that survives even if you replace your computer.</p>
+<h3 id="network-overlay-network">Network (Overlay Network)</h3>
+<p>In Docker Swarm, overlay networks connect containers even across different physical servers. Containers on the same network can communicate using service names instead of IP addresses.</p>
+<p><strong>Example</strong>: A container can connect to Redis by using the hostname "redis" instead of needing to know the IP address.</p>
+<h3 id="bind-mount">Bind Mount</h3>
+<p>A way to share a directory from the host server directly into a container. Changes made in the container show up on the host and vice versa.</p>
+<p><strong>When we use it</strong>: Vault unseal keys are stored on the host server and bind-mounted into the Vault container so it can read them.</p>
+<h3 id="node">Node</h3>
+<p>In Docker Swarm, a node is a server that runs containers. Can be:
+- <strong>Manager Node</strong>: Orchestrates the swarm, assigns containers to workers
+- <strong>Worker Node</strong>: Runs containers as assigned by manager</p>
+<p><strong>Current setup</strong>: We have 1 manager node (our single Droplet) running everything.</p>
+<hr />
+<h2 id="networking-security-concepts">Networking &amp; Security Concepts</h2>
+<h3 id="dns-domain-name-system">DNS (Domain Name System)</h3>
+<p>The system that translates human-readable domain names (like <code>sprocket.mlesports.gg</code>) into IP addresses (like <code>192.168.4.39</code>) that computers use to find each other.</p>
+<p><strong>Real-world analogy</strong>: Like a phone book - you look up "Pizza Place" and get the phone number.</p>
+<h3 id="https-http">HTTPS / HTTP</h3>
+<ul>
+<li><strong>HTTP</strong>: HyperText Transfer Protocol - how web browsers communicate with web servers</li>
+<li><strong>HTTPS</strong>: HTTP Secure - encrypted version so data can't be intercepted</li>
+</ul>
+<p><strong>Why it matters</strong>: Without HTTPS, passwords and data travel in plain text. Anyone on the network can read them.</p>
+<h3 id="tls-transport-layer-security">TLS (Transport Layer Security)</h3>
+<p>The encryption technology that makes HTTPS secure. Formerly called SSL (Secure Sockets Layer) - you'll still hear "SSL certificate" but it really means TLS.</p>
+<h3 id="certificate-tlsssl-certificate">Certificate (TLS/SSL Certificate)</h3>
+<p>A digital file that proves a website is who it claims to be and enables HTTPS encryption. Issued by trusted authorities like Let's Encrypt.</p>
+<p><strong>Real-world analogy</strong>: Like a passport that proves your identity and is issued by a trusted government.</p>
+<h3 id="lets-encrypt">Let's Encrypt</h3>
+<p>A free, automated certificate authority that issues TLS certificates. We use it to get certificates for <code>sprocket.mlesports.gg</code> so users see the padlock icon in their browser.</p>
+<h3 id="port">Port</h3>
+<p>A numbered endpoint on a computer where network connections are made. Common ports:
+- <strong>80</strong>: HTTP (web traffic, unencrypted)
+- <strong>443</strong>: HTTPS (web traffic, encrypted)
+- <strong>22</strong>: SSH (remote server access)
+- <strong>5432/25060</strong>: PostgreSQL (database)</p>
+<p><strong>Real-world analogy</strong>: Like apartment numbers in a building - the building has one address (IP), but different apartments (ports) serve different purposes.</p>
+<h3 id="firewall">Firewall</h3>
+<p>Security system that controls what network traffic is allowed in/out of a server. Like a security guard at a building entrance - only lets in authorized visitors.</p>
+<p><strong>Our firewall</strong>: Allows ports 80 (HTTP), 443 (HTTPS), 22 (SSH for admins only). Blocks everything else.</p>
+<h3 id="reverse-proxy">Reverse Proxy</h3>
+<p>A server that sits in front of your application servers and forwards requests to them. Provides benefits like:
+- TLS termination (handles HTTPS encryption/decryption)
+- Load balancing (distributes traffic across multiple servers)
+- Routing (sends requests to the right application based on URL)</p>
+<p><strong>Our reverse proxy</strong>: Traefik handles all incoming traffic and routes it to the correct service.</p>
+<h3 id="load-balancer">Load Balancer</h3>
+<p>Distributes incoming network traffic across multiple servers to prevent any one server from becoming overloaded.</p>
+<p><strong>Example</strong>: If you have 3 web servers, the load balancer sends some users to server 1, some to server 2, some to server 3.</p>
+<h3 id="ingress-controller">Ingress Controller</h3>
+<p>In container environments, the component that handles incoming traffic from outside the cluster and routes it to the appropriate services. Traefik is our ingress controller.</p>
+<h3 id="oauth">OAuth</h3>
+<p>An authentication method that lets users log in using their Google, Discord, Steam, or Epic Games accounts instead of creating a new username/password.</p>
+<p><strong>User experience</strong>: "Sign in with Google" button.</p>
+<h3 id="jwt-json-web-token">JWT (JSON Web Token)</h3>
+<p>A secure way to transmit user authentication information between client and server. After logging in, the user gets a JWT that proves they're authenticated for future requests.</p>
+<p><strong>Real-world analogy</strong>: Like a wristband at a concert - you show your ID once to get in, then the wristband proves you're allowed inside.</p>
+<hr />
+<h2 id="storage-data-concepts">Storage &amp; Data Concepts</h2>
+<h3 id="database">Database</h3>
+<p>Software that stores and organizes data so applications can create, read, update, and delete information efficiently.</p>
+<p><strong>Our database</strong>: PostgreSQL, which stores all Sprocket data (users, matches, teams, etc.)</p>
+<h3 id="postgresql-postgres">PostgreSQL (Postgres)</h3>
+<p>A powerful, reliable, open-source relational database. Organizes data into tables (like spreadsheets) with rows and columns.</p>
+<p><strong>Why we chose it</strong>: Industry standard, handles complex queries, supports millions of records, excellent reliability.</p>
+<h3 id="managed-database">Managed Database</h3>
+<p>A database service run by a cloud provider (like Digital Ocean) where they handle:
+- Automatic backups
+- Updates and security patches
+- Hardware maintenance
+- Scaling and performance tuning</p>
+<p><strong>vs. Self-Hosted</strong>: We used to run our own PostgreSQL in a container. Now Digital Ocean manages it for us.</p>
+<p><strong>Trade-off</strong>: Costs $15/month but saves many hours of maintenance work.</p>
+<h3 id="redis">Redis</h3>
+<p>An in-memory data store used for caching and fast data access. Extremely fast because it stores data in RAM instead of on disk.</p>
+<p><strong>Use cases in Sprocket</strong>:
+- Session storage (keep users logged in)
+- Caching (store frequently-accessed data to avoid database queries)
+- Pub/sub messaging (real-time updates)</p>
+<p><strong>Real-world analogy</strong>: Like keeping frequently-used files on your desk instead of filing them away - faster access.</p>
+<h3 id="s3-simple-storage-service">S3 (Simple Storage Service)</h3>
+<p>Amazon's object storage service for files. Digital Ocean Spaces is S3-compatible (same API, different company).</p>
+<p><strong>Use cases in Sprocket</strong>:
+- Storing replay files
+- Storing generated images
+- Storing backups
+- Storing Vault's encrypted data</p>
+<p><strong>Why S3?</strong>: Industry standard, extremely durable (99.999999999% - "eleven 9s"), cheap, scalable.</p>
+<h3 id="object-storage">Object Storage</h3>
+<p>Storage for files (objects) accessed via HTTP API instead of mounting as a filesystem. Each file has a unique URL.</p>
+<p><strong>vs. File Storage</strong>: Instead of <code>/var/www/images/photo.jpg</code>, you access <code>https://s3.amazonaws.com/bucket/photo.jpg</code></p>
+<h3 id="bucket">Bucket</h3>
+<p>In object storage, a container for files. Like a folder, but at the top level.</p>
+<p><strong>Our buckets</strong>:
+- <code>vault-secrets</code>: Stores Vault's encrypted backend data
+- <code>sprocket-storage</code>: Stores application files (images, replays)</p>
+<h3 id="backup">Backup</h3>
+<p>A copy of data stored separately so you can restore it if the original is lost or corrupted.</p>
+<p><strong>Our backups</strong>:
+- Database: Automatic daily backups by Digital Ocean (7-day retention)
+- Vault: Manual backups of unseal keys and S3 data
+- Pulumi state: Manual exports</p>
+<h3 id="retention">Retention</h3>
+<p>How long backups are kept before being deleted.</p>
+<p><strong>Example</strong>: 7-day retention means you can restore from backups up to 7 days old, but older backups are deleted.</p>
+<hr />
+<h2 id="application-architecture-concepts">Application Architecture Concepts</h2>
+<h3 id="microservices">Microservices</h3>
+<p>An architectural pattern where an application is split into small, independent services that each handle one specific function.</p>
+<p><strong>Example</strong>: Instead of one big "Sprocket" application, we have separate services for:
+- Web UI
+- API
+- Discord bot
+- Image generation
+- Matchmaking
+- Notifications</p>
+<p><strong>Benefits</strong>: Each service can be updated independently. If one fails, others keep working.</p>
+<h3 id="api-application-programming-interface">API (Application Programming Interface)</h3>
+<p>A way for applications to communicate with each other programmatically. Our GraphQL API lets the web UI, Discord bot, and other services request data.</p>
+<p><strong>Real-world analogy</strong>: Like a waiter at a restaurant - you tell them what you want, they bring it from the kitchen. You don't need to know how the kitchen works.</p>
+<h3 id="graphql">GraphQL</h3>
+<p>A query language for APIs. Instead of having dozens of different endpoints, clients can request exactly the data they need in a single query.</p>
+<p><strong>Example</strong>: One request can get user info, their recent matches, and team details, rather than making 3 separate requests.</p>
+<h3 id="message-queue">Message Queue</h3>
+<p>A system for asynchronous communication between services. One service puts a message in the queue, another service processes it later.</p>
+<p><strong>Our message queue</strong>: RabbitMQ</p>
+<p><strong>Use case</strong>: When a match finishes, the API puts a message in the queue. The notification service reads it and sends Discord notifications. The analytics service reads it and records stats.</p>
+<p><strong>Why queues?</strong>: Services don't have to wait for each other. API can return immediately while background tasks process.</p>
+<h3 id="rabbitmq">RabbitMQ</h3>
+<p>A popular open-source message queue system using the AMQP protocol.</p>
+<p><strong>Real-world analogy</strong>: Like a mailbox - sender drops a letter in, recipient picks it up when ready.</p>
+<h3 id="pubsub-publishsubscribe">Pub/Sub (Publish/Subscribe)</h3>
+<p>A messaging pattern where:
+- <strong>Publishers</strong> send messages to topics
+- <strong>Subscribers</strong> listen to topics they're interested in</p>
+<p><strong>Example</strong>: Match results are "published" to a topic. Notification service, analytics service, and ELO service all "subscribe" to get the results.</p>
+<hr />
+<h2 id="deployment-operations-tools">Deployment &amp; Operations Tools</h2>
+<h3 id="infrastructure-as-code-iac">Infrastructure as Code (IaC)</h3>
+<p>Defining infrastructure (servers, networks, databases) using code files instead of clicking through web interfaces.</p>
+<p><strong>Benefits</strong>:
+- Version controlled (track changes in git)
+- Repeatable (deploy the same way every time)
+- Self-documenting (code shows what exists)
+- Easy rollback (restore previous version)</p>
+<p><strong>Our IaC tool</strong>: Pulumi</p>
+<h3 id="pulumi">Pulumi</h3>
+<p>An Infrastructure as Code tool that lets you define infrastructure using real programming languages (we use TypeScript).</p>
+<p><strong>What it manages</strong>:
+- Docker services
+- Networks
+- Volumes
+- Secrets
+- Configurations</p>
+<p><strong>How it works</strong>: You write code describing what you want. Pulumi compares it to what currently exists and makes the necessary changes.</p>
+<h3 id="stack-pulumi-stack">Stack (Pulumi Stack)</h3>
+<p>An instance of your infrastructure. We have 3 stacks:
+- <code>layer_1</code>: Core infrastructure (Traefik, Vault)
+- <code>layer_2</code>: Data services (Redis, databases, monitoring)
+- <code>prod</code>: Application services (Sprocket web, API, bot)</p>
+<h3 id="terraform">Terraform</h3>
+<p>Another popular Infrastructure as Code tool (competitor to Pulumi). We don't use it, but you might see it mentioned in industry documentation.</p>
+<h3 id="cicd-continuous-integration-continuous-deployment">CI/CD (Continuous Integration / Continuous Deployment)</h3>
+<p>Automated processes for testing and deploying code:
+- <strong>CI</strong>: Automatically test code when developers commit changes
+- <strong>CD</strong>: Automatically deploy tested code to production</p>
+<p><strong>Current state</strong>: We don't have CI/CD yet (manual deployments via Pulumi). Future improvement.</p>
+<h3 id="git">Git</h3>
+<p>Version control system that tracks changes to code over time. Like "track changes" in Word, but much more powerful.</p>
+<p><strong>Our git repository</strong>: <code>sprocket-infra</code> on GitHub</p>
+<h3 id="github">GitHub</h3>
+<p>A website that hosts git repositories and provides collaboration tools. Our infrastructure code lives here.</p>
+<hr />
+<h2 id="monitoring-observability">Monitoring &amp; Observability</h2>
+<h3 id="metrics">Metrics</h3>
+<p>Numerical data about system performance collected over time:
+- CPU usage: 45%
+- Memory usage: 3.2GB
+- Request rate: 150 requests/minute
+- Error rate: 0.3%</p>
+<p><strong>Why it matters</strong>: Helps identify problems before users notice. "CPU is at 90%" warns you to add resources.</p>
+<h3 id="logs">Logs</h3>
+<p>Text records of events that happen in applications. Each log entry typically has:
+- Timestamp
+- Severity (INFO, WARN, ERROR)
+- Message describing what happened</p>
+<p><strong>Example</strong>: <code>2025-11-08 10:30:15 ERROR: Failed to connect to database</code></p>
+<h3 id="monitoring">Monitoring</h3>
+<p>Continuously collecting metrics and logs to understand system health.</p>
+<p><strong>Our monitoring stack</strong>:
+- <strong>InfluxDB</strong>: Stores time-series metrics
+- <strong>Grafana</strong>: Visualizes metrics in dashboards
+- <strong>Loki</strong>: Aggregates logs from all services
+- <strong>Gatus</strong>: Monitors service health/uptime</p>
+<h3 id="dashboard">Dashboard</h3>
+<p>A visual display of key metrics, usually showing graphs and charts in real-time.</p>
+<p><strong>Example</strong>: Our Grafana dashboard shows CPU usage, memory usage, request rate, error rate, database connections - all updating live.</p>
+<h3 id="alert">Alert</h3>
+<p>An automated notification when metrics exceed thresholds.</p>
+<p><strong>Examples</strong>:
+- "CPU &gt; 85% for 10 minutes" → Send Slack message
+- "Error rate &gt; 5%" → Page on-call engineer
+- "Service down for 2 minutes" → Send PagerDuty alert</p>
+<p><strong>Current state</strong>: Monitoring tools installed, but alerts not fully configured yet.</p>
+<h3 id="uptime">Uptime</h3>
+<p>Percentage of time a service is available and working correctly.</p>
+<p><strong>Industry targets</strong>:
+- 99% uptime = ~3.65 days downtime per year
+- 99.9% uptime = ~8.76 hours downtime per year
+- 99.99% uptime = ~52 minutes downtime per year</p>
+<p><strong>Our target</strong>: 99.9%+ (aiming for "three 9s")</p>
+<h3 id="sla-service-level-agreement">SLA (Service Level Agreement)</h3>
+<p>A commitment about service availability and performance. Defines what level of service users should expect.</p>
+<p><strong>Example SLA</strong>: "The service will be available 99.9% of the time, with response times under 500ms for 95% of requests."</p>
+<hr />
+<h2 id="security-secrets-management">Security &amp; Secrets Management</h2>
+<h3 id="secrets">Secrets</h3>
+<p>Sensitive information like passwords, API keys, and certificates that must be kept secure.</p>
+<p><strong>Examples</strong>:
+- Database passwords
+- OAuth client secrets
+- API tokens
+- Encryption keys</p>
+<h3 id="vault-hashicorp-vault">Vault (HashiCorp Vault)</h3>
+<p>A tool for securely storing and managing secrets. Provides:
+- Encrypted storage
+- Access control (who can read which secrets)
+- Audit logging (track who accessed what)
+- Secret rotation capabilities</p>
+<p><strong>Why we use it</strong>: Better than storing secrets in code or environment variables. Centralized, secure, auditable.</p>
+<h3 id="unseal-seal-vault">Unseal / Seal (Vault)</h3>
+<p>Vault starts in a "sealed" state where it can't decrypt any secrets. Unsealing requires providing multiple "unseal keys" (like needing multiple keys to open a bank vault).</p>
+<p><strong>Sealed</strong>: Vault is running but all data is encrypted and inaccessible
+<strong>Unsealed</strong>: Vault can decrypt and serve secrets</p>
+<p><strong>Why this security model?</strong>: Even if someone steals the Vault server, they can't read secrets without unseal keys.</p>
+<h3 id="doppler">Doppler</h3>
+<p>A cloud-based secrets management service we use as our "source of truth" for secrets. Team members can update secrets here, then they're synced to Vault.</p>
+<p><strong>Workflow</strong>: Doppler (team edits) → Bootstrap script → Vault (runtime use)</p>
+<h3 id="environment-variable">Environment Variable</h3>
+<p>A variable set outside your application code that the application can read. Common way to configure applications without hardcoding values.</p>
+<p><strong>Example</strong>: <code>DATABASE_URL=postgresql://...</code> tells the app where to find the database.</p>
+<h3 id="docker-secret">Docker Secret</h3>
+<p>A secure way to make secrets available to containers in Docker Swarm. Secrets are encrypted in transit and at rest, mounted as read-only files inside containers.</p>
+<p><strong>How it works</strong>: Pulumi creates Docker secrets from Vault values. Containers read secrets from <code>/app/secret/</code> directory.</p>
+<hr />
+<h2 id="sprocket-specific-terms">Sprocket-Specific Terms</h2>
+<h3 id="sprocket">Sprocket</h3>
+<p>The gaming platform this infrastructure supports. Provides competitive gaming leagues, match tracking, player statistics, and team management for Rocket League esports.</p>
+<h3 id="mle-minor-league-esports">MLE (Minor League Esports)</h3>
+<p>The organization that runs Sprocket. Provides competitive Rocket League leagues at various skill levels.</p>
+<h3 id="ballchasing">Ballchasing</h3>
+<p>An external service that stores and analyzes Rocket League replay files. Sprocket integrates with their API to fetch replay data.</p>
+<h3 id="replay">Replay</h3>
+<p>A recording of a Rocket League match that can be analyzed for statistics. Stored as <code>.replay</code> files, uploaded to Ballchasing or our S3 storage.</p>
+<h3 id="elo">ELO</h3>
+<p>A rating system for ranking player skill. Named after Arpad Elo who developed it for chess. Used in Sprocket to match players of similar skill.</p>
+<h3 id="matchmaking">Matchmaking</h3>
+<p>The process of creating balanced matches by grouping players of similar skill levels.</p>
+<hr />
+<h2 id="service-specific-terms">Service-Specific Terms</h2>
+<h3 id="traefik">Traefik</h3>
+<p>A modern reverse proxy and load balancer. Acts as the entry point for all HTTP/HTTPS traffic to our infrastructure.</p>
+<p><strong>What it does</strong>:
+- Routes <code>sprocket.mlesports.gg</code> to the web service
+- Routes <code>api.sprocket.mlesports.gg</code> to the API service
+- Handles TLS certificate automation with Let's Encrypt
+- Terminates HTTPS connections</p>
+<h3 id="ingress-egress">Ingress / Egress</h3>
+<ul>
+<li><strong>Ingress</strong>: Traffic coming INTO the system (user requests)</li>
+<li><strong>Egress</strong>: Traffic going OUT of the system (API calls to external services)</li>
+</ul>
+<p><strong>Traefik Ingress Network</strong>: The Docker network where all public-facing services connect to receive incoming traffic.</p>
+<h3 id="influxdb">InfluxDB</h3>
+<p>A time-series database optimized for storing metrics that change over time (CPU usage, request rates, temperatures, etc.)</p>
+<p><strong>vs. PostgreSQL</strong>: PostgreSQL stores records (users, matches). InfluxDB stores measurements over time (server CPU at 10:00, 10:01, 10:02...).</p>
+<h3 id="grafana">Grafana</h3>
+<p>An open-source platform for visualizing metrics. Creates dashboards with graphs, charts, and alerts.</p>
+<p><strong>Connects to</strong>: InfluxDB (for metrics), Loki (for logs)</p>
+<h3 id="loki">Loki</h3>
+<p>A log aggregation system developed by Grafana Labs. Collects logs from all services and makes them searchable.</p>
+<p><strong>Query example</strong>: "Show me all ERROR logs from sprocket-core service in the last hour"</p>
+<h3 id="gatus">Gatus</h3>
+<p>A health monitoring tool that periodically checks if services are up and responding correctly.</p>
+<p><strong>What it monitors</strong>:
+- HTTP endpoints (is the website accessible?)
+- Database connectivity
+- External API availability
+- Response times</p>
+<h3 id="n8n">N8n</h3>
+<p>A workflow automation tool (like Zapier but self-hosted). Used for scheduled tasks and integrations.</p>
+<p><strong>Use cases</strong>: Automated data exports, scheduled reports, webhook integrations</p>
+<h3 id="neo4j">Neo4j</h3>
+<p>A graph database - stores data as nodes (entities) and relationships between them. Better than traditional databases for highly connected data.</p>
+<p><strong>Use case in Sprocket</strong>: Player relationships, team hierarchies, social connections</p>
+<h3 id="telegraf">Telegraf</h3>
+<p>A metrics collection agent that gathers system stats and forwards them to InfluxDB.</p>
+<p><strong>What it collects</strong>: CPU, memory, disk usage, network I/O, Docker container stats</p>
+<hr />
+<h2 id="technology-stack">Technology Stack</h2>
+<h3 id="nodejs">Node.js</h3>
+<p>JavaScript runtime that lets you run JavaScript on servers (not just in browsers). Many of our services are built with Node.js.</p>
+<h3 id="nextjs">Next.js</h3>
+<p>A React framework for building web applications. Powers our Sprocket Web UI.</p>
+<p><strong>Why Next.js</strong>: Server-side rendering for better performance and SEO.</p>
+<h3 id="nestjs">NestJS</h3>
+<p>A Node.js framework for building scalable server applications. Powers our Sprocket API.</p>
+<p><strong>Why NestJS</strong>: Great TypeScript support, modular architecture, built-in GraphQL support.</p>
+<h3 id="typescript">TypeScript</h3>
+<p>A programming language that adds types to JavaScript. Makes code more reliable by catching errors before runtime.</p>
+<p><strong>Our infrastructure code</strong>: Written in TypeScript (Pulumi definitions)</p>
+<hr />
+<h2 id="acronyms-quick-reference">Acronyms Quick Reference</h2>
+<table>
+<thead>
+<tr>
+<th>Acronym</th>
+<th>Full Term</th>
+<th>Simple Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>API</td>
+<td>Application Programming Interface</td>
+<td>How applications talk to each other</td>
+</tr>
+<tr>
+<td>CDN</td>
+<td>Content Delivery Network</td>
+<td>Serves files from servers close to users for speed</td>
+</tr>
+<tr>
+<td>CI/CD</td>
+<td>Continuous Integration/Deployment</td>
+<td>Automated testing and deployment</td>
+</tr>
+<tr>
+<td>CLI</td>
+<td>Command Line Interface</td>
+<td>Text-based way to interact with software</td>
+</tr>
+<tr>
+<td>DNS</td>
+<td>Domain Name System</td>
+<td>Translates domain names to IP addresses</td>
+</tr>
+<tr>
+<td>HA</td>
+<td>High Availability</td>
+<td>System designed to stay running if parts fail</td>
+</tr>
+<tr>
+<td>HTTP(S)</td>
+<td>HyperText Transfer Protocol (Secure)</td>
+<td>How web browsers and servers communicate</td>
+</tr>
+<tr>
+<td>IaC</td>
+<td>Infrastructure as Code</td>
+<td>Defining infrastructure using code</td>
+</tr>
+<tr>
+<td>JWT</td>
+<td>JSON Web Token</td>
+<td>Token proving a user is authenticated</td>
+</tr>
+<tr>
+<td>OAuth</td>
+<td>Open Authorization</td>
+<td>"Sign in with Google/Discord" authentication</td>
+</tr>
+<tr>
+<td>S3</td>
+<td>Simple Storage Service</td>
+<td>Amazon's (and compatible) object storage</td>
+</tr>
+<tr>
+<td>SLA</td>
+<td>Service Level Agreement</td>
+<td>Promise about service availability</td>
+</tr>
+<tr>
+<td>SSH</td>
+<td>Secure Shell</td>
+<td>Encrypted way to access servers remotely</td>
+</tr>
+<tr>
+<td>SSL/TLS</td>
+<td>Secure Sockets Layer / Transport Layer Security</td>
+<td>Encryption for web traffic</td>
+</tr>
+<tr>
+<td>UI</td>
+<td>User Interface</td>
+<td>What users see and interact with</td>
+</tr>
+<tr>
+<td>URL</td>
+<td>Uniform Resource Locator</td>
+<td>Web address (e.g., https://sprocket.mlesports.gg)</td>
+</tr>
+<tr>
+<td>VM</td>
+<td>Virtual Machine</td>
+<td>Software-based computer running inside another computer</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="common-units-measurements">Common Units &amp; Measurements</h2>
+<h3 id="storage">Storage</h3>
+<ul>
+<li><strong>KB</strong> (Kilobyte) = 1,024 bytes</li>
+<li><strong>MB</strong> (Megabyte) = 1,024 KB</li>
+<li><strong>GB</strong> (Gigabyte) = 1,024 MB (~1 billion bytes)</li>
+<li><strong>TB</strong> (Terabyte) = 1,024 GB (~1 trillion bytes)</li>
+</ul>
+<p><strong>Context</strong>: Our database is ~10GB. Our S3 storage costs $5/month for 100GB+.</p>
+<h3 id="computing">Computing</h3>
+<ul>
+<li><strong>CPU</strong> (Central Processing Unit): The "brain" that executes instructions</li>
+<li><strong>Core</strong>: Modern CPUs have multiple cores (can do multiple things simultaneously)</li>
+<li><strong>RAM</strong> (Random Access Memory): Fast temporary storage for running programs</li>
+<li><strong>vCPU</strong>: Virtual CPU - a portion of a physical CPU allocated to a virtual machine</li>
+</ul>
+<p><strong>Our server</strong>: 4 vCPUs, 8GB RAM</p>
+<h3 id="network">Network</h3>
+<ul>
+<li><strong>Mbps</strong> (Megabits per second): Network speed measurement</li>
+<li><strong>Latency</strong>: Time for data to travel from source to destination (measured in milliseconds)</li>
+<li><strong>Bandwidth</strong>: Maximum data transfer rate</li>
+<li><strong>Throughput</strong>: Actual data transfer rate achieved</li>
+</ul>
+<h3 id="time">Time</h3>
+<ul>
+<li><strong>ms</strong> (millisecond) = 0.001 seconds</li>
+<li><strong>Response Time</strong>: How long it takes a server to respond to a request</li>
+</ul>
+<p><strong>Our target</strong>: &lt;500ms response time for 95% of requests (p95)</p>
+<hr />
+<h2 id="related-resources">Related Resources</h2>
+<p><strong>For deeper learning</strong>:
+- Docker documentation: https://docs.docker.com/
+- Pulumi documentation: https://www.pulumi.com/docs/
+- Traefik documentation: https://doc.traefik.io/traefik/</p>
+<p><strong>Sprocket-specific</strong>:
+- Main repository: https://github.com/SprocketBot/
+- Infrastructure repository: https://github.com/SprocketBot/sprocket-infra</p>
+<hr />
+<p><strong>Glossary Version</strong>: 1.0
+<strong>Last Updated</strong>: November 8, 2025
+<strong>Maintained By</strong>: Infrastructure Team</p>
+<p><strong>Feedback</strong>: If you encounter an undefined term, please add it to this glossary or request clarification in #infrastructure.</p>
+<hr />
+<p><em>This glossary is a living document. Please update it when new terms are introduced or when definitions need clarification.</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../../../..", "features": [], "search": "../../../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+    
+  </body>
+</html>

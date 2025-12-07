@@ -1,0 +1,4650 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://minor-league-esports.github.io/knowledgeBase/departments/development/systems/production-infrastructure/DEPLOYMENT_GUIDE/">
+      
+      
+        <link rel="prev" href="../GLOSSARY/">
+      
+      
+        <link rel="next" href="../OPERATIONS_RUNBOOK/">
+      
+      
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.18">
+    
+    
+      
+        <title>Deployment Guide - Knowledge Base</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="yellow" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sprocket-infrastructure-deployment-guide" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../.." title="Knowledge Base" class="md-header__button md-logo" aria-label="Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Knowledge Base
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Deployment Guide
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/minor-league-esports/knowledgeBase" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="Knowledge Base" class="md-nav__button md-logo" aria-label="Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Knowledge Base
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/minor-league-esports/knowledgeBase" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Departments
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Departments
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../rocket-league-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Rocket League Operations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../trackmania-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Trackmania Operations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../community/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Community
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Development
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../development/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../new-team-members/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    New Team Members
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3" id="__nav_2_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Systems
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Systems
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../systems-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modmail/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Modmail KB
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sprocket-identity-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprocket Identity System
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4" id="__nav_2_4_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Production Infrastructure
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_4_3_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_4_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            Production Infrastructure
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_2" id="__nav_2_4_3_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-START-HERE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Quick Start
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../README.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    README
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CONTEXT_SUMMARY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Context Summary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_3" id="__nav_2_4_3_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Architecture & Design
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Architecture & Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ARCHITECTURE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Architecture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GLOSSARY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_4" id="__nav_2_4_3_4_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Deployment & Operations
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_4_3_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            Deployment & Operations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Deployment Guide
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Deployment Guide
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      Table of Contents
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment-architecture-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deployment Architecture Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#business-context-planning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Business Context &amp; Planning
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Business Context &amp; Planning">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#time-investment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Time Investment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#required-skills" class="md-nav__link">
+    <span class="md-ellipsis">
+      Required Skills
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cost-breakdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cost Breakdown
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cost Breakdown">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#one-time-setup-costs" class="md-nav__link">
+    <span class="md-ellipsis">
+      One-Time Setup Costs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#monthly-recurring-costs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monthly Recurring Costs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#risk-factors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Risk Factors
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prerequisites-checklist-for-project-managers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites Checklist (for Project Managers)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-happens-after-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Happens After Deployment?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-not-to-deploy" class="md-nav__link">
+    <span class="md-ellipsis">
+      When NOT to Deploy
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Prerequisites">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#required-access" class="md-nav__link">
+    <span class="md-ellipsis">
+      Required Access
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#required-software" class="md-nav__link">
+    <span class="md-ellipsis">
+      Required Software
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#production-node-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Production Node Requirements
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pre-deployment-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pre-Deployment Checklist
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pre-Deployment Checklist">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-external-services-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. External Services Configuration
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. External Services Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-digital-ocean-managed-postgresql" class="md-nav__link">
+    <span class="md-ellipsis">
+      A. Digital Ocean Managed PostgreSQL
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-digital-ocean-spaces-s3" class="md-nav__link">
+    <span class="md-ellipsis">
+      B. Digital Ocean Spaces (S3)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-doppler-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      C. Doppler Setup
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-dns-configuration-production-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      D. DNS Configuration (Production Only)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-firewall-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Firewall Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-repository-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Repository Setup
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-pulumi-backend-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Pulumi Backend Configuration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#environment-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Environment Setup
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Environment Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuration-files-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration Files Overview
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#layer-1-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Layer 1 Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#layer-2-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Layer 2 Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#platform-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Platform Configuration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#layer-1-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Layer 1 Deployment
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Layer 1 Deployment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-deploy-layer-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Deploy Layer 1
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-verify-layer-1-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Verify Layer 1 Deployment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-vault-initialization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Vault Initialization
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#secret-provisioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Secret Provisioning
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Secret Provisioning">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-prepare-secrets-from-doppler" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Prepare Secrets from Doppler
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-run-bootstrap-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Run Bootstrap Script
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-verify-secrets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Verify Secrets
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#layer-2-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Layer 2 Deployment
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Layer 2 Deployment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-deploy-layer-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Deploy Layer 2
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-verify-layer-2-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Verify Layer 2 Deployment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-test-layer-2-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Test Layer 2 Services
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#platform-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Platform Deployment
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Platform Deployment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-deploy-platform" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Deploy Platform
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-verify-platform-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Verify Platform Deployment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-monitor-service-startup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Monitor Service Startup
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verification
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Verification">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#automated-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Automated Verification
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manual-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Manual Verification
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Manual Verification">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-test-httphttps-redirect" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Test HTTP→HTTPS Redirect
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-test-https-access" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Test HTTPS Access
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-test-api-endpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Test API Endpoint
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-test-service-discovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Test Service Discovery
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-test-database-connectivity" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Test Database Connectivity
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-test-s3-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Test S3 Storage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-browser-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Browser Tests
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-direct-master-node-access-advanced-debugging" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Direct Master Node Access (Advanced Debugging)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#common-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Issues
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#issue-1-services-not-starting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Issue 1: Services Not Starting
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#issue-2-404-not-found" class="md-nav__link">
+    <span class="md-ellipsis">
+      Issue 2: 404 Not Found
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#issue-3-certificate-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Issue 3: Certificate Errors
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#issue-4-vault-sealed" class="md-nav__link">
+    <span class="md-ellipsis">
+      Issue 4: Vault Sealed
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#issue-5-database-connection-failed" class="md-nav__link">
+    <span class="md-ellipsis">
+      Issue 5: Database Connection Failed
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rollback-procedures" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rollback Procedures
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Rollback Procedures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rollback-platform" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rollback Platform
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rollback-layer-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rollback Layer 2
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rollback-layer-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rollback Layer 1
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#emergency-rollback" class="md-nav__link">
+    <span class="md-ellipsis">
+      Emergency Rollback
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#post-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Post-Deployment
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Post-Deployment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#security-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security Checklist
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#monitoring-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitoring Setup
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backup-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Backup Setup
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Next Steps
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OPERATIONS_RUNBOOK/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Operations Runbook
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../EXTERNALITIES_AND_DEPENDENCIES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Externalities & Dependencies
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_5" id="__nav_2_4_3_4_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Project History
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            Project History
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../POSTMORTEM/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Postmortem
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TECHNICAL_CHALLENGES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Technical Challenges
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GIT_HISTORY_ANALYSIS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Git History Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CLAUDE_CONVERSATIONS_SUMMARY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Claude Conversations Summary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CLAUDE_CONVERSATION_ANALYSIS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Claude Conversation Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TECHNICAL_CHALLENGES_FROM_CLAUDE_CONVERSATIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Technical Challenges from Claude
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_6" id="__nav_2_4_3_4_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Meta Documentation
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            Meta Documentation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DOCUMENTATION_REVIEW_RECOMMENDATIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Documentation Review
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TRANSFER_INSTRUCTIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Transfer Instructions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_7" id="__nav_2_4_3_4_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Templates
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            Templates
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../INCIDENT_POSTMORTEM_TEMPLATE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Incident Postmortem Template
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_4" id="__nav_2_4_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Features and Designs
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            Features and Designs
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../features-and-designs/sprocket-v2-unified-matchmaking-proposal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprocket v2 Unified Matchmaking
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../marketing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Marketing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../production/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Production
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      Table of Contents
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment-architecture-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deployment Architecture Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#business-context-planning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Business Context &amp; Planning
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Business Context &amp; Planning">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#time-investment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Time Investment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#required-skills" class="md-nav__link">
+    <span class="md-ellipsis">
+      Required Skills
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cost-breakdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cost Breakdown
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cost Breakdown">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#one-time-setup-costs" class="md-nav__link">
+    <span class="md-ellipsis">
+      One-Time Setup Costs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#monthly-recurring-costs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monthly Recurring Costs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#risk-factors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Risk Factors
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prerequisites-checklist-for-project-managers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites Checklist (for Project Managers)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-happens-after-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Happens After Deployment?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-not-to-deploy" class="md-nav__link">
+    <span class="md-ellipsis">
+      When NOT to Deploy
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Prerequisites">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#required-access" class="md-nav__link">
+    <span class="md-ellipsis">
+      Required Access
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#required-software" class="md-nav__link">
+    <span class="md-ellipsis">
+      Required Software
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#production-node-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Production Node Requirements
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pre-deployment-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pre-Deployment Checklist
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pre-Deployment Checklist">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-external-services-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. External Services Configuration
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. External Services Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-digital-ocean-managed-postgresql" class="md-nav__link">
+    <span class="md-ellipsis">
+      A. Digital Ocean Managed PostgreSQL
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-digital-ocean-spaces-s3" class="md-nav__link">
+    <span class="md-ellipsis">
+      B. Digital Ocean Spaces (S3)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-doppler-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      C. Doppler Setup
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-dns-configuration-production-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      D. DNS Configuration (Production Only)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-firewall-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Firewall Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-repository-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Repository Setup
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-pulumi-backend-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Pulumi Backend Configuration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#environment-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Environment Setup
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Environment Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuration-files-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration Files Overview
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#layer-1-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Layer 1 Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#layer-2-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Layer 2 Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#platform-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Platform Configuration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#layer-1-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Layer 1 Deployment
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Layer 1 Deployment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-deploy-layer-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Deploy Layer 1
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-verify-layer-1-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Verify Layer 1 Deployment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-vault-initialization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Vault Initialization
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#secret-provisioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Secret Provisioning
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Secret Provisioning">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-prepare-secrets-from-doppler" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Prepare Secrets from Doppler
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-run-bootstrap-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Run Bootstrap Script
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-verify-secrets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Verify Secrets
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#layer-2-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Layer 2 Deployment
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Layer 2 Deployment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-deploy-layer-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Deploy Layer 2
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-verify-layer-2-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Verify Layer 2 Deployment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-test-layer-2-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Test Layer 2 Services
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#platform-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Platform Deployment
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Platform Deployment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-deploy-platform" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Deploy Platform
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-verify-platform-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Verify Platform Deployment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-monitor-service-startup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Monitor Service Startup
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verification
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Verification">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#automated-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Automated Verification
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manual-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Manual Verification
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Manual Verification">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-test-httphttps-redirect" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Test HTTP→HTTPS Redirect
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-test-https-access" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Test HTTPS Access
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-test-api-endpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Test API Endpoint
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-test-service-discovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Test Service Discovery
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-test-database-connectivity" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Test Database Connectivity
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-test-s3-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Test S3 Storage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-browser-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Browser Tests
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-direct-master-node-access-advanced-debugging" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Direct Master Node Access (Advanced Debugging)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#common-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Issues
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#issue-1-services-not-starting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Issue 1: Services Not Starting
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#issue-2-404-not-found" class="md-nav__link">
+    <span class="md-ellipsis">
+      Issue 2: 404 Not Found
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#issue-3-certificate-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Issue 3: Certificate Errors
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#issue-4-vault-sealed" class="md-nav__link">
+    <span class="md-ellipsis">
+      Issue 4: Vault Sealed
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#issue-5-database-connection-failed" class="md-nav__link">
+    <span class="md-ellipsis">
+      Issue 5: Database Connection Failed
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rollback-procedures" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rollback Procedures
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Rollback Procedures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rollback-platform" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rollback Platform
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rollback-layer-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rollback Layer 2
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rollback-layer-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rollback Layer 1
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#emergency-rollback" class="md-nav__link">
+    <span class="md-ellipsis">
+      Emergency Rollback
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#post-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Post-Deployment
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Post-Deployment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#security-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security Checklist
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#monitoring-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitoring Setup
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backup-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Backup Setup
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Next Steps
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="sprocket-infrastructure-deployment-guide">Sprocket Infrastructure Deployment Guide</h1>
+<p><strong>Version</strong>: 1.1
+<strong>Last Updated</strong>: December 4, 2025
+<strong>Difficulty</strong>: Advanced
+<strong>Estimated Time</strong>: 4-6 hours (first-time deployment)</p>
+<hr />
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#pre-deployment-checklist">Pre-Deployment Checklist</a></li>
+<li><a href="#environment-setup">Environment Setup</a></li>
+<li><a href="#layer-1-deployment">Layer 1 Deployment</a></li>
+<li><a href="#secret-provisioning">Secret Provisioning</a></li>
+<li><a href="#layer-2-deployment">Layer 2 Deployment</a></li>
+<li><a href="#platform-deployment">Platform Deployment</a></li>
+<li><a href="#verification">Verification</a></li>
+<li><a href="#troubleshooting">Troubleshooting</a></li>
+<li><a href="#rollback-procedures">Rollback Procedures</a></li>
+</ol>
+<hr />
+<h2 id="deployment-architecture-overview">Deployment Architecture Overview</h2>
+<p><strong>⚠️ Important Context</strong>: The deployment diagram below shows a <strong>generic cloud architecture pattern</strong>. Our actual deployment uses <strong>Docker Swarm on Digital Ocean</strong>, not GCP Cloud Run. The diagram illustrates the conceptual architecture that could apply to cloud deployments, but the specific technologies differ from our current stack.</p>
+<p><img alt="Deployment Architecture" src="deployment-architecture.png" /></p>
+<p><strong>Our Actual Deployment</strong>:
+- <strong>Platform</strong>: Docker Swarm on a Digital Ocean Droplet (single-node, can scale to multi-node)
+- <strong>Services</strong>: Containerized microservices (Sprocket Web, API, Discord Bot, background workers)
+- <strong>Data</strong>: Managed PostgreSQL (Digital Ocean), self-hosted Redis, S3-compatible storage (Digital Ocean Spaces)
+- <strong>Infrastructure</strong>: Traefik (reverse proxy), Vault (secrets), monitoring stack (Grafana, InfluxDB)
+- <strong>CI/CD</strong>: Pulumi (Infrastructure as Code), manual deployments via CLI</p>
+<p>The diagram represents a <strong>future cloud-native deployment option</strong> or a conceptual reference architecture.</p>
+<hr />
+<h2 id="business-context-planning">Business Context &amp; Planning</h2>
+<p><strong>For Decision Makers &amp; Project Managers</strong></p>
+<p>Before beginning a deployment, understand the resource investment required. This section provides non-technical context about what a deployment entails.</p>
+<h3 id="time-investment">Time Investment</h3>
+<table>
+<thead>
+<tr>
+<th>Deployment Stage</th>
+<th>First-Time</th>
+<th>Experienced Engineer</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Prerequisites Setup</strong></td>
+<td>2-3 hours</td>
+<td>30-60 minutes</td>
+<td>One-time setup per engineer</td>
+</tr>
+<tr>
+<td><strong>External Services</strong></td>
+<td>1-2 hours</td>
+<td>15-30 minutes</td>
+<td>Creating managed database, S3 buckets</td>
+</tr>
+<tr>
+<td><strong>Layer 1 Deployment</strong></td>
+<td>1-2 hours</td>
+<td>15-30 minutes</td>
+<td>Core infrastructure (Vault, Traefik)</td>
+</tr>
+<tr>
+<td><strong>Secret Provisioning</strong></td>
+<td>30-60 minutes</td>
+<td>10-15 minutes</td>
+<td>Copying secrets from Doppler to Vault</td>
+</tr>
+<tr>
+<td><strong>Layer 2 Deployment</strong></td>
+<td>1-2 hours</td>
+<td>20-40 minutes</td>
+<td>Data services (Redis, databases, monitoring)</td>
+</tr>
+<tr>
+<td><strong>Platform Deployment</strong></td>
+<td>1-2 hours</td>
+<td>20-40 minutes</td>
+<td>Application services</td>
+</tr>
+<tr>
+<td><strong>Verification &amp; Testing</strong></td>
+<td>1-2 hours</td>
+<td>30-60 minutes</td>
+<td>Confirming everything works</td>
+</tr>
+<tr>
+<td><strong>Total Estimated Time</strong></td>
+<td><strong>6-12 hours</strong></td>
+<td><strong>2-4 hours</strong></td>
+<td>Spread across 1-2 days typically</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why the Time Range?</strong>
+- <strong>First deployment</strong>: Includes learning curve, troubleshooting, understanding architecture
+- <strong>Subsequent deployments</strong>: Familiarity with process significantly reduces time
+- <strong>Team deployment</strong>: With 2 engineers working together, can complete in 4-6 hours</p>
+<h3 id="required-skills">Required Skills</h3>
+<p>You'll need engineers with experience in:</p>
+<table>
+<thead>
+<tr>
+<th>Skill Area</th>
+<th>Importance</th>
+<th>Why It's Needed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Docker &amp; Docker Swarm</strong></td>
+<td>Critical</td>
+<td>All services run in Docker containers orchestrated by Swarm</td>
+</tr>
+<tr>
+<td><strong>Command Line / Bash</strong></td>
+<td>Critical</td>
+<td>Most operations happen via terminal commands</td>
+</tr>
+<tr>
+<td><strong>Infrastructure as Code (Pulumi/Terraform)</strong></td>
+<td>High</td>
+<td>All infrastructure defined in Pulumi TypeScript code</td>
+</tr>
+<tr>
+<td><strong>Networking Basics</strong></td>
+<td>Medium</td>
+<td>Understanding DNS, ports, proxies helpful for troubleshooting</td>
+</tr>
+<tr>
+<td><strong>Linux System Administration</strong></td>
+<td>Medium</td>
+<td>SSH access, file permissions, system troubleshooting</td>
+</tr>
+<tr>
+<td><strong>Cloud Services (Digital Ocean/AWS)</strong></td>
+<td>Medium</td>
+<td>Setting up managed database, S3 storage</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Minimum Team Size</strong>: 1 experienced engineer can do the deployment, but 2 is recommended for first deployment.</p>
+<p><strong>Skill Level</strong>: This is not a beginner-friendly deployment. Engineer(s) should have:
+- 2+ years of DevOps/infrastructure experience
+- Previous experience with Docker
+- Comfort with command-line operations
+- Ability to debug when things don't work as expected</p>
+<h3 id="cost-breakdown">Cost Breakdown</h3>
+<h4 id="one-time-setup-costs">One-Time Setup Costs</h4>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Cost</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Domain Name</strong></td>
+<td>$10-15/year</td>
+<td>If not already owned (e.g., <code>sprocket.mlesports.gg</code>)</td>
+</tr>
+<tr>
+<td><strong>SSL Certificate</strong></td>
+<td>$0</td>
+<td>Let's Encrypt provides free certificates</td>
+</tr>
+<tr>
+<td><strong>Initial Engineering Time</strong></td>
+<td>$800-2,400</td>
+<td>8-12 hours @ $100-200/hour (varies by location/seniority)</td>
+</tr>
+<tr>
+<td><strong>Total One-Time</strong></td>
+<td><strong>$810-2,415</strong></td>
+<td>Mostly engineering time</td>
+</tr>
+</tbody>
+</table>
+<h4 id="monthly-recurring-costs">Monthly Recurring Costs</h4>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Monthly Cost</th>
+<th>Annual Cost</th>
+<th>Can Optimize?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Digital Ocean Droplet</strong> (4 vCPUs, 8GB RAM)</td>
+<td>$96</td>
+<td>$1,152</td>
+<td>✓ Yes - can downsize to $72/mo if usage is low</td>
+</tr>
+<tr>
+<td><strong>Managed PostgreSQL</strong> (Basic tier)</td>
+<td>$15</td>
+<td>$180</td>
+<td>✗ No - critical service</td>
+</tr>
+<tr>
+<td><strong>Block Storage Volumes</strong> (100GB total)</td>
+<td>$15</td>
+<td>$180</td>
+<td>~ Maybe - review usage after 1 month</td>
+</tr>
+<tr>
+<td><strong>Spaces Storage (S3)</strong></td>
+<td>$5</td>
+<td>$60</td>
+<td>~ Maybe - implement cleanup policy</td>
+</tr>
+<tr>
+<td><strong>Domain Name</strong></td>
+<td>~$1</td>
+<td>$12</td>
+<td>✗ No</td>
+</tr>
+<tr>
+<td><strong>Total Monthly</strong></td>
+<td><strong>$132</strong></td>
+<td><strong>$1,584/year</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Potential Savings</strong>:
+- If actual usage is consistently &lt;50% CPU/memory, could downsize Droplet to $72/month
+- Estimated potential savings: $15-30/month ($180-360/year)</p>
+<p><strong>Cost Comparison to Alternatives</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Alternative Approach</th>
+<th>Est. Monthly Cost</th>
+<th>Trade-offs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Current Setup</strong> (managed services)</td>
+<td>$132/month</td>
+<td>Low maintenance, reliable, documented</td>
+</tr>
+<tr>
+<td><strong>All Self-Hosted</strong> (no managed DB)</td>
+<td>$100/month</td>
+<td>Saves $30/mo but adds 10-15 hours/month maintenance</td>
+</tr>
+<tr>
+<td><strong>Full AWS/GCP</strong> (managed everything)</td>
+<td>$300-500/month</td>
+<td>More features, auto-scaling, but 3-4x cost</td>
+</tr>
+<tr>
+<td><strong>Serverless</strong> (Vercel/Netlify/Lambda)</td>
+<td>$150-300/month</td>
+<td>Different architecture, would require code rewrite</td>
+</tr>
+</tbody>
+</table>
+<p><strong>ROI Analysis</strong>: Even at $100/hour, 10 hours of maintenance costs more than the $30/month saved by self-hosting the database. Managed services are cost-effective for teams with limited DevOps bandwidth.</p>
+<h3 id="risk-factors">Risk Factors</h3>
+<p><strong>What Could Extend Timeline?</strong></p>
+<table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Probability</th>
+<th>Impact</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>DNS propagation delays</strong></td>
+<td>Medium</td>
+<td>+1-4 hours</td>
+<td>Set up DNS 24 hours before deployment</td>
+</tr>
+<tr>
+<td><strong>Let's Encrypt rate limits</strong></td>
+<td>Low</td>
+<td>+1-24 hours</td>
+<td>Use staging certs for testing, production once</td>
+</tr>
+<tr>
+<td><strong>Missing credentials/access</strong></td>
+<td>Medium</td>
+<td>+1-2 hours</td>
+<td>Complete access checklist before starting</td>
+</tr>
+<tr>
+<td><strong>Docker Hub image pull failures</strong></td>
+<td>Low</td>
+<td>+30-60 min</td>
+<td>Verify image access beforehand</td>
+</tr>
+<tr>
+<td><strong>First-time Pulumi issues</strong></td>
+<td>Medium (first-timers)</td>
+<td>+1-3 hours</td>
+<td>Review Pulumi docs, have backup support</td>
+</tr>
+<tr>
+<td><strong>Network/firewall issues</strong></td>
+<td>Low</td>
+<td>+1-2 hours</td>
+<td>Test connectivity, document firewall rules</td>
+</tr>
+<tr>
+<td><strong>Vault unsealing problems</strong></td>
+<td>Low</td>
+<td>+30-60 min</td>
+<td>Follow Vault initialization carefully</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Highest Impact Risks</strong>:
+1. <strong>Not having required access credentials</strong> - Have all API keys, passwords, tokens ready before starting
+2. <strong>Unfamiliarity with tools</strong> - First deployment should be paired with someone experienced
+3. <strong>Production vs. test environment confusion</strong> - Use local/staging for first attempt</p>
+<h3 id="prerequisites-checklist-for-project-managers">Prerequisites Checklist (for Project Managers)</h3>
+<p>Before scheduling a deployment, ensure:</p>
+<ul>
+<li>[ ] <strong>Budget Approved</strong>: $132/month recurring + ~$1,000 one-time engineering</li>
+<li>[ ] <strong>Engineering Time Allocated</strong>: Block 8-12 hours for first deployment (can span 1-2 days)</li>
+<li>[ ] <strong>Access Granted</strong>:</li>
+<li>[ ] Digital Ocean account with billing configured</li>
+<li>[ ] Doppler account with secrets populated</li>
+<li>[ ] GitHub organization membership</li>
+<li>[ ] Docker Hub access to private repositories</li>
+<li>[ ] DNS provider access (to create A records)</li>
+<li>[ ] <strong>Server Ready</strong>: Production server provisioned (or local dev environment ready)</li>
+<li>[ ] <strong>Backup Engineer Available</strong>: In case primary engineer gets blocked</li>
+</ul>
+<h3 id="what-happens-after-deployment">What Happens After Deployment?</h3>
+<p><strong>Immediate (First 24 hours)</strong>:
+- Monitor service health
+- Watch for errors in logs
+- Verify all features work (login, match creation, Discord bot)
+- Test external integrations (OAuth, Ballchasing API)</p>
+<p><strong>First Week</strong>:
+- Monitor resource usage (CPU, memory, disk)
+- Identify any services using excessive resources
+- Fine-tune service replica counts if needed
+- Set up monitoring alerts</p>
+<p><strong>First Month</strong>:
+- Review costs vs. budget
+- Analyze usage patterns
+- Right-size infrastructure if possible (downsize droplet if underutilized)
+- Implement any missing monitoring/alerting</p>
+<p><strong>Ongoing</strong>:
+- <strong>Monthly</strong>: Review costs, check for security updates
+- <strong>Quarterly</strong>: Test disaster recovery procedure
+- <strong>As Needed</strong>: Deploy application updates (typically 15-30 minutes per deploy)</p>
+<h3 id="when-not-to-deploy">When NOT to Deploy</h3>
+<p><strong>Delay deployment if</strong>:
+- Required credentials/access not available (will cause delays mid-deployment)
+- Engineer unfamiliar with Docker and no backup support available
+- Production server doesn't meet minimum specs (4 CPU, 8GB RAM)
+- Budget not yet approved for monthly recurring costs
+- During critical business periods (deploy during low-usage windows)
+- Friday afternoon or before long weekend (no time to address issues)</p>
+<p><strong>Best Time to Deploy</strong>:
+- Monday-Wednesday (full week to address issues)
+- Morning/early afternoon (full day available if problems arise)
+- Low-usage period for your application
+- When 2 engineers available (one primary, one backup)</p>
+<hr />
+<h2 id="prerequisites">Prerequisites</h2>
+<h3 id="required-access">Required Access</h3>
+<p>Before starting, ensure you have access to:</p>
+<ul>
+<li>[ ] <strong>Doppler</strong> project with all required secrets</li>
+<li>[ ] <strong>GitHub Organization</strong> (<code>SprocketBot</code>) membership</li>
+<li>[ ] <strong>Digital Ocean</strong> account with:</li>
+<li>[ ] Managed PostgreSQL database provisioned</li>
+<li>[ ] Spaces (S3) access configured</li>
+<li>[ ] Droplet or production node access</li>
+<li>[ ] <strong>Pulumi Backend</strong> access (Pulumi Cloud or S3 backend)</li>
+<li>[ ] <strong>Docker Hub</strong> credentials for private images</li>
+<li>[ ] <strong>DNS Provider</strong> access (for production deployment)</li>
+</ul>
+<h3 id="required-software">Required Software</h3>
+<p>Install the following on your deployment machine:</p>
+<pre><code class="language-bash"># Node.js 16.x (required for Pulumi operations)
+nvm install 16
+nvm use 16
+
+# Pulumi CLI
+curl -fsSL https://get.pulumi.com | sh
+
+# Vault CLI
+wget https://releases.hashicorp.com/vault/1.10.0/vault_1.10.0_linux_amd64.zip
+unzip vault_1.10.0_linux_amd64.zip
+sudo mv vault /usr/local/bin/
+
+# jq (for JSON processing)
+sudo apt-get install jq  # Debian/Ubuntu
+# or
+brew install jq  # macOS
+
+# Doppler CLI
+curl -Ls https://cli.doppler.com/install.sh | sh
+
+# Verify installations
+node --version   # Should be v16.x.x
+pulumi version
+vault version
+jq --version
+doppler --version
+</code></pre>
+<h3 id="production-node-requirements">Production Node Requirements</h3>
+<p><strong>Minimum Specifications</strong>:
+- <strong>CPU</strong>: 4 cores
+- <strong>RAM</strong>: 8GB (16GB recommended)
+- <strong>Disk</strong>: 100GB SSD
+- <strong>Network</strong>: 1Gbps
+- <strong>OS</strong>: Ubuntu 20.04+ or similar</p>
+<p><strong>Software Requirements</strong>:</p>
+<pre><code class="language-bash"># Docker (with Swarm mode)
+curl -fsSL https://get.docker.com | sh
+docker swarm init
+
+# Verify Docker Swarm is active
+docker info | grep Swarm
+# Should show: Swarm: active
+</code></pre>
+<hr />
+<h2 id="pre-deployment-checklist">Pre-Deployment Checklist</h2>
+<h3 id="1-external-services-configuration">1. External Services Configuration</h3>
+<h4 id="a-digital-ocean-managed-postgresql">A. Digital Ocean Managed PostgreSQL</h4>
+<p><strong>Create Database</strong>:
+1. Log into Digital Ocean console
+2. Navigate to Databases → Create Database
+3. Choose PostgreSQL, select version 13+
+4. Choose plan (Basic $15/month minimum)
+5. Choose datacenter region (NYC3 recommended)
+6. Name: <code>sprocketbot-postgres</code>
+7. Wait for provisioning (~5 minutes)</p>
+<p><strong>Get Connection Details</strong>:</p>
+<pre><code>Host: sprocketbot-postgres-XXXXX-do-user-XXXXX-0.j.db.ondigitalocean.com
+Port: 25060
+Database: defaultdb
+User: doadmin
+Password: [from console]
+SSL Mode: require
+</code></pre>
+<p><strong>Save these details</strong> - you'll need them for Pulumi configuration.</p>
+<h4 id="b-digital-ocean-spaces-s3">B. Digital Ocean Spaces (S3)</h4>
+<p><strong>Create Spaces</strong>:
+1. Navigate to Spaces → Create Space
+2. Choose datacenter (NYC3 recommended)
+3. Create two spaces:
+   - <code>vault-secrets</code> (for Vault backend)
+   - <code>sprocket-storage</code> (for application files)
+4. Generate Spaces access key:
+   - API → Spaces Access Keys → Generate New Key
+   - Save <strong>Access Key</strong> and <strong>Secret Key</strong></p>
+<p><strong>Configuration</strong>:</p>
+<pre><code>Endpoint: nyc3.digitaloceanspaces.com
+Access Key: DO004ZHPV38R8C9Q46XG
+Secret Key: [from console]
+Bucket (Vault): vault-secrets
+Bucket (App): sprocket-storage
+</code></pre>
+<h4 id="c-doppler-setup">C. Doppler Setup</h4>
+<p><strong>Login and Configure</strong>:</p>
+<pre><code class="language-bash"># Login to Doppler
+doppler login
+
+# Set up project
+doppler setup
+
+# Verify secrets
+doppler secrets
+</code></pre>
+<p><strong>Required Secrets in Doppler</strong>:</p>
+<pre><code># OAuth Credentials
+GOOGLE_CLIENT_ID
+GOOGLE_CLIENT_SECRET
+DISCORD_CLIENT_ID
+DISCORD_CLIENT_SECRET
+EPIC_CLIENT_ID
+EPIC_CLIENT_SECRET
+STEAM_API_KEY
+
+# API Tokens
+BALLCHASING_API_TOKEN
+
+# Application Secrets
+CHATWOOT_HMAC_KEY
+
+# Storage Credentials
+MINIO_ACCESS_KEY  # For S3 access
+MINIO_SECRET_KEY  # For S3 secret
+</code></pre>
+<p><strong>Export for Bootstrap Script</strong>:</p>
+<pre><code class="language-bash"># Export all secrets to environment
+eval $(doppler secrets download --no-file --format env-no-quotes)
+
+# Verify exports
+echo $GOOGLE_CLIENT_ID  # Should show value
+</code></pre>
+<h4 id="d-dns-configuration-production-only">D. DNS Configuration (Production Only)</h4>
+<p><strong>For Production Deployment</strong>:</p>
+<p>Required DNS records pointing to your production node IP:</p>
+<pre><code>A     sprocket.mlesports.gg            → &lt;production-ip&gt;
+A     api.sprocket.mlesports.gg        → &lt;production-ip&gt;
+A     vault.sprocket.mlesports.gg      → &lt;production-ip&gt;
+A     traefik.sprocket.mlesports.gg    → &lt;production-ip&gt;
+
+# Or use wildcard
+A     *.sprocket.mlesports.gg          → &lt;production-ip&gt;
+</code></pre>
+<p><strong>Verify DNS Propagation</strong>:</p>
+<pre><code class="language-bash"># Wait 5-10 minutes after creating records
+nslookup sprocket.mlesports.gg
+# Should return your production IP
+
+dig sprocket.mlesports.gg
+# Should show A record pointing to your IP
+</code></pre>
+<p><strong>For Local Development</strong>:</p>
+<pre><code class="language-bash"># Add to /etc/hosts instead
+echo '127.0.0.1 sprocket.localhost api.sprocket.localhost vault.localhost' | sudo tee -a /etc/hosts
+</code></pre>
+<h3 id="2-firewall-configuration">2. Firewall Configuration</h3>
+<p><strong>Production Node Firewall Rules</strong>:</p>
+<pre><code class="language-bash"># Allow HTTP (for Let's Encrypt)
+sudo ufw allow 80/tcp
+
+# Allow HTTPS
+sudo ufw allow 443/tcp
+
+# Allow SSH (restrict to your IP)
+sudo ufw allow from YOUR_IP to any port 22
+
+# Enable firewall
+sudo ufw enable
+</code></pre>
+<p><strong>Cloud Provider Firewall</strong> (if using Digital Ocean, AWS, etc.):
+- Allow inbound: 80/tcp, 443/tcp
+- Allow outbound: all (or specific ports)</p>
+<h3 id="3-repository-setup">3. Repository Setup</h3>
+<pre><code class="language-bash"># Clone repository
+git clone git@github.com:SprocketBot/sprocket-infra.git
+cd sprocket-infra
+
+# Verify structure
+ls -la
+# Should see: layer_1/, layer_2/, platform/, global/, scripts/
+</code></pre>
+<h3 id="4-pulumi-backend-configuration">4. Pulumi Backend Configuration</h3>
+<p><strong>Option A: Pulumi Cloud</strong> (Recommended for teams)</p>
+<pre><code class="language-bash"># Login to Pulumi Cloud
+pulumi login
+
+# Verify
+pulumi whoami
+</code></pre>
+<p><strong>Option B: S3 Backend</strong> (Self-hosted)</p>
+<pre><code class="language-bash"># Create ~/.aws/credentials
+cat &gt; ~/.aws/credentials &lt;&lt;EOF
+[default]
+aws_access_key_id = YOUR_ACCESS_KEY
+aws_secret_access_key = YOUR_SECRET_KEY
+region = us-east-1
+EOF
+
+# Login to S3 backend
+pulumi login &quot;s3://your-bucket/pulumi?endpoint=your-endpoint&quot;
+</code></pre>
+<hr />
+<h2 id="environment-setup">Environment Setup</h2>
+<h3 id="configuration-files-overview">Configuration Files Overview</h3>
+<p>The infrastructure uses three Pulumi stacks, each with its own configuration:</p>
+<pre><code>layer_1/Pulumi.layer_1.yaml    - Layer 1 config
+layer_2/Pulumi.layer_2.yaml    - Layer 2 config
+platform/Pulumi.prod.yaml      - Platform config
+</code></pre>
+<h3 id="layer-1-configuration">Layer 1 Configuration</h3>
+<pre><code class="language-bash">cd layer_1
+
+# Select or create stack
+pulumi stack select layer_1
+# If stack doesn't exist:
+# pulumi stack init layer_1
+
+# Configure hostname
+pulumi config set hostname sprocket.mlesports.gg
+# For local development:
+# pulumi config set hostname localhost
+
+# Configure PostgreSQL connection (from Digital Ocean)
+pulumi config set postgres-host sprocketbot-postgres-XXXXX-do-user-XXXXX-0.j.db.ondigitalocean.com
+pulumi config set postgres-port 25060
+
+# Configure Vault S3 backend (from Digital Ocean Spaces)
+pulumi config set vault-s3-bucket vault-secrets
+pulumi config set vault-s3-endpoint https://nyc3.digitaloceanspaces.com
+pulumi config set --secret vault-s3-access-key DO004ZHPV38R8C9Q46XG
+pulumi config set --secret vault-s3-secret-key YOUR_SECRET_KEY_HERE
+
+# Configure Docker Hub access (for private images)
+pulumi config set docker-username asaxplayinghorse
+pulumi config set --secret docker-access-token YOUR_DOCKER_TOKEN_HERE
+
+# Configure PostgreSQL password
+pulumi config set --secret postgres-password YOUR_DB_PASSWORD_HERE
+
+# View configuration
+pulumi config
+</code></pre>
+<p><strong>Expected Output</strong>:</p>
+<pre><code class="language-yaml">KEY                      VALUE
+hostname                 sprocket.mlesports.gg
+postgres-host            sprocketbot-postgres-...
+postgres-port            25060
+vault-s3-bucket          vault-secrets
+vault-s3-endpoint        https://nyc3.digitaloceanspaces.com
+vault-s3-access-key      [secret]
+vault-s3-secret-key      [secret]
+docker-username          asaxplayinghorse
+docker-access-token      [secret]
+postgres-password        [secret]
+</code></pre>
+<h3 id="layer-2-configuration">Layer 2 Configuration</h3>
+<pre><code class="language-bash">cd ../layer_2
+
+# Select or create stack
+pulumi stack select layer_2
+# If doesn't exist:
+# pulumi stack init layer_2
+
+# Configure hostname (must match Layer 1)
+pulumi config set hostname sprocket.mlesports.gg
+
+# Configure PostgreSQL (must match Layer 1)
+pulumi config set postgres-host sprocketbot-postgres-XXXXX-do-user-XXXXX-0.j.db.ondigitalocean.com
+
+# Configure S3 endpoint for applications
+pulumi config set s3-endpoint nyc3.digitaloceanspaces.com
+
+# View configuration
+pulumi config
+</code></pre>
+<h3 id="platform-configuration">Platform Configuration</h3>
+<pre><code class="language-bash">cd ../platform
+
+# Select or create stack
+pulumi stack select prod
+# If doesn't exist:
+# pulumi stack init prod
+
+# Configure hostname (must match Layer 1 &amp; 2)
+pulumi config set hostname sprocket.mlesports.gg
+
+# Configure subdomain (environment name)
+pulumi config set subdomain main
+
+# Configure image tag (Docker image version to deploy)
+pulumi config set image-tag main
+
+# Configure PostgreSQL (must match Layer 1 &amp; 2)
+pulumi config set postgres-host sprocketbot-postgres-XXXXX-do-user-XXXXX-0.j.db.ondigitalocean.com
+
+# Optional: For local development, add IP-based access
+# pulumi config set server-ip 192.168.4.39
+# pulumi config set tailscale-ip 100.110.185.84
+
+# View configuration
+pulumi config
+</code></pre>
+<hr />
+<h2 id="layer-1-deployment">Layer 1 Deployment</h2>
+<h3 id="step-1-deploy-layer-1">Step 1: Deploy Layer 1</h3>
+<p><strong>Purpose</strong>: Deploy core infrastructure (Traefik, Vault, Socket Proxy)</p>
+<pre><code class="language-bash">cd layer_1
+
+# Preview changes
+pulumi preview
+
+# Expected output:
+# + traefik-d3127fd
+# + vault-service
+# + socket-proxy
+# + traefik-ingress network
+# + vault-network
+# + 3 configs, 2 volumes
+
+# Deploy
+pulumi up
+
+# Confirm when prompted:
+# Do you want to perform this update? yes
+</code></pre>
+<p><strong>Expected Duration</strong>: 2-5 minutes</p>
+<p><strong>Success Indicators</strong>:</p>
+<pre><code>Updating (layer_1)
+
+     Type                     Name              Status
+ +   pulumi:pulumi:Stack      layer_1-layer_1   created
+ +   ├─ docker:index:Network  traefik-network   created
+ +   ├─ docker:index:Network  vault-network     created
+ +   ├─ docker:index:Volume   traefik-data      created
+ +   ├─ docker:index:Service  traefik           created
+ +   ├─ docker:index:Service  vault             created
+ +   └─ docker:index:Service  socket-proxy      created
+
+Resources:
+    + 7 created
+
+Duration: 3m15s
+</code></pre>
+<h3 id="step-2-verify-layer-1-deployment">Step 2: Verify Layer 1 Deployment</h3>
+<pre><code class="language-bash"># Check services are running
+docker service ls
+
+# Expected output:
+# ID             NAME            MODE         REPLICAS   IMAGE
+# abc123...      traefik-...     replicated   1/1        traefik:v2.6.1
+# def456...      vault-service   replicated   1/1        vault:1.10.0
+# ghi789...      socket-proxy    replicated   1/1        tecnativa/docker-socket-proxy
+
+# Check Traefik is accessible
+curl -I http://localhost:80
+# HTTP/1.1 404 (404 is expected - no routes configured yet)
+
+curl -k -I https://localhost:443
+# HTTP/2 404
+
+# Check Vault is accessible
+curl -k https://localhost/vault
+# Or if using proper domain:
+# curl https://vault.sprocket.mlesports.gg
+</code></pre>
+<h3 id="step-3-vault-initialization">Step 3: Vault Initialization</h3>
+<p><strong>Check Vault Status</strong>:</p>
+<pre><code class="language-bash"># Get Vault container
+VAULT_CONTAINER=$(docker ps -q -f name=vault)
+
+# Check Vault logs
+docker logs $VAULT_CONTAINER
+
+# Should see:
+# &quot;Vault initialized&quot;
+# &quot;Vault unsealed&quot;
+</code></pre>
+<p><strong>Locate Unseal Keys</strong>:</p>
+<pre><code class="language-bash"># Unseal keys are stored at:
+cat global/services/vault/unseal-tokens/unseal_tokens.txt
+
+# Save these keys securely!
+# You'll need them if you ever need to manually unseal Vault
+</code></pre>
+<p><strong>Get Root Token</strong>:</p>
+<pre><code class="language-bash"># Extract root token
+cat global/services/vault/unseal-tokens/root_token.txt
+
+# Or from unseal_tokens.txt:
+grep 'Initial Root Token' global/services/vault/unseal-tokens/unseal_tokens.txt
+</code></pre>
+<p><strong>Set Vault Environment Variables</strong>:</p>
+<pre><code class="language-bash"># For production
+export VAULT_ADDR=https://vault.sprocket.mlesports.gg
+
+# For local development
+# export VAULT_ADDR=http://vault.localhost
+
+# Set root token
+export VAULT_TOKEN=$(cat global/services/vault/unseal-tokens/root_token.txt)
+
+# Verify Vault access
+vault status
+
+# Expected output:
+# Sealed: false
+# Key Shares: 5
+# Key Threshold: 3
+# Initialized: true
+</code></pre>
+<p><strong>Common Vault Issues</strong>:</p>
+<p><strong>Issue</strong>: Vault is sealed</p>
+<pre><code class="language-bash"># Check status
+vault status
+# Sealed: true
+
+# Unseal manually
+vault operator unseal
+# Enter first unseal key from unseal_tokens.txt
+# Repeat 2 more times with different keys
+</code></pre>
+<p><strong>Issue</strong>: Can't connect to Vault</p>
+<pre><code class="language-bash"># Check service is running
+docker service ps vault-service
+
+# Check logs
+docker service logs vault-service
+
+# Verify network
+docker network inspect traefik-ingress
+# Should show vault service connected
+</code></pre>
+<hr />
+<h2 id="secret-provisioning">Secret Provisioning</h2>
+<h3 id="step-1-prepare-secrets-from-doppler">Step 1: Prepare Secrets from Doppler</h3>
+<pre><code class="language-bash">cd scripts
+
+# Login to Doppler (if not already)
+doppler login
+
+# Select correct project/config
+doppler setup
+
+# Export secrets to environment
+eval $(doppler secrets download --no-file --format env-no-quotes)
+
+# Verify exports
+echo $GOOGLE_CLIENT_ID  # Should show value
+echo $DISCORD_CLIENT_ID  # Should show value
+</code></pre>
+<h3 id="step-2-run-bootstrap-script">Step 2: Run Bootstrap Script</h3>
+<p><strong>Purpose</strong>: Provision secrets from Doppler into Vault</p>
+<pre><code class="language-bash"># Ensure Vault environment variables are set
+export VAULT_ADDR=https://vault.sprocket.mlesports.gg  # or http://vault.localhost
+export VAULT_TOKEN=$(cat ../global/services/vault/unseal-tokens/root_token.txt)
+
+# Run bootstrap script
+./bootstrap-vault-secrets.sh
+</code></pre>
+<p><strong>Expected Output</strong>:</p>
+<pre><code>Bootstrapping Vault secrets for environment: sprocket
+Vault address: https://vault.sprocket.mlesports.gg
+
+Checking required environment variables...
+✓ All required environment variables are set!
+
+Creating secrets in Vault...
+
+Creating/updating secret at: platform/sprocket/manual/oauth/google
+✓ Successfully created/updated: platform/sprocket/manual/oauth/google
+
+Creating/updating secret at: platform/sprocket/manual/oauth/discord
+✓ Successfully created/updated: platform/sprocket/manual/oauth/discord
+
+Creating/updating secret at: platform/sprocket/manual/oauth/epic
+✓ Successfully created/updated: platform/sprocket/manual/oauth/epic
+
+Creating/updating secret at: platform/sprocket/manual/oauth/steam
+✓ Successfully created/updated: platform/sprocket/manual/oauth/steam
+
+Creating/updating secret at: platform/ballchasing
+✓ Successfully created/updated: platform/ballchasing
+
+Creating/updating secret at: platform/sprocket/chatwoot
+✓ Successfully created/updated: platform/sprocket/chatwoot
+
+Creating/updating secret at: infrastructure/data/minio/root
+✓ Successfully created/updated: infrastructure/data/minio/root
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✓ All secrets have been successfully bootstrapped!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+</code></pre>
+<h3 id="step-3-verify-secrets">Step 3: Verify Secrets</h3>
+<pre><code class="language-bash"># Verify secrets were created
+vault kv get platform/sprocket/manual/oauth/google
+# Should show clientId and clientSecret
+
+vault kv get platform/sprocket/manual/oauth/discord
+# Should show client_id and client_secret
+
+vault kv get platform/ballchasing
+# Should show token
+
+# List all secrets
+vault kv list platform/sprocket/manual/oauth
+# Should show: discord, epic, google, steam
+</code></pre>
+<p><strong>Common Issues</strong>:</p>
+<p><strong>Issue</strong>: <code>Error making API request... 403 Forbidden</code></p>
+<pre><code class="language-bash"># Your Vault token doesn't have permission
+# Use root token:
+export VAULT_TOKEN=$(cat ../global/services/vault/unseal-tokens/root_token.txt)
+
+# Or create a policy with appropriate permissions
+</code></pre>
+<p><strong>Issue</strong>: Missing environment variable</p>
+<pre><code class="language-bash"># Check which variable is missing from error message
+# Export from Doppler again:
+eval $(doppler secrets download --no-file --format env-no-quotes)
+
+# Or manually export:
+export GOOGLE_CLIENT_ID=&quot;your-value-here&quot;
+</code></pre>
+<hr />
+<h2 id="layer-2-deployment">Layer 2 Deployment</h2>
+<h3 id="step-1-deploy-layer-2">Step 1: Deploy Layer 2</h3>
+<p><strong>Purpose</strong>: Deploy data services (Redis, RabbitMQ, InfluxDB, etc.)</p>
+<pre><code class="language-bash">cd ../layer_2
+
+# Preview changes
+pulumi preview
+
+# Expected resources:
+# + Redis service
+# + RabbitMQ service
+# + InfluxDB service
+# + Grafana service
+# + N8n service
+# + Neo4j service
+# + Gatus service
+# + Loki service
+# + Telegraf service
+# + Vault policies
+# + Multiple networks, volumes, configs
+
+# Deploy
+pulumi up
+</code></pre>
+<p><strong>Expected Duration</strong>: 3-7 minutes</p>
+<p><strong>Success Indicators</strong>:</p>
+<pre><code>Updating (layer_2)
+
+     Type                              Name                 Status
+ +   pulumi:pulumi:Stack               layer_2-layer_2      created
+ +   ├─ SprocketBot:Services:Redis     layer2redis          created
+ +   ├─ SprocketBot:Services:RabbitMQ  rabbitmq             created
+ +   ├─ SprocketBot:Services:InfluxDB  influx               created
+ +   ├─ SprocketBot:Services:Grafana   grafana              created
+ +   ├─ SprocketBot:Services:N8n       n8n                  created
+ +   ├─ SprocketBot:Services:Neo4j     neo4j                created
+ +   ├─ SprocketBot:Services:Gatus     gatus-internal       created
+ +   └─ ... (additional resources)
+
+Resources:
+    + 25 created
+
+Duration: 5m42s
+</code></pre>
+<h3 id="step-2-verify-layer-2-deployment">Step 2: Verify Layer 2 Deployment</h3>
+<pre><code class="language-bash"># Check all services are running
+docker service ls | grep layer_2
+
+# Expected output (similar to):
+# layer2redis-...        replicated   1/1        redis:6-alpine
+# rabbitmq-...           replicated   1/1        rabbitmq:3-management
+# influx-...             replicated   1/1        influxdb:2.7
+# grafana-...            replicated   1/1        grafana/grafana
+# ...
+
+# Check service health
+docker service ps layer2redis-redis-primary
+# Should show &quot;Running&quot; state
+
+# Check logs for errors
+docker service logs layer2redis-redis-primary --tail 50
+# Should show successful startup
+</code></pre>
+<h3 id="step-3-test-layer-2-services">Step 3: Test Layer 2 Services</h3>
+<p><strong>Redis</strong>:</p>
+<pre><code class="language-bash"># Get Redis container
+REDIS_CONTAINER=$(docker ps -q -f name=layer2redis)
+
+# Test Redis connection
+docker exec $REDIS_CONTAINER redis-cli ping
+# Expected: PONG
+
+# Test with auth (if password configured)
+REDIS_PASSWORD=$(vault kv get -field=password infrastructure/data/redis)
+docker exec $REDIS_CONTAINER redis-cli -a $REDIS_PASSWORD ping
+</code></pre>
+<p><strong>RabbitMQ</strong>:</p>
+<pre><code class="language-bash"># Access RabbitMQ management UI (if exposed)
+# https://rabbitmq.sprocket.mlesports.gg
+# Or check via API
+curl -k https://localhost/rabbitmq/api/overview
+</code></pre>
+<p><strong>InfluxDB</strong>:</p>
+<pre><code class="language-bash"># Access InfluxDB UI (if exposed)
+# https://influx.sprocket.mlesports.gg
+
+# Or check health
+INFLUX_CONTAINER=$(docker ps -q -f name=influx)
+docker exec $INFLUX_CONTAINER influx ping
+</code></pre>
+<hr />
+<h2 id="platform-deployment">Platform Deployment</h2>
+<h3 id="step-1-deploy-platform">Step 1: Deploy Platform</h3>
+<p><strong>Purpose</strong>: Deploy application services (web, API, Discord bot, microservices)</p>
+<pre><code class="language-bash">cd ../platform
+
+# Preview changes
+pulumi preview
+
+# Expected resources:
+# + Sprocket Web service
+# + Sprocket API service
+# + Discord Bot service
+# + Image Generation services (frontend + backend)
+# + Multiple microservices (notification, analytics, matchmaking, etc.)
+# + Platform network
+# + Multiple secrets, configs
+
+# Deploy
+pulumi up
+</code></pre>
+<p><strong>Expected Duration</strong>: 5-10 minutes</p>
+<p><strong>Success Indicators</strong>:</p>
+<pre><code>Updating (prod)
+
+     Type                                   Name                        Status
+ +   pulumi:pulumi:Stack                    platform-prod               created
+ +   ├─ SprocketBot:Platform                prod                        created
+ +   │  ├─ SprocketBot:Service              prod-sprocket-web           created
+ +   │  ├─ SprocketBot:Service              prod-sprocket-core          created
+ +   │  ├─ SprocketBot:Service              prod-discord-bot            created
+ +   │  ├─ SprocketBot:Service              prod-image-generation       created
+ +   │  ├─ SprocketBot:Service              prod-notification-service   created
+ +   │  └─ ... (additional services)
+
+Resources:
+    + 35 created
+
+Duration: 8m23s
+</code></pre>
+<h3 id="step-2-verify-platform-deployment">Step 2: Verify Platform Deployment</h3>
+<pre><code class="language-bash"># Check all platform services are running
+docker service ls | grep prod
+
+# Expected output:
+# prod-sprocket-web-service                 replicated   1/1   asaxplayinghorse/sprocket-web:main
+# prod-sprocket-core-service                replicated   1/1   asaxplayinghorse/sprocket-core:main
+# prod-discord-bot-service                  replicated   1/1   asaxplayinghorse/sprocket-discord-bot:main
+# ...
+
+# Check specific service status
+docker service ps prod-sprocket-web-service
+
+# Should show:
+# ID             NAME                     IMAGE                              NODE      DESIRED STATE   CURRENT STATE
+# abc123...      prod-sprocket-web...     asaxplayinghorse/sprocket-web...   node1     Running         Running 2 minutes ago
+</code></pre>
+<h3 id="step-3-monitor-service-startup">Step 3: Monitor Service Startup</h3>
+<p>Services may take several minutes to fully start. Monitor logs:</p>
+<pre><code class="language-bash"># Watch web service logs
+docker service logs -f prod-sprocket-web-service
+
+# Watch API service logs
+docker service logs -f prod-sprocket-core-service
+
+# Watch Discord bot logs
+docker service logs -f prod-discord-bot-service
+</code></pre>
+<p><strong>Successful Startup Indicators</strong>:</p>
+<p><strong>Web Service</strong>:</p>
+<pre><code>[Nest] INFO [NestFactory] Starting Nest application...
+[Nest] INFO [InstanceLoader] AppModule dependencies initialized
+[Nest] INFO Server listening on port 3000
+</code></pre>
+<p><strong>API Service</strong>:</p>
+<pre><code>[Nest] INFO [NestFactory] Starting Nest application...
+[Nest] INFO [GraphQLModule] Mapped {/graphql, POST} route
+[Nest] INFO Database connection established
+[Nest] INFO Server listening on port 3001
+</code></pre>
+<p><strong>Discord Bot</strong>:</p>
+<pre><code>INFO: Discord bot logged in as SprocketBot#1234
+INFO: Connected to Discord gateway
+INFO: Ready to receive commands
+</code></pre>
+<hr />
+<h2 id="verification">Verification</h2>
+<h3 id="automated-verification">Automated Verification</h3>
+<pre><code class="language-bash"># Run quick test script
+./quick-test.sh
+
+# Run comprehensive verification
+./verify-deployment.sh
+</code></pre>
+<p><strong>Expected Output</strong> (quick-test.sh):</p>
+<pre><code>=== Quick Sprocket Deployment Test ===
+
+Testing Traefik on port 80... OK (HTTP 301)
+Testing Traefik on port 443... OK (HTTP 200)
+Checking DNS for sprocket.mlesports.gg... Resolves to 127.0.0.1
+Checking web service container... Running (abc123...)
+Checking Traefik router for web service... Router configured
+
+=== Summary ===
+Services are configured! Access at:
+  http://sprocket.mlesports.gg
+  https://sprocket.mlesports.gg
+</code></pre>
+<h3 id="manual-verification">Manual Verification</h3>
+<h4 id="1-test-httphttps-redirect">1. Test HTTP→HTTPS Redirect</h4>
+<pre><code class="language-bash">curl -I http://sprocket.mlesports.gg
+
+# Expected output:
+# HTTP/1.1 301 Moved Permanently
+# Location: https://sprocket.mlesports.gg/
+</code></pre>
+<h4 id="2-test-https-access">2. Test HTTPS Access</h4>
+<pre><code class="language-bash">curl -I https://sprocket.mlesports.gg
+
+# Expected output:
+# HTTP/2 200
+# content-type: text/html
+# ... (headers)
+</code></pre>
+<h4 id="3-test-api-endpoint">3. Test API Endpoint</h4>
+<pre><code class="language-bash">curl -X POST https://api.sprocket.mlesports.gg/graphql \
+  -H &quot;Content-Type: application/json&quot; \
+  -d '{&quot;query&quot;: &quot;{ __schema { types { name } } }&quot;}'
+
+# Expected: GraphQL schema response (JSON)
+</code></pre>
+<h4 id="4-test-service-discovery">4. Test Service Discovery</h4>
+<pre><code class="language-bash"># Check Traefik router configuration
+TRAEFIK_CONTAINER=$(docker ps -q -f name=traefik)
+docker exec $TRAEFIK_CONTAINER wget -qO- http://localhost:8080/api/http/routers | jq
+
+# Should show routers for:
+# - sprocket-web
+# - sprocket-core (API)
+# - image-generation
+# - vault
+# - traefik dashboard
+</code></pre>
+<h4 id="5-test-database-connectivity">5. Test Database Connectivity</h4>
+<pre><code class="language-bash"># From API service container
+API_CONTAINER=$(docker ps -q -f name=prod-sprocket-core)
+
+docker exec $API_CONTAINER node -e &quot;
+const pg = require('pg');
+const client = new pg.Client({
+  host: 'sprocketbot-postgres-...',
+  port: 25060,
+  database: 'defaultdb',
+  user: 'doadmin',
+  password: process.env.DB_PASSWORD,
+  ssl: { rejectUnauthorized: false }
+});
+client.connect()
+  .then(() =&gt; console.log('✓ Database connected'))
+  .catch(err =&gt; console.error('✗ Database error:', err.message));
+&quot;
+</code></pre>
+<h4 id="6-test-s3-storage">6. Test S3 Storage</h4>
+<pre><code class="language-bash"># Test S3 connectivity
+aws s3 ls --endpoint-url https://nyc3.digitaloceanspaces.com s3://sprocket-storage/
+
+# Or using aws-cli in a service container
+docker exec $API_CONTAINER aws s3 ls s3://sprocket-storage/ --endpoint-url https://nyc3.digitaloceanspaces.com
+</code></pre>
+<h4 id="7-browser-tests">7. Browser Tests</h4>
+<p><strong>Web UI</strong>:
+- Navigate to https://sprocket.mlesports.gg
+- Should see Sprocket homepage
+- Try logging in with Google/Discord OAuth</p>
+<p><strong>Traefik Dashboard</strong>:
+- Navigate to https://traefik.sprocket.mlesports.gg
+- Should see Traefik dashboard (requires auth)
+- Check routers, services, middleware</p>
+<p><strong>Vault UI</strong>:
+- Navigate to https://vault.sprocket.mlesports.gg
+- Should see Vault login page
+- Can login with GitHub OAuth or root token</p>
+<p><strong>Grafana (Unified Logs &amp; Metrics)</strong>:
+- Navigate to https://grafana.sprocket.mlesports.gg
+- Should see Grafana login
+- Default credentials (if not changed): admin/admin
+- <strong>Unified Interface</strong>: Access both metrics (InfluxDB/Telegraf) and logs (Loki) from single dashboard
+- Use <strong>Explore</strong> view to query logs with LogQL: <code>{service="prod-sprocket-core-service"} |= "ERROR"</code>
+- Use <strong>Dashboards</strong> to view real-time metrics and system health</p>
+<h4 id="8-direct-master-node-access-advanced-debugging">8. Direct Master Node Access (Advanced Debugging)</h4>
+<p>For low-level debugging, you can access the Digital Ocean master node directly:</p>
+<p><strong>Via Digital Ocean Console</strong>:
+1. Log into https://cloud.digitalocean.com
+2. Navigate to: Droplets → Select your droplet
+3. Click "Console" (web-based SSH terminal)
+4. Login and run debugging commands:
+   <code>bash
+   docker service ls              # List all services
+   docker service logs &lt;service&gt;  # View service logs
+   docker stats --no-stream       # Check resource usage
+   docker system df               # Check disk usage</code></p>
+<p><strong>Via SSH</strong>:</p>
+<pre><code class="language-bash">ssh root@&lt;droplet-ip&gt;
+# Or with key: ssh -i ~/.ssh/your-key root@&lt;droplet-ip&gt;
+</code></pre>
+<p><strong>Common Debugging Commands</strong>:</p>
+<pre><code class="language-bash"># Exec into a running container
+CONTAINER_ID=$(docker ps -q -f name=prod-sprocket-core)
+docker exec -it $CONTAINER_ID sh
+
+# Check system resources
+df -h                  # Disk usage
+free -h                # Memory usage
+docker system df       # Docker storage
+
+# Network debugging
+docker network inspect traefik-ingress
+nslookup vault.sprocket.mlesports.gg
+</code></pre>
+<p>See <a href="../OPERATIONS_RUNBOOK/#digital-ocean-master-node-access-for-debugging">OPERATIONS_RUNBOOK.md</a> for detailed debugging procedures.</p>
+<hr />
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="common-issues">Common Issues</h3>
+<h4 id="issue-1-services-not-starting">Issue 1: Services Not Starting</h4>
+<p><strong>Symptoms</strong>:</p>
+<pre><code class="language-bash">docker service ls
+# Shows 0/1 replicas
+</code></pre>
+<p><strong>Diagnosis</strong>:</p>
+<pre><code class="language-bash"># Check service status
+docker service ps &lt;service-name&gt; --no-trunc
+
+# Common failure reasons:
+# - Image pull failure
+# - Resource constraints
+# - Health check failure
+# - Configuration error
+</code></pre>
+<p><strong>Solutions</strong>:</p>
+<p><strong>Image Pull Failure</strong>:</p>
+<pre><code class="language-bash"># Check Docker Hub authentication
+docker login
+# Enter credentials
+
+# Verify image exists
+docker pull asaxplayinghorse/sprocket-web:main
+
+# Update service
+docker service update --force &lt;service-name&gt;
+</code></pre>
+<p><strong>Resource Constraints</strong>:</p>
+<pre><code class="language-bash"># Check node resources
+docker node ls
+docker node inspect self | jq '.[0].Description.Resources'
+
+# Check running containers
+docker stats --no-stream
+
+# If low on resources:
+# - Scale down non-critical services
+# - Upgrade node (more CPU/RAM)
+# - Add more nodes to swarm
+</code></pre>
+<p><strong>Health Check Failure</strong>:</p>
+<pre><code class="language-bash"># Check service logs
+docker service logs &lt;service-name&gt; --tail 100
+
+# Common causes:
+# - Database not accessible
+# - Missing secrets
+# - Port already in use
+# - Dependency not ready
+</code></pre>
+<h4 id="issue-2-404-not-found">Issue 2: 404 Not Found</h4>
+<p><strong>Symptoms</strong>:</p>
+<pre><code class="language-bash">curl https://sprocket.mlesports.gg
+# HTTP/2 404
+</code></pre>
+<p><strong>Diagnosis</strong>:</p>
+<pre><code class="language-bash"># Check Traefik routers
+TRAEFIK_CONTAINER=$(docker ps -q -f name=traefik)
+docker exec $TRAEFIK_CONTAINER wget -qO- http://localhost:8080/api/http/routers | jq '.[] | select(.rule | contains(&quot;sprocket&quot;))'
+
+# Should show router with rule matching your domain
+</code></pre>
+<p><strong>Solutions</strong>:</p>
+<p><strong>Router Not Found</strong>:</p>
+<pre><code class="language-bash"># Check service labels
+docker service inspect prod-sprocket-web-service | jq '.[0].Spec.TaskTemplate.ContainerSpec.Labels'
+
+# Should include Traefik labels like:
+# &quot;traefik.enable&quot;: &quot;true&quot;
+# &quot;traefik.http.routers.sprocket-web.rule&quot;: &quot;Host(`sprocket.mlesports.gg`)&quot;
+
+# If missing, service needs to be redeployed
+cd platform
+pulumi up
+</code></pre>
+<p><strong>Wrong Hostname</strong>:</p>
+<pre><code class="language-bash"># Check Pulumi config
+pulumi config get hostname
+# Should match your domain
+
+# Update if wrong
+pulumi config set hostname sprocket.mlesports.gg
+pulumi up
+</code></pre>
+<p><strong>Orphaned Service Tasks</strong>:</p>
+<pre><code class="language-bash"># Sometimes old service versions linger
+docker service update --force prod-sprocket-web-service
+
+# Or recreate service
+cd platform
+pulumi destroy --target &lt;service-resource&gt;
+pulumi up
+</code></pre>
+<h4 id="issue-3-certificate-errors">Issue 3: Certificate Errors</h4>
+<p><strong>Symptoms</strong>:</p>
+<pre><code class="language-bash">curl https://sprocket.mlesports.gg
+# SSL certificate problem: unable to get local issuer certificate
+</code></pre>
+<p><strong>Diagnosis</strong>:</p>
+<pre><code class="language-bash"># Check certificate issuer
+echo | openssl s_client -connect sprocket.mlesports.gg:443 -servername sprocket.mlesports.gg 2&gt;/dev/null | openssl x509 -noout -issuer
+
+# Should show:
+# issuer=C=US, O=Let's Encrypt, CN=R3
+
+# If shows &quot;TRAEFIK DEFAULT CERT&quot;:
+# - Let's Encrypt hasn't issued cert yet
+# - DNS not pointing to server
+# - Let's Encrypt rate limited
+</code></pre>
+<p><strong>Solutions</strong>:</p>
+<p><strong>DNS Not Configured</strong>:</p>
+<pre><code class="language-bash"># Verify DNS
+nslookup sprocket.mlesports.gg
+# Should return your server IP
+
+# If not, update DNS records
+# Wait 5-10 minutes for propagation
+</code></pre>
+<p><strong>Let's Encrypt Rate Limited</strong>:</p>
+<pre><code class="language-bash"># Check Traefik logs
+docker service logs traefik-... | grep -i &quot;acme\|letsencrypt&quot;
+
+# If rate limited:
+# - Wait 1 hour (soft limit resets)
+# - Use staging environment temporarily
+# - Check you're not requesting too many certs
+</code></pre>
+<p><strong>Firewall Blocking Port 80</strong>:</p>
+<pre><code class="language-bash"># Let's Encrypt HTTP-01 challenge needs port 80
+# Check firewall
+sudo ufw status
+
+# Should show:
+# 80/tcp ALLOW
+
+# If blocked:
+sudo ufw allow 80/tcp
+</code></pre>
+<h4 id="issue-4-vault-sealed">Issue 4: Vault Sealed</h4>
+<p><strong>Symptoms</strong>:</p>
+<pre><code class="language-bash">vault status
+# Sealed: true
+</code></pre>
+<p><strong>Solution</strong>:</p>
+<pre><code class="language-bash"># Unseal Vault manually
+vault operator unseal
+# Enter first unseal key from unseal_tokens.txt
+
+vault operator unseal
+# Enter second unseal key
+
+vault operator unseal
+# Enter third unseal key
+
+# Check status
+vault status
+# Sealed: false
+</code></pre>
+<p><strong>Prevent Future Sealing</strong>:</p>
+<pre><code class="language-bash"># Check auto-unseal script
+cat global/services/vault/scripts/auto-initialize.sh
+
+# Verify bind mount is working
+docker service inspect vault-service | jq '.[0].Spec.TaskTemplate.ContainerSpec.Mounts'
+
+# Should show:
+# {
+#   &quot;Type&quot;: &quot;bind&quot;,
+#   &quot;Source&quot;: &quot;/root/sprocket-infra/global/services/vault/unseal-tokens&quot;,
+#   &quot;Target&quot;: &quot;/vault/unseal-tokens&quot;
+# }
+</code></pre>
+<h4 id="issue-5-database-connection-failed">Issue 5: Database Connection Failed</h4>
+<p><strong>Symptoms</strong>:</p>
+<pre><code class="language-bash"># Service logs show:
+# Error: connect ECONNREFUSED
+# Or: FATAL: password authentication failed
+</code></pre>
+<p><strong>Solutions</strong>:</p>
+<p><strong>Check Connection Details</strong>:</p>
+<pre><code class="language-bash"># Verify Pulumi config
+cd layer_1
+pulumi config get postgres-host
+pulumi config get postgres-port
+
+# Should match Digital Ocean connection info
+</code></pre>
+<p><strong>Check Password</strong>:</p>
+<pre><code class="language-bash"># Password should be in Pulumi config
+pulumi config get postgres-password --show-secrets
+
+# Or in Vault
+vault kv get infrastructure/data/postgres
+</code></pre>
+<p><strong>Test Connection from Node</strong>:</p>
+<pre><code class="language-bash"># Install PostgreSQL client
+sudo apt-get install postgresql-client
+
+# Test connection
+PGPASSWORD='your-password' psql -h sprocketbot-postgres-... -p 25060 -U doadmin -d defaultdb
+
+# If successful, connection details are correct
+# If fails, check:
+# - IP whitelist on Digital Ocean
+# - Network connectivity
+# - Password
+</code></pre>
+<p><strong>Update IP Whitelist</strong>:</p>
+<pre><code class="language-bash"># In Digital Ocean console:
+# 1. Go to your database
+# 2. Settings → Trusted Sources
+# 3. Add your production node IP
+# 4. Save
+</code></pre>
+<hr />
+<h2 id="rollback-procedures">Rollback Procedures</h2>
+<h3 id="rollback-platform">Rollback Platform</h3>
+<pre><code class="language-bash">cd platform
+
+# Export current state (backup)
+pulumi stack export &gt; backup-platform-$(date +%Y%m%d-%H%M%S).json
+
+# Preview destroy
+pulumi destroy --preview
+
+# Destroy platform
+pulumi destroy
+
+# Or rollback to previous state
+pulumi stack import &lt; backup-platform-TIMESTAMP.json
+pulumi up
+</code></pre>
+<h3 id="rollback-layer-2">Rollback Layer 2</h3>
+<pre><code class="language-bash">cd layer_2
+
+# Export state
+pulumi stack export &gt; backup-layer2-$(date +%Y%m%d-%H%M%S).json
+
+# Destroy
+pulumi destroy
+</code></pre>
+<p>⚠️ <strong>Warning</strong>: Destroying Layer 2 will delete data services. Ensure backups exist!</p>
+<h3 id="rollback-layer-1">Rollback Layer 1</h3>
+<pre><code class="language-bash">cd layer_1
+
+# Export state
+pulumi stack export &gt; backup-layer1-$(date +%Y%m%d-%H%M%S).json
+
+# Destroy
+pulumi destroy
+</code></pre>
+<p>⚠️ <strong>Warning</strong>: Destroying Layer 1 will make entire platform inaccessible!</p>
+<h3 id="emergency-rollback">Emergency Rollback</h3>
+<p><strong>If deployment is completely broken:</strong></p>
+<pre><code class="language-bash"># Stop all services
+docker service rm $(docker service ls -q)
+
+# Clean up networks
+docker network prune -f
+
+# Clean up volumes (⚠️ DELETES DATA!)
+docker volume prune -f
+
+# Start fresh deployment
+cd layer_1 &amp;&amp; pulumi up
+cd ../layer_2 &amp;&amp; pulumi up
+cd ../platform &amp;&amp; pulumi up
+</code></pre>
+<hr />
+<h2 id="post-deployment">Post-Deployment</h2>
+<h3 id="security-checklist">Security Checklist</h3>
+<ul>
+<li>[ ] Change default passwords (Grafana, etc.)</li>
+<li>[ ] Rotate Vault root token</li>
+<li>[ ] Enable Vault audit logging</li>
+<li>[ ] Configure firewall rules</li>
+<li>[ ] Set up SSL certificate monitoring</li>
+<li>[ ] Review service logs for errors</li>
+<li>[ ] Test disaster recovery procedure</li>
+</ul>
+<h3 id="monitoring-setup">Monitoring Setup</h3>
+<ul>
+<li>[ ] Configure Grafana dashboards</li>
+<li>[ ] Set up alerting (PagerDuty, etc.)</li>
+<li>[ ] Configure log retention (Loki)</li>
+<li>[ ] Set up uptime monitoring (Gatus)</li>
+<li>[ ] Enable metric collection (Telegraf)</li>
+</ul>
+<h3 id="backup-setup">Backup Setup</h3>
+<ul>
+<li>[ ] Configure automated database backups</li>
+<li>[ ] Test database restore</li>
+<li>[ ] Document Vault recovery procedure</li>
+<li>[ ] Export Pulumi state regularly</li>
+<li>[ ] Store secrets backup securely</li>
+</ul>
+<hr />
+<h2 id="next-steps">Next Steps</h2>
+<p>After successful deployment:</p>
+<ol>
+<li><strong>Test Application Functionality</strong></li>
+<li>User registration</li>
+<li>OAuth login</li>
+<li>API queries</li>
+<li>
+<p>Discord bot commands</p>
+</li>
+<li>
+<p><strong>Performance Tuning</strong></p>
+</li>
+<li>Monitor resource usage</li>
+<li>Optimize database queries</li>
+<li>Configure caching</li>
+<li>
+<p>Adjust service replicas if needed</p>
+</li>
+<li>
+<p><strong>Documentation</strong></p>
+</li>
+<li>Document custom configurations</li>
+<li>Create runbooks for common operations</li>
+<li>
+<p>Update team wiki</p>
+</li>
+<li>
+<p><strong>Team Onboarding</strong></p>
+</li>
+<li>Share access credentials</li>
+<li>Provide architecture overview</li>
+<li>Conduct deployment walkthrough</li>
+</ol>
+<hr />
+<p><strong>Deployment Complete!</strong> 🎉</p>
+<p>Your Sprocket infrastructure is now live and serving users.</p>
+<p>For operational procedures, see <a href="../OPERATIONS_RUNBOOK/">OPERATIONS_RUNBOOK.md</a>.</p>
+<p>For troubleshooting, see the <a href="#troubleshooting">Troubleshooting</a> section above or <a href="../TECHNICAL_CHALLENGES/">TECHNICAL_CHALLENGES.md</a>.</p>
+<hr />
+<p><strong>Document Version</strong>: 1.1
+<strong>Last Updated</strong>: December 4, 2025
+<strong>Maintained By</strong>: Infrastructure Team</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../../../..", "features": [], "search": "../../../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+    
+  </body>
+</html>
