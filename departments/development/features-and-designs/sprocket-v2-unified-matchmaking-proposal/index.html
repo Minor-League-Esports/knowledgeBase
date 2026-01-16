@@ -1,0 +1,2377 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://minor-league-esports.github.io/knowledgeBase/departments/development/features-and-designs/sprocket-v2-unified-matchmaking-proposal/">
+      
+      
+        <link rel="prev" href="../../systems/production-infrastructure/INCIDENT_POSTMORTEM_TEMPLATE/">
+      
+      
+        <link rel="next" href="../../../marketing/">
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.18">
+    
+    
+      
+        <title>Sprocket v2 Unified Matchmaking - Knowledge Base</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="yellow" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sprocket-v2-unified-matchmaking-system-design-proposal" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../.." title="Knowledge Base" class="md-header__button md-logo" aria-label="Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Knowledge Base
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Sprocket v2 Unified Matchmaking
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/minor-league-esports/knowledgeBase" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="Knowledge Base" class="md-nav__button md-logo" aria-label="Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Knowledge Base
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/minor-league-esports/knowledgeBase" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Departments
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Departments
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../rocket-league-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Rocket League Operations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../trackmania-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Trackmania Operations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../community/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Community
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Development
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../new-team-members/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    New Team Members
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3" id="__nav_2_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Systems
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Systems
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../systems/systems-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../systems/modmail/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Modmail KB
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../systems/sprocket-identity-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprocket Identity System
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4" id="__nav_2_4_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Production Infrastructure
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_4_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            Production Infrastructure
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../systems/production-infrastructure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_2" id="__nav_2_4_3_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../systems/production-infrastructure/00-START-HERE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Quick Start
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../systems/production-infrastructure/README.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    README
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../systems/production-infrastructure/CONTEXT_SUMMARY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Context Summary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_3" id="__nav_2_4_3_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Architecture & Design
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Architecture & Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../systems/production-infrastructure/ARCHITECTURE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Architecture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../systems/production-infrastructure/GLOSSARY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_4" id="__nav_2_4_3_4_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Deployment & Operations
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            Deployment & Operations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../systems/production-infrastructure/DEPLOYMENT_GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Deployment Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../systems/production-infrastructure/OPERATIONS_RUNBOOK/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Operations Runbook
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../systems/production-infrastructure/EXTERNALITIES_AND_DEPENDENCIES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Externalities & Dependencies
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_5" id="__nav_2_4_3_4_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Project History
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            Project History
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../systems/production-infrastructure/POSTMORTEM/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Postmortem
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../systems/production-infrastructure/TECHNICAL_CHALLENGES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Technical Challenges
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../systems/production-infrastructure/GIT_HISTORY_ANALYSIS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Git History Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../systems/production-infrastructure/CLAUDE_CONVERSATIONS_SUMMARY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Claude Conversations Summary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../systems/production-infrastructure/CLAUDE_CONVERSATION_ANALYSIS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Claude Conversation Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../systems/production-infrastructure/TECHNICAL_CHALLENGES_FROM_CLAUDE_CONVERSATIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Technical Challenges from Claude
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_6" id="__nav_2_4_3_4_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Meta Documentation
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            Meta Documentation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../systems/production-infrastructure/DOCUMENTATION_REVIEW_RECOMMENDATIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Documentation Review
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../systems/production-infrastructure/TRANSFER_INSTRUCTIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Transfer Instructions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_7" id="__nav_2_4_3_4_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Templates
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            Templates
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../systems/production-infrastructure/INCIDENT_POSTMORTEM_TEMPLATE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Incident Postmortem Template
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_4" id="__nav_2_4_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Features and Designs
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            Features and Designs
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Sprocket v2 Unified Matchmaking
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprocket v2 Unified Matchmaking
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#executive-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Executive Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-system-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Current System Analysis
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Current System Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-fragmented-landscape" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Fragmented Landscape
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#technical-architecture-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Technical Architecture Overview
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#industry-best-practices-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Industry Best Practices Analysis
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Industry Best Practices Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#league-of-legends-tier-based-mmr-with-promotion-series" class="md-nav__link">
+    <span class="md-ellipsis">
+      League of Legends: Tier-Based MMR with Promotion Series
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dota-2-visible-mmr-with-seasonal-recalibration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dota 2: Visible MMR with Seasonal Recalibration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#counter-strike-global-offensive-glicko-2-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Counter-Strike: Global Offensive: Glicko-2 Implementation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#proposed-unified-system-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Proposed Unified System Architecture
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Proposed Unified System Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-philosophy-continuous-skill-spectrum" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Philosophy: Continuous Skill Spectrum
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unified-elo-pool-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Unified Elo Pool Implementation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#single-master-queue-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      Single Master Queue System
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cross-skill-group-matchmaking-benefits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cross-Skill-Group Matchmaking Benefits
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#technical-implementation-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Technical Implementation Strategy
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Technical Implementation Strategy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#database-schema-evolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Database Schema Evolution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#matchmaking-service-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Matchmaking Service Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rating-update-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rating Update Algorithm
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#user-experience-enhancements" class="md-nav__link">
+    <span class="md-ellipsis">
+      User Experience Enhancements
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="User Experience Enhancements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#multi-queue-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multi-Queue Interface
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transparent-skill-group-boundaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Transparent Skill Group Boundaries
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#matchmaking-feedback" class="md-nav__link">
+    <span class="md-ellipsis">
+      Matchmaking Feedback
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#risk-assessment-and-mitigation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Risk Assessment and Mitigation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Risk Assessment and Mitigation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#competitive-integrity-concerns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Competitive Integrity Concerns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#player-confusion-about-skill-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      Player Confusion About Skill Groups
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rating-inflationdeflation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rating Inflation/Deflation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Considerations
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#success-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Success Metrics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Success Metrics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#primary-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Primary Metrics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#secondary-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Secondary Metrics
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../marketing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Marketing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../production/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Production
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#executive-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Executive Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-system-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Current System Analysis
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Current System Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-fragmented-landscape" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Fragmented Landscape
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#technical-architecture-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Technical Architecture Overview
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#industry-best-practices-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Industry Best Practices Analysis
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Industry Best Practices Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#league-of-legends-tier-based-mmr-with-promotion-series" class="md-nav__link">
+    <span class="md-ellipsis">
+      League of Legends: Tier-Based MMR with Promotion Series
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dota-2-visible-mmr-with-seasonal-recalibration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dota 2: Visible MMR with Seasonal Recalibration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#counter-strike-global-offensive-glicko-2-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Counter-Strike: Global Offensive: Glicko-2 Implementation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#proposed-unified-system-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Proposed Unified System Architecture
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Proposed Unified System Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-philosophy-continuous-skill-spectrum" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Philosophy: Continuous Skill Spectrum
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unified-elo-pool-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Unified Elo Pool Implementation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#single-master-queue-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      Single Master Queue System
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cross-skill-group-matchmaking-benefits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cross-Skill-Group Matchmaking Benefits
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#technical-implementation-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Technical Implementation Strategy
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Technical Implementation Strategy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#database-schema-evolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Database Schema Evolution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#matchmaking-service-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Matchmaking Service Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rating-update-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rating Update Algorithm
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#user-experience-enhancements" class="md-nav__link">
+    <span class="md-ellipsis">
+      User Experience Enhancements
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="User Experience Enhancements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#multi-queue-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multi-Queue Interface
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transparent-skill-group-boundaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Transparent Skill Group Boundaries
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#matchmaking-feedback" class="md-nav__link">
+    <span class="md-ellipsis">
+      Matchmaking Feedback
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#risk-assessment-and-mitigation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Risk Assessment and Mitigation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Risk Assessment and Mitigation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#competitive-integrity-concerns" class="md-nav__link">
+    <span class="md-ellipsis">
+      Competitive Integrity Concerns
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#player-confusion-about-skill-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      Player Confusion About Skill Groups
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rating-inflationdeflation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rating Inflation/Deflation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Considerations
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#success-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Success Metrics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Success Metrics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#primary-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Primary Metrics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#secondary-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Secondary Metrics
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="sprocket-v2-unified-matchmaking-system-design-proposal">Sprocket V2: Unified Matchmaking System Design Proposal</h1>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>This proposal outlines a fundamental transformation of MLE's matchmaking system from isolated skill-group-based queues to a unified, cross-league matchmaking platform. By implementing a single Elo rating pool across all skill groups and introducing intelligent matchmaking algorithms, we can significantly improve player experience, reduce queue times, and create more balanced matches while maintaining competitive integrity across all skill levels.</p>
+<h2 id="current-system-analysis">Current System Analysis</h2>
+<h3 id="the-fragmented-landscape">The Fragmented Landscape</h3>
+<p>MLE's current matchmaking system operates like a collection of isolated islands, each skill group (Foundation League, Academy League, Champion League, etc.) maintains its own separate Elo rating pool. A player rated 1300 in Foundation League cannot meaningfully compare their skill to a 900-rated player in Champion League, despite potentially similar actual skill levels. This fragmentation creates several critical issues:</p>
+<p><strong>Skill Group Silos</strong>: Players are locked into their respective skill groups with no mechanism for cross-group competition. The system enforces rigid boundaries where a 10.0 salary player in Foundation League (approaching promotion) might have nearly identical skill to a 10.5 salary player in Academy League (at risk of demotion), yet they can never compete against each other. This creates artificial barriers that don't reflect the continuous nature of skill development.</p>
+<p><strong>Queue Fragmentation</strong>: Each skill group operates independent queues for different game modes (2v2, 3v3, LFS). A player seeking any competitive match must manually check each skill group's queue separately, leading to reduced match frequency and longer wait times. The current system processes matchmaking by finding players within expanding skill ranges (starting at ±100 rating, expanding to ±500), but this expansion happens within isolated skill groups rather than across the entire player base.</p>
+<p><strong>Bubble Player Instability</strong>: Players near skill group boundaries experience constant promotion/demotion cycles without adequate hysteresis mechanisms. The current system lacks sufficient buffer zones, causing players to oscillate between skill groups based on small rating fluctuations rather than sustained performance changes.</p>
+<h3 id="technical-architecture-overview">Technical Architecture Overview</h3>
+<p>The existing system centers around several key entities: <a href="https://github.com/SprocketBot/sprocket/tree/dev/core/src/db/player/player.entity.ts"><code>PlayerEntity</code></a> contains a <a href="https://github.com/SprocketBot/sprocket/tree/dev/core/src/db/player/player.entity.ts"><code>salary</code></a> field (string-based rating representation) and links to <a href="https://github.com/SprocketBot/sprocket/tree/dev/core/src/db/skill_group/skill_group.entity.ts"><code>SkillGroupEntity</code></a>. The <a href="https://github.com/SprocketBot/sprocket/tree/dev/core/src/db/scrim_queue/scrim_queue.entity.ts"><code>ScrimQueueEntity</code></a> manages individual queue entries with <a href="https://github.com/SprocketBot/sprocket/tree/dev/core/src/db/scrim_queue/scrim_queue.entity.ts"><code>skillRating</code></a> values, while the <a href="https://github.com/SprocketBot/sprocket/tree/dev/core/src/matchmaking/queue/queue.service.ts"><code>QueueService</code></a> implements the current matchmaking logic with expanding skill ranges.</p>
+<p>Match results flow through a submission system where replay files are validated, ratified by players, and then processed for rating updates. However, the current implementation shows several TODO comments indicating incomplete Elo update logic: <a href="https://github.com/SprocketBot/sprocket/tree/dev/core/src/gql/player/player.resolver.ts"><code>// TODO: Elo Side Effects</code></a> appears in player mutation handlers, suggesting the rating update system requires significant development.</p>
+<h2 id="industry-best-practices-analysis">Industry Best Practices Analysis</h2>
+<h3 id="league-of-legends-tier-based-mmr-with-promotion-series">League of Legends: Tier-Based MMR with Promotion Series</h3>
+<p>Riot Games implements a sophisticated hybrid system combining visible tiers (Iron through Challenger) with hidden Match Making Rating (MMR). Players compete within divisions (I-IV) while their MMR operates on a continuous scale. The system includes promotion series that require sustained performance to advance, preventing random fluctuation-based promotions. Most importantly, players can be matched across tier boundaries when their MMR aligns, creating larger matchmaking pools while maintaining competitive integrity.</p>
+<h3 id="dota-2-visible-mmr-with-seasonal-recalibration">Dota 2: Visible MMR with Seasonal Recalibration</h3>
+<p>Valve's approach uses fully visible MMR numbers ranging from 0 to over 10,000, with separate ratings for solo and party play. The system implements seasonal recalibration, allowing players to reset their ratings periodically while maintaining some historical data. Dota 2's matchmaking algorithm considers not just MMR but also uncertainty values, matching new accounts with wider skill ranges to quickly establish accurate ratings.</p>
+<h3 id="counter-strike-global-offensive-glicko-2-implementation">Counter-Strike: Global Offensive: Glicko-2 Implementation</h3>
+<p>CS:GO utilizes the Glicko-2 rating system, which maintains both a rating value and a Rating Deviation (RD) that represents uncertainty. Higher RD values allow for larger rating changes and broader matchmaking ranges. The system naturally implements hysteresis through the RD mechanism—players with stable performance have lower RD, making their ratings more resistant to change.</p>
+<h2 id="proposed-unified-system-architecture">Proposed Unified System Architecture</h2>
+<h3 id="core-philosophy-continuous-skill-spectrum">Core Philosophy: Continuous Skill Spectrum</h3>
+<p>The new system replaces discrete skill group silos with a continuous Elo rating scale spanning all skill groups. Rather than maintaining separate rating pools, all players exist on a single spectrum where skill group boundaries represent ranges rather than absolute barriers. This approach acknowledges that skill development is continuous, not discrete, and allows for more nuanced player matching.</p>
+<h3 id="unified-elo-pool-implementation">Unified Elo Pool Implementation</h3>
+<p><strong>Single Rating System</strong>: All players share one Elo pool ranging from 0 to 3000+, with skill groups mapped to specific rating ranges:</p>
+<ul>
+<li>Foundation League: 0-800</li>
+<li>Academy League: 700-1200  </li>
+<li>Champion League: 1100-1600</li>
+<li>Master League: 1500-2000</li>
+<li>Premier League: 1900+</li>
+</ul>
+<p>The overlapping ranges (100-point buffers) create natural transition zones where cross-group matches can occur, while the unified pool ensures meaningful skill comparisons across all levels.</p>
+<p><strong>Hysteresis Mechanisms</strong>: Implement promotion/demotion thresholds with built-in buffers. Players promote when exceeding the upper threshold (e.g., 820 for Foundation → Academy) but only demote when falling below the lower threshold (e.g., 680 for Academy → Foundation). This 140-point buffer prevents constant oscillation and requires sustained performance changes for skill group transitions.</p>
+<h3 id="single-master-queue-system">Single Master Queue System</h3>
+<p><strong>Multi-Queue Capability</strong>: Players can simultaneously queue for multiple scrim types (2v2 Round Robin, 3v3 Round Robin, Team 2v2/3v3, LFS) across all skill groups. The system maintains separate queue entries but processes them through a unified matchmaking algorithm that finds the best available match regardless of skill group boundaries.</p>
+<p><strong>Intelligent Matchmaking Algorithm</strong>: The proposed algorithm expands search parameters based on queue time:</p>
+<ol>
+<li><strong>Initial Search (0-2 minutes)</strong>: Match players within ±100 rating points of the same skill group</li>
+<li><strong>Expanded Search (2-5 minutes)</strong>: Extend to ±150 rating points, allow cross-group matches within 50 rating points of boundaries</li>
+<li><strong>Broad Search (5+ minutes)</strong>: Expand to ±250 rating points, prioritize match quality over skill group boundaries</li>
+<li><strong>Emergency Match (10+ minutes)</strong>: Maximum expansion to ±400 rating points, create matches with available players</li>
+</ol>
+<h3 id="cross-skill-group-matchmaking-benefits">Cross-Skill-Group Matchmaking Benefits</h3>
+<p><strong>Bubble Player Solution</strong>: The unified system naturally addresses bubble player issues. A 795-rated Foundation League player can match against a 805-rated Academy League player—these players are only 10 rating points apart despite being in different skill groups. The system recognizes their similar skill levels and creates balanced matches that wouldn't be possible in the current siloed approach.</p>
+<p><strong>Expanded Matchmaking Pools</strong>: By removing skill group barriers, the effective player pool for matchmaking increases dramatically. During off-peak hours, when individual skill groups might have only 2-3 queued players, the unified system can draw from 15-20 players across all skill groups, significantly reducing queue times.</p>
+<p><strong>Skill Development Acceleration</strong>: Cross-group matches provide valuable learning opportunities. Foundation League players competing against Academy League opponents experience higher-level play, accelerating skill development. Conversely, Academy League players mentoring Foundation League opponents reinforce fundamental concepts.</p>
+<h2 id="technical-implementation-strategy">Technical Implementation Strategy</h2>
+<h3 id="database-schema-evolution">Database Schema Evolution</h3>
+<p>The current <a href="https://github.com/SprocketBot/sprocket/tree/dev/core/src/db/player/player.entity.ts"><code>PlayerEntity</code></a> requires modification to support the unified system:</p>
+<pre><code class="language-typescript">@Entity('player')
+export class PlayerEntity extends BaseEntity {
+    @Column()
+    unifiedEloRating: number; // Single Elo value (0-3000+)
+
+    @Column()
+    skillGroup: SkillGroup; // Current skill group for display/organization
+
+    @Column()
+    eloUncertainty: number; // Glicko-2 RD equivalent
+
+    @Column()
+    lastRatingUpdate: Date;
+
+    @Column({ nullable: true })
+    promotionThreshold: number; // Personal promotion threshold
+
+    @Column({ nullable: true })
+    demotionThreshold: number; // Personal demotion threshold
+}
+</code></pre>
+<h3 id="matchmaking-service-architecture">Matchmaking Service Architecture</h3>
+<p>The <a href="https://github.com/SprocketBot/sprocket/tree/dev/core/src/matchmaking/queue/queue.service.ts"><code>QueueService</code></a> requires fundamental restructuring:</p>
+<pre><code class="language-typescript">@Injectable()
+export class UnifiedQueueService {
+    private readonly INITIAL_SKILL_RANGE = 100;
+    private readonly MAX_SKILL_RANGE = 400;
+    private readonly CROSS_GROUP_THRESHOLD = 50; // Allow cross-group within 50 points
+
+    async findMatches(gameId: string): Promise&lt;MatchmakingResult[]&gt; {
+        const allQueuedPlayers = await this.getAllQueuedPlayers(gameId);
+
+        // Group by skill level rather than skill group
+        const skillSortedPlayers = allQueuedPlayers.sort((a, b) =&gt; a.skillRating - b.skillRating);
+
+        // Implement time-based expansion
+        const currentTime = new Date();
+        const expansionFactor = this.calculateExpansionFactor(skillSortedPlayers, currentTime);
+
+        return this.createBalancedMatches(skillSortedPlayers, expansionFactor);
+    }
+}
+</code></pre>
+<h3 id="rating-update-algorithm">Rating Update Algorithm</h3>
+<p>Implement a Glicko-2 inspired system that maintains both rating and uncertainty:</p>
+<pre><code class="language-typescript">interface RatingUpdateResult {
+    newRating: number;
+    newUncertainty: number;
+    skillGroupChange?: SkillGroupChange;
+}
+
+async function updateRating(
+    player: PlayerEntity,
+    matchResult: MatchResult,
+    opponentRatings: number[]
+): Promise&lt;RatingUpdateResult&gt; {
+    // Calculate rating change based on expected vs actual outcome
+    const expectedScore = calculateExpectedScore(player.unifiedEloRating, opponentRatings);
+    const actualScore = matchResult.playerScore;
+
+    // Apply Glicko-2 style update with uncertainty adjustment
+    const ratingChange = (actualScore - expectedScore) * player.eloUncertainty;
+    const uncertaintyChange = calculateUncertaintyChange(player, matchResult);
+
+    return {
+        newRating: player.unifiedEloRating + ratingChange,
+        newUncertainty: Math.max(player.eloUncertainty + uncertaintyChange, MIN_UNCERTAINTY),
+        skillGroupChange: determineSkillGroupChange(player, newRating)
+    };
+}
+</code></pre>
+<h2 id="user-experience-enhancements">User Experience Enhancements</h2>
+<h3 id="multi-queue-interface">Multi-Queue Interface</h3>
+<p>Players can select multiple scrim types simultaneously through an intuitive interface:</p>
+<ul>
+<li><strong>Primary Queue</strong>: Player's preferred scrim type (highest priority)</li>
+<li><strong>Secondary Queues</strong>: Additional scrim types they're willing to play</li>
+<li><strong>Cross-Group Preference</strong>: Option to enable/disable cross-skill-group matches</li>
+<li><strong>Maximum Skill Gap</strong>: Player-defined maximum rating difference for matches</li>
+</ul>
+<h3 id="transparent-skill-group-boundaries">Transparent Skill Group Boundaries</h3>
+<p>Display current skill group ranges and personal thresholds:</p>
+<pre><code>Your Rating: 1,247 (Academy League)
+Promotion to Champion League: 1,250 (3 points needed)
+Demotion to Foundation League: 1,150 (97 points buffer)
+Cross-group matches: Enabled (±50 rating points)
+</code></pre>
+<h3 id="matchmaking-feedback">Matchmaking Feedback</h3>
+<p>Provide real-time feedback during queue:</p>
+<ul>
+<li>Estimated wait time based on current queue population</li>
+<li>Number of players in compatible skill ranges</li>
+<li>Cross-group match opportunities identified</li>
+<li>Skill rating changes from recent matches</li>
+</ul>
+<h2 id="risk-assessment-and-mitigation">Risk Assessment and Mitigation</h2>
+<h3 id="competitive-integrity-concerns">Competitive Integrity Concerns</h3>
+<p><strong>Risk</strong>: Cross-group matches might create unfair competitive environments.</p>
+<p><strong>Mitigation</strong>: Implement strict rating-based matching regardless of skill group. A 1200-rated Foundation League player should never face a 1600-rated Champion League player, even if both are queued. The system prioritizes rating proximity over skill group boundaries.</p>
+<h3 id="player-confusion-about-skill-groups">Player Confusion About Skill Groups</h3>
+<p><strong>Risk</strong>: Players might not understand why they're matching against different skill groups.</p>
+<p><strong>Mitigation</strong>: Provide clear educational materials explaining the continuous rating system. Show pre-match information: "This opponent is 45 rating points higher—an even match!" Emphasize that skill groups are organizational tools, not absolute skill barriers.</p>
+<h3 id="rating-inflationdeflation">Rating Inflation/Deflation</h3>
+<p><strong>Risk</strong>: Unified system might experience rating drift over time.</p>
+<p><strong>Mitigation</strong>: Implement rating decay for inactive players and periodic recalibration events. Monitor rating distributions and adjust algorithms if drift exceeds acceptable thresholds (±5% from baseline distributions).</p>
+<h2 id="implementation-considerations">Implementation Considerations</h2>
+<p>This system represents a fundamental architectural change that will require careful planning and execution. Key implementation phases should include:</p>
+<ul>
+<li><strong>Database schema migration</strong> to support unified rating system</li>
+<li><strong>Unified rating system backend implementation</strong> with proper Elo update logic</li>
+<li><strong>Basic cross-group matchmaking algorithm</strong> development and testing</li>
+<li><strong>Multi-queue interface development</strong> for enhanced user experience</li>
+<li><strong>Rating update algorithm integration</strong> with existing submission system</li>
+<li><strong>Skill group transition logic</strong> with proper hysteresis mechanisms</li>
+<li><strong>Advanced matchmaking algorithms</strong> optimization</li>
+<li><strong>Beta testing</strong> with select groups before full rollout</li>
+<li><strong>Gradual deployment</strong> across all leagues with continuous monitoring</li>
+</ul>
+<p>The complexity of this transformation requires thorough testing and gradual implementation to ensure system stability and competitive integrity throughout the transition.</p>
+<h2 id="success-metrics">Success Metrics</h2>
+<h3 id="primary-metrics">Primary Metrics</h3>
+<ul>
+<li><strong>Average Queue Time</strong>: Target 50% reduction across all skill groups</li>
+<li><strong>Match Balance</strong>: 70% of matches within ±100 rating points</li>
+<li><strong>Player Satisfaction</strong>: 80%+ positive feedback on new system</li>
+<li><strong>Cross-Group Match Rate</strong>: 25% of matches involve different skill groups</li>
+</ul>
+<h3 id="secondary-metrics">Secondary Metrics</h3>
+<ul>
+<li><strong>Skill Group Transition Stability</strong>: &lt;10% of players experience promotion/demotion cycles within 30 days</li>
+<li><strong>Rating Accuracy</strong>: Predicted match outcomes align with actual results 75% of the time</li>
+<li><strong>System Utilization</strong>: 90%+ of queued players find matches within maximum time limits</li>
+</ul>
+<h2 id="conclusion">Conclusion</h2>
+<p>The proposed unified matchmaking system represents a fundamental evolution in MLE's competitive infrastructure. By embracing the continuous nature of skill development and leveraging industry-proven matchmaking techniques, we can create a more engaging, efficient, and fair competitive environment for all players.</p>
+<p>The system's success depends on careful implementation of rating algorithms, clear communication with players, and continuous monitoring of competitive integrity. However, the potential benefits—reduced queue times, improved match quality, and enhanced player development—justify the significant architectural changes required.</p>
+<p>This transformation aligns with MLE's mission to provide the best possible competitive experience while maintaining the organizational structure that makes our leagues unique. The unified system preserves skill group identities while removing artificial barriers that currently limit competitive opportunities.</p>
+<p>The path forward requires careful execution, but the destination—a more vibrant, accessible, and competitive MLE ecosystem—is well worth the journey.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../../..", "features": [], "search": "../../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+    
+  </body>
+</html>

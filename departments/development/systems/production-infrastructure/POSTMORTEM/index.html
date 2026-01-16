@@ -1,0 +1,4892 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://minor-league-esports.github.io/knowledgeBase/departments/development/systems/production-infrastructure/POSTMORTEM/">
+      
+      
+        <link rel="prev" href="../EXTERNALITIES_AND_DEPENDENCIES/">
+      
+      
+        <link rel="next" href="../TECHNICAL_CHALLENGES/">
+      
+      
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.18">
+    
+    
+      
+        <title>Postmortem - Knowledge Base</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="yellow" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sprocket-infrastructure-project-postmortem" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../.." title="Knowledge Base" class="md-header__button md-logo" aria-label="Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Knowledge Base
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Postmortem
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/minor-league-esports/knowledgeBase" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="Knowledge Base" class="md-nav__button md-logo" aria-label="Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Knowledge Base
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/minor-league-esports/knowledgeBase" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Departments
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Departments
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../rocket-league-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Rocket League Operations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../trackmania-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Trackmania Operations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../community/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Community
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Development
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../development/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../new-team-members/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    New Team Members
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3" id="__nav_2_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Systems
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Systems
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../systems-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modmail/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Modmail KB
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sprocket-identity-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprocket Identity System
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4" id="__nav_2_4_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Production Infrastructure
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_4_3_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_4_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            Production Infrastructure
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_2" id="__nav_2_4_3_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-START-HERE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Quick Start
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../README.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    README
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CONTEXT_SUMMARY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Context Summary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_3" id="__nav_2_4_3_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Architecture & Design
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Architecture & Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ARCHITECTURE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Architecture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GLOSSARY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_4" id="__nav_2_4_3_4_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Deployment & Operations
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            Deployment & Operations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DEPLOYMENT_GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Deployment Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OPERATIONS_RUNBOOK/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Operations Runbook
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../EXTERNALITIES_AND_DEPENDENCIES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Externalities & Dependencies
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_5" id="__nav_2_4_3_4_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Project History
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_4_3_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            Project History
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Postmortem
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Postmortem
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#executive-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Executive Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#project-timeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Project Timeline
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Project Timeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#visual-timeline-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Visual Timeline Overview
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#effort-breakdown-by-phase" class="md-nav__link">
+    <span class="md-ellipsis">
+      Effort Breakdown by Phase
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-foundation-rebuild-sept-14-19-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 1: Foundation Rebuild (Sept 14-19, 2025)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 1: Foundation Rebuild (Sept 14-19, 2025)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-milestones" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Milestones
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#challenges" class="md-nav__link">
+    <span class="md-ellipsis">
+      Challenges
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Outcomes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-the-vault-struggles-sept-18-21-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 2: The Vault Struggles (Sept 18-21, 2025)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 2: The Vault Struggles (Sept 18-21, 2025)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Problem
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#attempts-and-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attempts and Failures
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breakthrough-sept-19" class="md-nav__link">
+    <span class="md-ellipsis">
+      Breakthrough (Sept 19)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#final-success-sept-21" class="md-nav__link">
+    <span class="md-ellipsis">
+      Final Success (Sept 21)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-storage-migration-sept-30-oct-8-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 3: Storage Migration (Sept 30 - Oct 8, 2025)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 3: Storage Migration (Sept 30 - Oct 8, 2025)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-migrate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Migrate?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#migration-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      Migration Process
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration Changes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#results" class="md-nav__link">
+    <span class="md-ellipsis">
+      Results
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-4-platform-resurrection-oct-26-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 4: Platform Resurrection (Oct 26, 2025)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 4: Platform Resurrection (Oct 26, 2025)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#challenges_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Challenges
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breakthrough" class="md-nav__link">
+    <span class="md-ellipsis">
+      Breakthrough
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-made-it-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Made It Work
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-5-routing-hell-oct-26-27-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 5: Routing Hell (Oct 26-27, 2025)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 5: Routing Hell (Oct 26-27, 2025)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-problem_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Problem
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#symptoms" class="md-nav__link">
+    <span class="md-ellipsis">
+      Symptoms
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#root-cause" class="md-nav__link">
+    <span class="md-ellipsis">
+      Root Cause
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solution-oct-27" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solution (Oct 27)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration Strategy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#additional-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Additional Changes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-6-database-migration-nov-1-3-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 6: Database Migration (Nov 1-3, 2025)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 6: Database Migration (Nov 1-3, 2025)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-managed-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Managed Database?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#migration-process_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Migration Process
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#results_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Results
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-7-the-final-push-nov-4-8-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 7: The Final Push (Nov 4-8, 2025)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 7: The Final Push (Nov 4-8, 2025)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#last-mile-challenges" class="md-nav__link">
+    <span class="md-ellipsis">
+      Last Mile Challenges
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-sprint" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Sprint
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#final-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Final Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verification
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#technical-challenges-deep-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Technical Challenges Deep Dive
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Technical Challenges Deep Dive">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#challenge-1-vault-bootstrapping-automation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Challenge 1: Vault Bootstrapping Automation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#challenge-2-multi-environment-routing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Challenge 2: Multi-Environment Routing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#challenge-3-secret-management-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Challenge 3: Secret Management Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#challenge-4-storage-backend-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Challenge 4: Storage Backend Migration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#challenge-5-lets-encrypt-certificate-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Challenge 5: Let's Encrypt Certificate Management
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture-evolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture Evolution
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Architecture Evolution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#before-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      Before (2024)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#after-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      After (2025)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#external-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      External Services
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-decisions-and-rationale" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Decisions and Rationale
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Decisions and Rationale">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision-1-three-layer-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision 1: Three-Layer Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decision-2-managed-postgresql" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision 2: Managed PostgreSQL
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decision-3-cloud-s3-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision 3: Cloud S3 Storage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decision-4-doppler-for-secret-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision 4: Doppler for Secret Management
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decision-5-local-bind-mount-for-vault-unseal-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision 5: Local Bind Mount for Vault Unseal Keys
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#metrics-and-statistics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Metrics and Statistics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Metrics and Statistics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#project-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Project Metrics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deployment-complexity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deployment Complexity
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#git-activity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Git Activity
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-went-well" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Went Well
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What Went Well">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-iterative-approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Iterative Approach
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-comprehensive-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Comprehensive Documentation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-migration-to-managed-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Migration to Managed Services
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-automation" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Automation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-problem-solving-persistence" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Problem-Solving Persistence
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-could-have-been-better" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Could Have Been Better
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What Could Have Been Better">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-database-from-day-one" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Database from Day One
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-storage-strategy-earlier" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Storage Strategy Earlier
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-earlier-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Earlier Documentation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-testing-environments" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Testing Environments
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-initial-planning" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Initial Planning
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lessons-learned" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lessons Learned
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lessons Learned">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#technical-lessons" class="md-nav__link">
+    <span class="md-ellipsis">
+      Technical Lessons
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Technical Lessons">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-use-managed-services-for-critical-infrastructure" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Use Managed Services for Critical Infrastructure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-automate-or-document-never-just-know" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Automate or Document, Never "Just Know"
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-design-for-production-first" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Design for Production First
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-secrets-management-requires-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Secrets Management Requires Strategy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-test-the-full-flow-not-just-individual-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Test the Full Flow, Not Just Individual Components
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-git-history-is-invaluable" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Git History Is Invaluable
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-external-dependencies-must-be-documented" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. External Dependencies Must Be Documented
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#process-lessons" class="md-nav__link">
+    <span class="md-ellipsis">
+      Process Lessons
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Process Lessons">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-break-big-problems-into-smaller-pieces" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Break Big Problems Into Smaller Pieces
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-document-as-you-learn" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Document As You Learn
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-persistence-pays-off" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Persistence Pays Off
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-plan-for-multiple-environments" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Plan for Multiple Environments
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recommendations-for-future-projects" class="md-nav__link">
+    <span class="md-ellipsis">
+      Recommendations for Future Projects
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Recommendations for Future Projects">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-start-with-managed-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Start with Managed Services
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-invest-in-automation-early" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Invest in Automation Early
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-use-infrastructure-as-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Use Infrastructure as Code
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-document-architectural-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Document Architectural Decisions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-plan-for-disaster-recovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Plan for Disaster Recovery
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-questions-and-future-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      Open Questions and Future Work
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Open Questions and Future Work">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-multi-node-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Multi-Node Deployment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-disaster-recovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Disaster Recovery
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-cost-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Cost Optimization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-monitoring-and-alerting" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Monitoring and Alerting
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-security-hardening" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Security Hardening
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Conclusion">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-achievements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Achievements
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#critical-success-factors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Critical Success Factors
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#most-important-lessons" class="md-nav__link">
+    <span class="md-ellipsis">
+      Most Important Lessons
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#final-thoughts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Final Thoughts
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TECHNICAL_CHALLENGES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Technical Challenges
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GIT_HISTORY_ANALYSIS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Git History Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CLAUDE_CONVERSATIONS_SUMMARY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Claude Conversations Summary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CLAUDE_CONVERSATION_ANALYSIS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Claude Conversation Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TECHNICAL_CHALLENGES_FROM_CLAUDE_CONVERSATIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Technical Challenges from Claude
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_6" id="__nav_2_4_3_4_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Meta Documentation
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            Meta Documentation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DOCUMENTATION_REVIEW_RECOMMENDATIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Documentation Review
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TRANSFER_INSTRUCTIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Transfer Instructions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_7" id="__nav_2_4_3_4_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Templates
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            Templates
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../INCIDENT_POSTMORTEM_TEMPLATE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Incident Postmortem Template
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_4" id="__nav_2_4_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Features and Designs
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            Features and Designs
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../features-and-designs/sprocket-v2-unified-matchmaking-proposal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprocket v2 Unified Matchmaking
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../marketing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Marketing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../production/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Production
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#executive-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Executive Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#project-timeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Project Timeline
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Project Timeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#visual-timeline-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Visual Timeline Overview
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#effort-breakdown-by-phase" class="md-nav__link">
+    <span class="md-ellipsis">
+      Effort Breakdown by Phase
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-foundation-rebuild-sept-14-19-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 1: Foundation Rebuild (Sept 14-19, 2025)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 1: Foundation Rebuild (Sept 14-19, 2025)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-milestones" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Milestones
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#challenges" class="md-nav__link">
+    <span class="md-ellipsis">
+      Challenges
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Outcomes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-the-vault-struggles-sept-18-21-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 2: The Vault Struggles (Sept 18-21, 2025)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 2: The Vault Struggles (Sept 18-21, 2025)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Problem
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#attempts-and-failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attempts and Failures
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breakthrough-sept-19" class="md-nav__link">
+    <span class="md-ellipsis">
+      Breakthrough (Sept 19)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#final-success-sept-21" class="md-nav__link">
+    <span class="md-ellipsis">
+      Final Success (Sept 21)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-storage-migration-sept-30-oct-8-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 3: Storage Migration (Sept 30 - Oct 8, 2025)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 3: Storage Migration (Sept 30 - Oct 8, 2025)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-migrate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Migrate?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#migration-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      Migration Process
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration Changes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#results" class="md-nav__link">
+    <span class="md-ellipsis">
+      Results
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-4-platform-resurrection-oct-26-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 4: Platform Resurrection (Oct 26, 2025)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 4: Platform Resurrection (Oct 26, 2025)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#challenges_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Challenges
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breakthrough" class="md-nav__link">
+    <span class="md-ellipsis">
+      Breakthrough
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-made-it-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Made It Work
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-5-routing-hell-oct-26-27-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 5: Routing Hell (Oct 26-27, 2025)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 5: Routing Hell (Oct 26-27, 2025)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-problem_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Problem
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#symptoms" class="md-nav__link">
+    <span class="md-ellipsis">
+      Symptoms
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#root-cause" class="md-nav__link">
+    <span class="md-ellipsis">
+      Root Cause
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solution-oct-27" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solution (Oct 27)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration Strategy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#additional-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Additional Changes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-6-database-migration-nov-1-3-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 6: Database Migration (Nov 1-3, 2025)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 6: Database Migration (Nov 1-3, 2025)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-managed-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Managed Database?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#migration-process_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Migration Process
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#results_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Results
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-7-the-final-push-nov-4-8-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 7: The Final Push (Nov 4-8, 2025)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Phase 7: The Final Push (Nov 4-8, 2025)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#last-mile-challenges" class="md-nav__link">
+    <span class="md-ellipsis">
+      Last Mile Challenges
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-sprint" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Sprint
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#final-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Final Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verification
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#technical-challenges-deep-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Technical Challenges Deep Dive
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Technical Challenges Deep Dive">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#challenge-1-vault-bootstrapping-automation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Challenge 1: Vault Bootstrapping Automation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#challenge-2-multi-environment-routing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Challenge 2: Multi-Environment Routing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#challenge-3-secret-management-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Challenge 3: Secret Management Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#challenge-4-storage-backend-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Challenge 4: Storage Backend Migration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#challenge-5-lets-encrypt-certificate-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Challenge 5: Let's Encrypt Certificate Management
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture-evolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture Evolution
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Architecture Evolution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#before-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      Before (2024)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#after-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      After (2025)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#external-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      External Services
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-decisions-and-rationale" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Decisions and Rationale
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Decisions and Rationale">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision-1-three-layer-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision 1: Three-Layer Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decision-2-managed-postgresql" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision 2: Managed PostgreSQL
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decision-3-cloud-s3-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision 3: Cloud S3 Storage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decision-4-doppler-for-secret-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision 4: Doppler for Secret Management
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decision-5-local-bind-mount-for-vault-unseal-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision 5: Local Bind Mount for Vault Unseal Keys
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#metrics-and-statistics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Metrics and Statistics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Metrics and Statistics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#project-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Project Metrics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deployment-complexity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deployment Complexity
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#git-activity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Git Activity
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-went-well" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Went Well
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What Went Well">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-iterative-approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Iterative Approach
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-comprehensive-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Comprehensive Documentation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-migration-to-managed-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Migration to Managed Services
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-automation" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Automation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-problem-solving-persistence" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Problem-Solving Persistence
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-could-have-been-better" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Could Have Been Better
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What Could Have Been Better">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-database-from-day-one" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Database from Day One
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-storage-strategy-earlier" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Storage Strategy Earlier
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-earlier-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Earlier Documentation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-testing-environments" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Testing Environments
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-initial-planning" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Initial Planning
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lessons-learned" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lessons Learned
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lessons Learned">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#technical-lessons" class="md-nav__link">
+    <span class="md-ellipsis">
+      Technical Lessons
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Technical Lessons">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-use-managed-services-for-critical-infrastructure" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Use Managed Services for Critical Infrastructure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-automate-or-document-never-just-know" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Automate or Document, Never "Just Know"
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-design-for-production-first" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Design for Production First
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-secrets-management-requires-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Secrets Management Requires Strategy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-test-the-full-flow-not-just-individual-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Test the Full Flow, Not Just Individual Components
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-git-history-is-invaluable" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Git History Is Invaluable
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-external-dependencies-must-be-documented" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. External Dependencies Must Be Documented
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#process-lessons" class="md-nav__link">
+    <span class="md-ellipsis">
+      Process Lessons
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Process Lessons">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-break-big-problems-into-smaller-pieces" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Break Big Problems Into Smaller Pieces
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-document-as-you-learn" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Document As You Learn
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-persistence-pays-off" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Persistence Pays Off
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-plan-for-multiple-environments" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Plan for Multiple Environments
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recommendations-for-future-projects" class="md-nav__link">
+    <span class="md-ellipsis">
+      Recommendations for Future Projects
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Recommendations for Future Projects">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-start-with-managed-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Start with Managed Services
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-invest-in-automation-early" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Invest in Automation Early
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-use-infrastructure-as-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Use Infrastructure as Code
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-document-architectural-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Document Architectural Decisions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-plan-for-disaster-recovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Plan for Disaster Recovery
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-questions-and-future-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      Open Questions and Future Work
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Open Questions and Future Work">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-multi-node-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Multi-Node Deployment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-disaster-recovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Disaster Recovery
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-cost-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Cost Optimization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-monitoring-and-alerting" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Monitoring and Alerting
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-security-hardening" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Security Hardening
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Conclusion">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-achievements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Achievements
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#critical-success-factors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Critical Success Factors
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#most-important-lessons" class="md-nav__link">
+    <span class="md-ellipsis">
+      Most Important Lessons
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#final-thoughts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Final Thoughts
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="sprocket-infrastructure-project-postmortem">Sprocket Infrastructure Project Postmortem</h1>
+<p><strong>Project</strong>: Sprocket Platform Infrastructure v1.0
+<strong>Timeline</strong>: September 14, 2025 - November 8, 2025 (8 weeks)
+<strong>Status</strong>: ✅ Successfully Deployed to Production
+<strong>Team</strong>: Infrastructure Engineering
+<strong>Author</strong>: Generated from project documentation and git history</p>
+<hr />
+<h2 id="executive-summary">Executive Summary</h2>
+<p>This postmortem documents the complete journey of rebuilding the Sprocket gaming platform infrastructure from a partially-functional, outdated deployment to a fully production-ready system serving real users. The project took 8 weeks and involved fundamental architectural changes, migration to managed services, and resolution of complex technical challenges.</p>
+<p><strong>Key Outcomes</strong>:
+- ✅ Production deployment complete and serving users
+- ✅ Three-layer architecture (Infrastructure → Data → Applications)
+- ✅ Migrated to managed PostgreSQL (Digital Ocean)
+- ✅ Migrated to cloud S3 storage (AWS S3 + Digital Ocean Spaces)
+- ✅ Automated Vault unsealing and secret provisioning
+- ✅ Multi-environment routing support (local, LAN, cloud)
+- ✅ HTTPS with Let's Encrypt automation
+- ✅ Comprehensive monitoring and observability</p>
+<p><strong>Final Infrastructure</strong>:
+- <strong>Layer 1</strong>: Traefik, Vault, Socket Proxy
+- <strong>Layer 2</strong>: Redis, RabbitMQ, InfluxDB, Grafana, N8n, Neo4j, Gatus, Loki, Telegraf
+- <strong>Platform</strong>: Web UI, API, Discord Bot, Image Generation, 7 microservices</p>
+<hr />
+<h2 id="project-timeline">Project Timeline</h2>
+<h3 id="visual-timeline-overview">Visual Timeline Overview</h3>
+<pre><code>September 2025                        October 2025                     November 2025
+|                                     |                                |
+Week 1     Week 2     Week 3    Week 4-5      Week 6-7         Week 8
+|          |          |          |             |                |
+Sept 14    Sept 18    Sept 30   Oct 26        Oct 26-27        Nov 4-8
+|          |          |          |             |                |
+v          v          v          v             v                v
+┌─────────┐┌─────────┐┌─────────┐┌─────────┐ ┌─────────┐     ┌─────────┐
+│ Phase 1 ││ Phase 2 ││ Phase 3 ││ Phase 4 │ │ Phase 5 │     │ Phase 6 │
+│Foundation│ Vault   ││ Storage ││Platform │ │ Routing │     │  Final  │
+│ Rebuild ││Struggles││Migration││Resurrect│ │  Hell   │     │  Push   │
+└─────────┘└─────────┘└─────────┘└─────────┘ └─────────┘     └─────────┘
+    ✓          ✓          ✓          ✓           ✓               ✓
+ Layer 1    Vault      MinIO→S3   Platform    Multi-env      Production
+ Running    Unseals    Complete   Services    Routing        Complete!
+                                  Running     Working
+
+Key Milestones:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Sept 14  │ Initial deployment - Layer 1 running
+Sept 19  │ 🎉 Vault unsealing breakthrough!
+Sept 21  │ Vault fully automated
+Sept 30  │ S3 migration begins
+Oct 8    │ MinIO completely removed
+Oct 26   │ 🎉 &quot;Sprocket is alive!&quot; - Platform deployed
+Oct 27   │ Multi-environment routing solved
+Nov 1-3  │ Database migrated to managed PostgreSQL
+Nov 7    │ Platform running on production domain
+Nov 8    │ 🎉🎉🎉 PRODUCTION COMPLETE - v1.0 live!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Total Duration: 8 weeks (56 days)
+Major Breakthroughs: 5
+Critical Blockers Resolved: 3
+Services Deployed: 22
+</code></pre>
+<h3 id="effort-breakdown-by-phase">Effort Breakdown by Phase</h3>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Duration</th>
+<th>Complexity</th>
+<th>Key Challenge</th>
+<th>Outcome</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Phase 1: Foundation</strong></td>
+<td>5 days</td>
+<td>⭐⭐</td>
+<td>Getting rusty infrastructure working</td>
+<td>✅ Layer 1 operational</td>
+</tr>
+<tr>
+<td><strong>Phase 2: Vault</strong></td>
+<td>3 days</td>
+<td>⭐⭐⭐⭐⭐</td>
+<td>Automating Vault unsealing</td>
+<td>✅ Fully automated</td>
+</tr>
+<tr>
+<td><strong>Phase 3: Storage</strong></td>
+<td>8 days</td>
+<td>⭐⭐⭐</td>
+<td>Migrating off MinIO</td>
+<td>✅ Cloud S3 operational</td>
+</tr>
+<tr>
+<td><strong>Phase 4: Platform</strong></td>
+<td>1 day</td>
+<td>⭐⭐</td>
+<td>Service dependencies</td>
+<td>✅ All services running</td>
+</tr>
+<tr>
+<td><strong>Phase 5: Routing</strong></td>
+<td>2 days</td>
+<td>⭐⭐⭐⭐</td>
+<td>Multi-environment access</td>
+<td>✅ All access patterns work</td>
+</tr>
+<tr>
+<td><strong>Phase 6: Final Push</strong></td>
+<td>5 days</td>
+<td>⭐⭐⭐</td>
+<td>Production readiness</td>
+<td>✅ Production live!</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Most Challenging Phase</strong>: Phase 2 (Vault Struggles) - 5 stars
+<strong>Quickest Win</strong>: Phase 4 (Platform Resurrection) - 1 day after months of prep
+<strong>Longest Phase</strong>: Phase 3 (Storage Migration) - 8 days for safe, phased migration</p>
+<hr />
+<h3 id="phase-1-foundation-rebuild-sept-14-19-2025">Phase 1: Foundation Rebuild (Sept 14-19, 2025)</h3>
+<p><strong>Goal</strong>: Get Layer 1 infrastructure working again</p>
+<h4 id="key-milestones">Key Milestones</h4>
+<ul>
+<li><strong>Sept 14</strong>: Initial deployment - Layer 1 running</li>
+<li><strong>Sept 16</strong>: Layer 2 configuration started</li>
+<li><strong>Sept 17-18</strong>: Vault bootstrap challenges begin</li>
+</ul>
+<h4 id="challenges">Challenges</h4>
+<ul>
+<li>Infrastructure hadn't been deployed in months (since 2024)</li>
+<li>Vault initialization process broken</li>
+<li>MinIO + Vault integration issues</li>
+<li>Secret bootstrapping not automated</li>
+</ul>
+<h4 id="outcomes">Outcomes</h4>
+<ul>
+<li>Layer 1 deployable (Traefik + Vault + Socket Proxy)</li>
+<li>Basic networking established</li>
+<li>Identified critical blocker: Vault unsealing</li>
+</ul>
+<p><strong>Commits</strong>: <code>3126c6d</code>, <code>8e2c54d</code>, <code>5de5d04</code></p>
+<hr />
+<h3 id="phase-2-the-vault-struggles-sept-18-21-2025">Phase 2: The Vault Struggles (Sept 18-21, 2025)</h3>
+<p><strong>Goal</strong>: Automate Vault initialization and unsealing</p>
+<p>This phase was the most challenging part of the project. Vault's security model requires manual unsealing after each start, creating a chicken-and-egg problem for automation.</p>
+<p><strong>Conversation Context</strong>: The Claude conversations reveal the emotional journey through this challenge:
+- <strong>Sept 18</strong>: "I feel like I'm losing my mind here" - expressing frustration with Vault issues
+- <strong>Sept 19</strong>: "vault actually unseals!" - breakthrough moment (commit <code>5057afc</code>)
+- <strong>Sept 21</strong>: "all tokens working now. Vault should be good!" - final success</p>
+<h4 id="the-problem">The Problem</h4>
+<pre><code>Services need secrets from Vault
+    ↓
+Vault must be unsealed to serve secrets
+    ↓
+Unsealing requires unseal keys
+    ↓
+Unseal keys must be stored securely
+    ↓
+Where do we store them safely?
+</code></pre>
+<h4 id="attempts-and-failures">Attempts and Failures</h4>
+<p>The conversations document the iterative problem-solving process:</p>
+<ol>
+<li><strong>Attempt 1</strong>: Store unseal keys in Pulumi config</li>
+<li><strong>Result</strong>: Security concern - even encrypted, this felt wrong</li>
+<li>
+<p><strong>Conversation</strong>: "Where to store unseal keys securely?"</p>
+</li>
+<li>
+<p><strong>Attempt 2</strong>: Manual unsealing after each deployment</p>
+</li>
+<li><strong>Result</strong>: Not repeatable, requires human intervention</li>
+<li>
+<p><strong>Conversation</strong>: "Manual unsealing is not scalable"</p>
+</li>
+<li>
+<p><strong>Attempt 3</strong>: Store keys in MinIO</p>
+</li>
+<li><strong>Result</strong>: MinIO needs Vault for credentials (circular dependency)</li>
+<li><strong>Conversation</strong>: "MinIO needs Vault for credentials - circular dependency"</li>
+</ol>
+<h4 id="breakthrough-sept-19">Breakthrough (Sept 19)</h4>
+<ul>
+<li><strong>Commit <code>5057afc</code></strong>: "vault actually unseals!"</li>
+<li><strong>Conversation Evidence</strong>: User's excitement: "vault actually unseals!" shows the breakthrough moment</li>
+<li>Solution: Store unseal keys in local bind mount</li>
+<li>Tokens stored at <code>global/services/vault/unseal-tokens/</code></li>
+<li>Auto-initialization script checks for existing tokens</li>
+<li>Script unseals Vault automatically on container start</li>
+<li>S3 backend ensures Vault state persists</li>
+</ul>
+<h4 id="implementation">Implementation</h4>
+<pre><code class="language-bash"># auto-initialize.sh
+1. Check if Vault is already initialized (via S3 backend)
+2. If not initialized:
+   - Run `vault operator init`
+   - Save tokens to bind-mounted directory
+3. If initialized but sealed:
+   - Read unseal keys from bind-mounted directory
+   - Unseal with 3 of 5 keys
+4. Vault ready to serve secrets
+</code></pre>
+<h4 id="final-success-sept-21">Final Success (Sept 21)</h4>
+<ul>
+<li><strong>Commit <code>2103358</code></strong>: "all tokens working now. Vault should be good!"</li>
+<li>Vault reliably initializes and unseals</li>
+<li>Services can retrieve secrets</li>
+<li>Repeatable deployment achieved</li>
+</ul>
+<p><strong>Lessons Learned</strong>:
+- Security vs. automation trade-offs are real
+- Local bind mounts are acceptable for node-specific secrets
+- S3 backend is crucial for Vault state persistence
+- Test the full initialization→unsealing→secret retrieval flow</p>
+<hr />
+<h3 id="phase-3-storage-migration-sept-30-oct-8-2025">Phase 3: Storage Migration (Sept 30 - Oct 8, 2025)</h3>
+<p><strong>Goal</strong>: Move from self-hosted MinIO to cloud S3 storage</p>
+<h4 id="why-migrate">Why Migrate?</h4>
+<p><strong>Problems with MinIO</strong>:
+- Required significant resources (CPU, memory, storage)
+- Another service to maintain and monitor
+- Vault S3 backend had instability with self-hosted MinIO
+- Backup complexity (backing up the backup system)
+- Single point of failure</p>
+<p><strong>Benefits of Cloud S3</strong>:
+- Managed service (no maintenance)
+- Built-in replication and durability (99.999999999%)
+- Professional-grade reliability
+- Lower operational overhead
+- Better performance</p>
+<h4 id="migration-process">Migration Process</h4>
+<p><strong>Phase 3a: Dual Operation (Sept 30)</strong>
+- <strong>Commit <code>3f32a74</code></strong>: "migrate to cloud S3 and fix service configurations"
+- Kept MinIO running
+- Migrated Vault backend to Digital Ocean Spaces
+- Updated <code>SprocketMinioProvider</code> to support direct credentials
+- Tested stability for several days</p>
+<p><strong>Phase 3b: Service Migration (Oct 1-7)</strong>
+- Updated application services to use cloud S3
+- Migrated existing data (images, replays, backups)
+- Verified all services working with new storage</p>
+<p><strong>Phase 3c: Cleanup (Oct 8)</strong>
+- <strong>Commit <code>3b45f27</code></strong>: "Move from MinIO to AWS. Remove postgres network."
+- Removed MinIO service completely
+- Cleaned up MinIO-related configuration
+- Updated documentation</p>
+<h4 id="configuration-changes">Configuration Changes</h4>
+<pre><code class="language-yaml"># Before (MinIO)
+s3-endpoint: minio.sprocket.mlesports.gg
+s3-access-key: local-minio-key
+s3-secret-key: local-minio-secret
+s3-port: 9000
+ssl: false
+
+# After (Cloud S3)
+s3-endpoint: nyc3.digitaloceanspaces.com
+s3-access-key: DO004ZHPV38R8C9Q46XG
+s3-secret-key: [from Vault]
+s3-port: 443
+ssl: true
+</code></pre>
+<h4 id="results">Results</h4>
+<ul>
+<li>✅ Vault backend: Digital Ocean Spaces (vault-secrets bucket)</li>
+<li>✅ Application storage: AWS S3 / Digital Ocean Spaces</li>
+<li>✅ Reduced infrastructure complexity</li>
+<li>✅ Better reliability and durability</li>
+<li>✅ One less service to manage</li>
+</ul>
+<p><strong>Lessons Learned</strong>:
+- Managed services reduce operational burden significantly
+- S3-compatible APIs make migration relatively easy
+- Test storage backends thoroughly before full migration
+- Migrate in phases to reduce risk</p>
+<hr />
+<h3 id="phase-4-platform-resurrection-oct-26-2025">Phase 4: Platform Resurrection (Oct 26, 2025)</h3>
+<p><strong>Goal</strong>: Get application services running</p>
+<p>After fixing infrastructure and storage, it was time to deploy the actual platform.</p>
+<h4 id="challenges_1">Challenges</h4>
+<ul>
+<li>Services hadn't been deployed in months</li>
+<li>Configuration drift between local and production</li>
+<li>Dependency management (services depend on Layer 2)</li>
+<li>Database schema migrations needed</li>
+<li>Image versions and tags mismatched</li>
+</ul>
+<h4 id="breakthrough">Breakthrough</h4>
+<ul>
+<li><strong>Commit <code>6395d01</code></strong>: "Sprocket is alive!"</li>
+<li>All platform services successfully deployed</li>
+<li>Web UI accessible</li>
+<li>API responding</li>
+<li>Discord bot connecting</li>
+<li>Microservices communicating</li>
+</ul>
+<h4 id="what-made-it-work">What Made It Work</h4>
+<ol>
+<li><strong>Proper layer ordering</strong>: Layer 1 → Layer 2 → Platform</li>
+<li><strong>Secret provisioning</strong>: Ran <code>bootstrap-vault-secrets.sh</code> before platform deployment</li>
+<li><strong>Database ready</strong>: Managed PostgreSQL already provisioned</li>
+<li><strong>Storage ready</strong>: S3 buckets created and accessible</li>
+<li><strong>Network configuration</strong>: All services on correct networks</li>
+</ol>
+<hr />
+<h3 id="phase-5-routing-hell-oct-26-27-2025">Phase 5: Routing Hell (Oct 26-27, 2025)</h3>
+<p><strong>Goal</strong>: Support multiple access patterns</p>
+<p><strong>Conversation Context</strong>: The conversations reveal the systematic approach to solving routing:
+- User: "The platform needed to be accessible via: Local development (.localhost domains), LAN access (Direct IP), Tailscale access, Production (Real domain)"
+- Recognition that "Traefik routing is based on Host header" was the root cause</p>
+<h4 id="the-problem_1">The Problem</h4>
+<p>The platform needed to be accessible via:
+1. <strong>Local development</strong>: <code>.localhost</code> domains (127.0.0.1)
+2. <strong>LAN access</strong>: Direct IP (192.168.4.39)
+3. <strong>Tailscale access</strong>: Tailscale IP (100.110.185.84)
+4. <strong>Production</strong>: Real domain (sprocket.mlesports.gg)</p>
+<p>Each pattern requires different Traefik routing rules and certificate handling.</p>
+<h4 id="symptoms">Symptoms</h4>
+<ul>
+<li>✗ Accessing via <code>http://localhost</code> → 404 error</li>
+<li>✗ Accessing via <code>http://192.168.4.39</code> → 404 error</li>
+<li>✗ Accessing via domain → works but only from internet</li>
+<li>✗ Certificate errors everywhere</li>
+</ul>
+<h4 id="root-cause">Root Cause</h4>
+<p>Traefik routes based on <code>Host</code> header:</p>
+<pre><code>Request to http://localhost
+  → Host: localhost
+  → Traefik rule: Host(`sprocket.mlesports.gg`)
+  → No match → 404
+</code></pre>
+<h4 id="solution-oct-27">Solution (Oct 27)</h4>
+<ul>
+<li><strong>Commit <code>7486e02</code></strong>: "add localhost-based routing and cloud deployment documentation"</li>
+<li><strong>Conversation Evidence</strong>: Systematic testing of different access patterns led to the IP-based routing workaround</li>
+</ul>
+<p><strong>Multi-pattern routing</strong>:</p>
+<pre><code class="language-typescript">// Platform.ts
+const hostRules = [];
+
+// Hostname-based routing (production)
+if (hostname) {
+  hostRules.push(`Host(\`${subdomain}.${hostname}\`)`);
+}
+
+// IP-based routing (LAN access)
+if (serverIp) {
+  hostRules.push(`Host(\`${serverIp}\`)`);
+}
+
+// Tailscale routing
+if (tailscaleIp) {
+  hostRules.push(`Host(\`${tailscaleIp}\`)`);
+}
+
+const routingRule = hostRules.join(' || ');
+</code></pre>
+<p><strong>Result</strong>:</p>
+<pre><code>Host(`sprocket.mlesports.gg`) || Host(`192.168.4.39`) || Host(`100.110.185.84`)
+</code></pre>
+<h4 id="configuration-strategy">Configuration Strategy</h4>
+<p><strong>For Local Development</strong>:</p>
+<pre><code class="language-yaml">hostname: localhost
+server-ip: 192.168.4.39
+tailscale-ip: 100.110.185.84
+</code></pre>
+<p><strong>For Production</strong>:</p>
+<pre><code class="language-yaml">hostname: sprocket.mlesports.gg
+# Remove server-ip and tailscale-ip
+</code></pre>
+<h4 id="additional-changes">Additional Changes</h4>
+<ul>
+<li>Created <code>CLOUD_DEPLOYMENT.md</code> - production deployment guide</li>
+<li>Created <code>LOCAL_ACCESS.md</code> - local development guide</li>
+<li>Fixed duplicate router issues causing 404s</li>
+<li>Documented <code>/etc/hosts</code> workaround for local development</li>
+</ul>
+<p><strong>Lessons Learned</strong>:
+- Design for production first, add development overrides later
+- IP-based routing is a workaround that may need revisiting for more elegant solutions
+- Document different access patterns clearly
+- Test each access method independently
+- Traefik routing rules can get complex fast</p>
+<p><strong>Dev vs Prod Commentary</strong>: The conversations show this was described as a "workaround" - acceptable for development but production should use proper DNS-based routing</p>
+<hr />
+<h3 id="phase-6-database-migration-nov-1-3-2025">Phase 6: Database Migration (Nov 1-3, 2025)</h3>
+<p><strong>Goal</strong>: Move to managed PostgreSQL</p>
+<h4 id="the-decision">The Decision</h4>
+<p>Although PostgreSQL was working in Layer 2, the team decided to migrate to Digital Ocean Managed PostgreSQL for production.</p>
+<h4 id="why-managed-database">Why Managed Database?</h4>
+<p><strong>Problems with Self-Hosted</strong>:
+- Data persistence concerns with Docker volumes
+- Backup/restore complexity
+- Resource management on single node
+- No built-in high availability
+- Manual maintenance (updates, patches, tuning)
+- Disaster recovery difficult</p>
+<p><strong>Benefits of Managed</strong>:
+- Automated daily backups (7-day retention)
+- Point-in-time recovery
+- Professional-grade reliability
+- Automatic updates and patches
+- Easy scaling (vertical and horizontal)
+- Dedicated resources
+- Built-in monitoring</p>
+<h4 id="migration-process_1">Migration Process</h4>
+<ol>
+<li><strong>Created managed cluster</strong> on Digital Ocean</li>
+<li><strong>Updated Pulumi configs</strong>:
+   <code>yaml
+   postgres-host: sprocketbot-postgres-d5033d2-do-user-24528890-0.j.db.ondigitalocean.com
+   postgres-port: 25060</code></li>
+<li><strong>Removed PostgreSQL service</strong> from Layer 2</li>
+<li><strong>Updated all service configurations</strong> to use external database</li>
+<li><strong>Migrated data</strong> from old PostgreSQL to managed instance</li>
+<li><strong>Updated <code>SprocketPostgresProvider</code></strong> to support external connections</li>
+<li>Set <code>superuser=false</code> for managed DB</li>
+</ol>
+<h4 id="results_1">Results</h4>
+<ul>
+<li>✅ PostgreSQL now an external dependency</li>
+<li>✅ Better reliability and performance</li>
+<li>✅ Automated backups</li>
+<li>✅ Reduced infrastructure complexity</li>
+<li>⚠️ Added monthly cost (~$15-60/month)</li>
+<li>⚠️ External dependency (requires internet connectivity)</li>
+</ul>
+<p><strong>Lessons Learned</strong>:
+- Don't manage databases in production unless you have to
+- Managed services are worth the cost for critical data - driven by operational pain identified in conversations
+- Plan data migration carefully
+- Update all connection configs atomically
+- Document external dependencies</p>
+<p><strong>Operational Insight</strong>: Conversations revealed this migration was driven by recognition that MinIO was "causing more problems than it solved"</p>
+<hr />
+<h3 id="phase-7-the-final-push-nov-4-8-2025">Phase 7: The Final Push (Nov 4-8, 2025)</h3>
+<p><strong>Goal</strong>: Deploy to production with real domain</p>
+<h4 id="last-mile-challenges">Last Mile Challenges</h4>
+<ul>
+<li>DNS propagation delays</li>
+<li>Let's Encrypt rate limiting</li>
+<li>Certificate provisioning timing</li>
+<li>Service health verification</li>
+<li>Final configuration tweaks</li>
+</ul>
+<h4 id="the-sprint">The Sprint</h4>
+<ul>
+<li><strong>Nov 4</strong> (<code>acf4e4e</code>): "so close!" - final debugging</li>
+<li><strong>Nov 7</strong> (<code>f0f2ef5</code>): "Final stretch." - last mile work</li>
+<li><strong>Nov 7</strong> (<code>e0d8785</code>): "Platform is up and running" - services deployed</li>
+<li><strong>Nov 8</strong> (<code>a2862ea</code>): "Sprocket v1 is finally up and running completely." - <strong>PRODUCTION COMPLETE!</strong> 🎉</li>
+</ul>
+<h4 id="final-configuration">Final Configuration</h4>
+<pre><code class="language-yaml"># Layer 1
+hostname: sprocket.mlesports.gg
+postgres-host: sprocketbot-postgres-d5033d2-do-user-24528890-0.j.db.ondigitalocean.com
+postgres-port: &quot;25060&quot;
+vault-s3-endpoint: https://nyc3.digitaloceanspaces.com
+vault-s3-bucket: vault-secrets
+
+# Layer 2
+hostname: sprocket.mlesports.gg
+s3-endpoint: nyc3.digitaloceanspaces.com
+
+# Platform
+hostname: sprocket.mlesports.gg
+subdomain: &quot;main&quot;
+image-tag: main
+postgres-host: sprocketbot-postgres-d5033d2-do-user-24528890-0.j.db.ondigitalocean.com
+</code></pre>
+<h4 id="verification">Verification</h4>
+<pre><code class="language-bash"># All services running
+docker service ls
+# 15/15 services at 1/1 replicas
+
+# HTTPS working
+curl -I https://sprocket.mlesports.gg
+# HTTP/2 200
+
+# Certificates valid
+openssl s_client -connect sprocket.mlesports.gg:443 -servername sprocket.mlesports.gg
+# Issuer: Let's Encrypt
+</code></pre>
+<hr />
+<h2 id="technical-challenges-deep-dive">Technical Challenges Deep Dive</h2>
+<h3 id="challenge-1-vault-bootstrapping-automation">Challenge 1: Vault Bootstrapping Automation</h3>
+<p><strong>Complexity</strong>: ⭐⭐⭐⭐⭐ (Highest)</p>
+<p><strong>The Chicken-and-Egg Problem</strong>:</p>
+<pre><code>Vault stores secrets → Services need secrets → Vault must be unsealed → Unsealing needs keys → Where to store keys?
+</code></pre>
+<p><strong>Attempts</strong>:
+1. Manual unsealing (not scalable)
+2. Keys in Pulumi config (security concern)
+3. Keys in MinIO (circular dependency)
+4. Cloud KMS auto-unseal (adds complexity and cost)</p>
+<p><strong>Final Solution</strong>: Local bind mount with auto-initialization script</p>
+<p><strong>Code</strong>: <code>global/services/vault/scripts/auto-initialize.sh</code></p>
+<pre><code class="language-bash">#!/bin/sh
+set -e
+
+vault server -config=/vault.hcl &amp;
+VAULT_PID=$!
+sleep 5
+
+export VAULT_ADDR=&quot;http://127.0.0.1:8200&quot;
+
+# Check if initialized
+if ! vault status | grep -q &quot;Initialized.*true&quot;; then
+  # Initialize and save tokens
+  vault operator init -key-shares=5 -key-threshold=3 &gt; /vault/unseal-tokens/unseal_tokens.txt
+  echo &quot;Vault initialized&quot;
+fi
+
+# Unseal
+if [ -f &quot;/vault/unseal-tokens/unseal_tokens.txt&quot; ]; then
+  grep 'Unseal Key' /vault/unseal-tokens/unseal_tokens.txt | \
+    awk '{print $4}' | head -3 | \
+    while read key; do
+      vault operator unseal $key
+    done
+  echo &quot;Vault unsealed&quot;
+fi
+
+# Keep container running
+wait $VAULT_PID
+</code></pre>
+<p><strong>Why It Works</strong>:
+- S3 backend persists Vault state
+- Unseal keys stored in bind-mounted directory on node
+- Auto-initialization script handles both first-run and restarts
+- Repeatable across deployments</p>
+<p><strong>Trade-offs</strong>:
+- ✅ Fully automated
+- ✅ Repeatable
+- ✅ No manual intervention
+- ⚠️ Unseal keys on node filesystem (acceptable for single-node deployment)
+- ⚠️ Not true auto-unseal (would need cloud KMS)</p>
+<hr />
+<h3 id="challenge-2-multi-environment-routing">Challenge 2: Multi-Environment Routing</h3>
+<p><strong>Complexity</strong>: ⭐⭐⭐⭐</p>
+<p><strong>The Problem</strong>: Support 4 different access patterns with one codebase</p>
+<table>
+<thead>
+<tr>
+<th>Access Pattern</th>
+<th>Host Header</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>localhost</td>
+<td><code>sprocket.localhost</code></td>
+<td>Local development</td>
+</tr>
+<tr>
+<td>LAN IP</td>
+<td><code>192.168.4.39</code></td>
+<td>Remote browser on same network</td>
+</tr>
+<tr>
+<td>Tailscale IP</td>
+<td><code>100.110.185.84</code></td>
+<td>Remote access via VPN</td>
+</tr>
+<tr>
+<td>Production domain</td>
+<td><code>sprocket.mlesports.gg</code></td>
+<td>Public internet</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why It's Hard</strong>:
+- Traefik routing is based on <code>Host</code> header
+- Let's Encrypt only works with public domains
+- Certificate handling different for each pattern
+- Can't use multiple routers with same name</p>
+<p><strong>Solution</strong>: Conditional routing rules based on configuration</p>
+<pre><code class="language-typescript">// Build routing rule based on config
+const hostRules = [];
+
+if (hostname) {
+  hostRules.push(`Host(\`${subdomain}.${hostname}\`)`);
+}
+
+if (serverIp) {
+  hostRules.push(`Host(\`${serverIp}\`)`);
+}
+
+if (tailscaleIp) {
+  hostRules.push(`Host(\`${tailscaleIp}\`)`);
+}
+
+const routingRule = hostRules.join(' || ');
+
+// Apply to Traefik labels
+new TraefikLabels(`sprocket-web-${env}`)
+  .rule(routingRule)
+  .targetPort(3000)
+  .tls(&quot;lets-encrypt-tls&quot;)
+</code></pre>
+<p><strong>Configuration Strategy</strong>:</p>
+<pre><code class="language-yaml"># Local development
+hostname: localhost
+server-ip: 192.168.4.39
+tailscale-ip: 100.110.185.84
+
+# Production
+hostname: sprocket.mlesports.gg
+# server-ip and tailscale-ip removed
+</code></pre>
+<p><strong>Results</strong>:
+- ✅ Single codebase for all environments
+- ✅ Configuration-driven routing
+- ✅ Works for local dev and production
+- ⚠️ IP-based routing is a workaround
+- ⚠️ Complex routing rules</p>
+<hr />
+<h3 id="challenge-3-secret-management-architecture">Challenge 3: Secret Management Architecture</h3>
+<p><strong>Complexity</strong>: ⭐⭐⭐⭐</p>
+<p><strong>The Problem</strong>: Secrets scattered across multiple systems</p>
+<p><strong>Secret Sources</strong>:
+1. <strong>Doppler</strong>: OAuth credentials, API tokens, application secrets
+2. <strong>Vault</strong>: Runtime secret distribution
+3. <strong>Pulumi Config</strong>: Infrastructure secrets
+4. <strong>Docker Secrets</strong>: Mounted into containers</p>
+<p><strong>Solution</strong>: Hierarchical secret management</p>
+<pre><code>Doppler (Source of Truth)
+    ↓
+Bootstrap Script
+    ↓
+Vault (Runtime Storage)
+    ↓
+Docker Secrets
+    ↓
+Application Services
+</code></pre>
+<p><strong>Implementation</strong>: <code>scripts/bootstrap-vault-secrets.sh</code></p>
+<pre><code class="language-bash"># Load from Doppler
+export GOOGLE_CLIENT_ID=$(doppler secrets get GOOGLE_CLIENT_ID)
+export GOOGLE_CLIENT_SECRET=$(doppler secrets get GOOGLE_CLIENT_SECRET)
+# ... etc
+
+# Provision to Vault
+vault kv put platform/sprocket/manual/oauth/google \
+  clientId=&quot;$GOOGLE_CLIENT_ID&quot; \
+  clientSecret=&quot;$GOOGLE_CLIENT_SECRET&quot;
+</code></pre>
+<p><strong>Why This Works</strong>:
+- <strong>Doppler</strong>: Single source of truth, team access control
+- <strong>Vault</strong>: Runtime distribution, dynamic secrets, auditing
+- <strong>Docker Secrets</strong>: Secure container mounting
+- <strong>Pulumi</strong>: Infrastructure-only secrets</p>
+<p><strong>Secret Flow Example</strong>:</p>
+<pre><code>Google OAuth credentials
+  → Stored in Doppler
+  → Bootstrap script reads from Doppler
+  → Writes to Vault at platform/sprocket/manual/oauth/google
+  → Pulumi reads from Vault
+  → Creates Docker secret
+  → Mounts into core service at /app/secret/googleClientId.txt
+  → Application reads from file
+</code></pre>
+<hr />
+<h3 id="challenge-4-storage-backend-migration">Challenge 4: Storage Backend Migration</h3>
+<p><strong>Complexity</strong>: ⭐⭐⭐</p>
+<p><strong>Why Migrate from MinIO?</strong>
+- Resource intensive (CPU, memory, storage)
+- Another service to maintain
+- Backup complexity
+- Vault S3 backend instability with self-hosted MinIO</p>
+<p><strong>Migration Strategy</strong>: Phased approach</p>
+<p><strong>Phase 1</strong>: Dual operation</p>
+<pre><code class="language-typescript">// Support both local and cloud S3
+export class SprocketMinioProvider {
+  constructor(args: {
+    vaultProvider?: vault.Provider,
+    s3Endpoint?: string,
+    accessKey?: string,
+    secretKey?: string
+  }) {
+    if (args.vaultProvider) {
+      // Use Vault for credentials
+    } else {
+      // Use direct credentials (for cloud S3)
+    }
+  }
+}
+</code></pre>
+<p><strong>Phase 2</strong>: Migrate Vault backend first</p>
+<pre><code class="language-hcl"># Vault config
+storage &quot;s3&quot; {
+  access_key = &quot;${accessKey}&quot;
+  secret_key = &quot;${secretKey}&quot;
+  bucket     = &quot;vault-secrets&quot;
+  endpoint   = &quot;https://nyc3.digitaloceanspaces.com&quot;
+  path       = &quot;vault_storage&quot;
+}
+</code></pre>
+<p><strong>Phase 3</strong>: Migrate application storage
+- Updated service configurations
+- Migrated existing data
+- Verified all services working</p>
+<p><strong>Phase 4</strong>: Remove MinIO
+- Removed service definition
+- Cleaned up configuration
+- Updated documentation</p>
+<p><strong>Results</strong>:
+- ✅ More reliable storage
+- ✅ Less infrastructure to manage
+- ✅ Better durability (99.999999999%)
+- ✅ Professional-grade backups</p>
+<hr />
+<h3 id="challenge-5-lets-encrypt-certificate-management">Challenge 5: Let's Encrypt Certificate Management</h3>
+<p><strong>Complexity</strong>: ⭐⭐⭐</p>
+<p><strong>The Problem</strong>: Automatic TLS certificates for production</p>
+<p><strong>Challenges</strong>:
+1. <strong>Rate Limiting</strong>: 50 certificates per week per domain
+2. <strong>DNS Requirements</strong>: Domain must resolve to public IP
+3. <strong>Challenge Verification</strong>: HTTP-01 challenge must reach server
+4. <strong>Local Development</strong>: Can't get real certs for localhost</p>
+<p><strong>Failure Modes Encountered</strong>:
+- Hit rate limit during testing (had to wait 1 hour)
+- Tried to get certs before DNS propagated (failed)
+- Mixed local/production configs (chaos)</p>
+<p><strong>Solutions</strong>:</p>
+<p><strong>For Production</strong>:</p>
+<pre><code class="language-yaml"># Traefik static config
+certificatesResolvers:
+  lets-encrypt-tls:
+    acme:
+      email: admin@sprocket.mlesports.gg
+      storage: /data/acme.json
+      httpChallenge:
+        entryPoint: web
+</code></pre>
+<p><strong>For Local Development</strong>:</p>
+<pre><code class="language-yaml"># No certificate resolver
+# Use Traefik's default self-signed certs
+# Accept certificate warnings in browser
+</code></pre>
+<p><strong>For Testing</strong>:</p>
+<pre><code class="language-yaml"># Use Let's Encrypt staging
+certificatesResolvers:
+  lets-encrypt-tls:
+    acme:
+      caServer: https://acme-staging-v02.api.letsencrypt.org/directory
+</code></pre>
+<p><strong>Best Practices</strong>:
+1. Always test with staging first
+2. Verify DNS before requesting prod certs
+3. Persistent storage for <code>acme.json</code> (don't lose certs!)
+4. One cert provisioning attempt takes 60+ seconds
+5. Rate limits are per domain</p>
+<hr />
+<h2 id="architecture-evolution">Architecture Evolution</h2>
+<h3 id="before-2024">Before (2024)</h3>
+<pre><code>Single-layer deployment
+  ├─ All services in one stack
+  ├─ Self-hosted PostgreSQL
+  ├─ Self-hosted MinIO
+  ├─ Manual Vault unsealing
+  ├─ No automated secret provisioning
+  └─ Inconsistent configuration
+</code></pre>
+<h3 id="after-2025">After (2025)</h3>
+<pre><code>Three-layer architecture
+  ├─ Layer 1 (Infrastructure)
+  │   ├─ Traefik (reverse proxy)
+  │   ├─ Vault (secrets, S3 backend)
+  │   └─ Socket Proxy
+  │
+  ├─ Layer 2 (Data Services)
+  │   ├─ Redis
+  │   ├─ RabbitMQ
+  │   ├─ InfluxDB
+  │   ├─ Grafana
+  │   ├─ N8n
+  │   ├─ Neo4j
+  │   ├─ Gatus
+  │   ├─ Loki
+  │   └─ Telegraf
+  │
+  └─ Platform (Applications)
+      ├─ Sprocket Web
+      ├─ Sprocket API
+      ├─ Discord Bot
+      ├─ Image Generation (frontend &amp; service)
+      └─ 6 microservices
+</code></pre>
+<h3 id="external-services">External Services</h3>
+<pre><code>Critical Dependencies
+  ├─ Digital Ocean Managed PostgreSQL
+  ├─ Digital Ocean Spaces (Vault backend)
+  ├─ AWS S3 (application storage)
+  ├─ Doppler (secret management)
+  ├─ GitHub Organization (Vault auth)
+  └─ DNS Provider (Let's Encrypt)
+</code></pre>
+<hr />
+<h2 id="key-decisions-and-rationale">Key Decisions and Rationale</h2>
+<h3 id="decision-1-three-layer-architecture">Decision 1: Three-Layer Architecture</h3>
+<p><strong>Rationale</strong>:
+- Clear separation of concerns
+- Deploy layers independently
+- Each layer depends on previous layers
+- Easier troubleshooting
+- Better resource isolation</p>
+<p><strong>Trade-offs</strong>:
+- ✅ More organized
+- ✅ Easier to understand
+- ✅ Better deployment control
+- ⚠️ More complex deployment process
+- ⚠️ Layer dependencies must be managed</p>
+<hr />
+<h3 id="decision-2-managed-postgresql">Decision 2: Managed PostgreSQL</h3>
+<p><strong>Rationale</strong>:
+- Critical data requires professional-grade reliability
+- Automated backups essential
+- Point-in-time recovery needed
+- Team doesn't want to manage DB operations
+- Single node deployment limits HA options</p>
+<p><strong>Trade-offs</strong>:
+- ✅ Better reliability
+- ✅ Automated backups
+- ✅ Less operational burden
+- ✅ Professional support
+- ⚠️ Monthly cost ($15-60)
+- ⚠️ External dependency
+- ⚠️ Less control over tuning</p>
+<p><strong>ROI</strong>: Worth it for production. The time saved on maintenance and peace of mind from automated backups easily justifies the cost.</p>
+<hr />
+<h3 id="decision-3-cloud-s3-storage">Decision 3: Cloud S3 Storage</h3>
+<p><strong>Rationale</strong>:
+- S3-compatible storage needed for Vault backend
+- MinIO adds operational complexity
+- Cloud storage more reliable
+- Better durability guarantees</p>
+<p><strong>Trade-offs</strong>:
+- ✅ More reliable
+- ✅ Less to manage
+- ✅ Better durability
+- ✅ Professional-grade
+- ⚠️ Monthly cost (minimal)
+- ⚠️ External dependency</p>
+<p><strong>ROI</strong>: Absolutely worth it. MinIO was causing more problems than it solved.</p>
+<hr />
+<h3 id="decision-4-doppler-for-secret-management">Decision 4: Doppler for Secret Management</h3>
+<p><strong>Rationale</strong>:
+- Need centralized secret management
+- Team collaboration on secrets
+- Audit trail for secret access
+- Better than storing secrets in Pulumi config</p>
+<p><strong>Trade-offs</strong>:
+- ✅ Centralized management
+- ✅ Team access control
+- ✅ Audit trail
+- ✅ Easy updates
+- ⚠️ External dependency
+- ⚠️ Potential vendor lock-in</p>
+<p><strong>Alternative Considered</strong>: AWS Secrets Manager (didn't want to lock into AWS)</p>
+<hr />
+<h3 id="decision-5-local-bind-mount-for-vault-unseal-keys">Decision 5: Local Bind Mount for Vault Unseal Keys</h3>
+<p><strong>Rationale</strong>:
+- Need automated unsealing
+- Cloud KMS too complex and costly for single-node
+- Pulumi config doesn't feel right for unseal keys
+- Acceptable risk for single-node deployment</p>
+<p><strong>Trade-offs</strong>:
+- ✅ Fully automated
+- ✅ Simple implementation
+- ✅ Repeatable
+- ⚠️ Keys on node filesystem
+- ⚠️ Not true auto-unseal</p>
+<p><strong>Future Consideration</strong>: Migrate to cloud KMS auto-unseal if multi-node deployment needed.</p>
+<hr />
+<h2 id="metrics-and-statistics">Metrics and Statistics</h2>
+<h3 id="project-metrics">Project Metrics</h3>
+<ul>
+<li><strong>Duration</strong>: 8 weeks (Sept 14 - Nov 8, 2025)</li>
+<li><strong>Total Commits</strong>: 20+ commits in rebuild phase</li>
+<li><strong>Major Breakthroughs</strong>: 5 key milestones</li>
+<li><strong>Services Deployed</strong>: 22 total services</li>
+<li>3 in Layer 1</li>
+<li>9 in Layer 2</li>
+<li>10 in Platform</li>
+<li><strong>External Dependencies</strong>: 6 critical systems</li>
+</ul>
+<h3 id="deployment-complexity">Deployment Complexity</h3>
+<ul>
+<li><strong>Pulumi Stacks</strong>: 3 (layer_1, layer_2, prod)</li>
+<li><strong>Docker Networks</strong>: 5 overlay networks</li>
+<li><strong>Docker Volumes</strong>: ~15 persistent volumes</li>
+<li><strong>Configuration Files</strong>: 50+ JSON/YAML configs</li>
+<li><strong>Secret Paths</strong>: 20+ Vault paths</li>
+<li><strong>Infrastructure as Code</strong>: ~5,000 lines of TypeScript</li>
+</ul>
+<h3 id="git-activity">Git Activity</h3>
+<ul>
+<li><strong>Code Additions</strong>: Significant refactoring</li>
+<li><strong>Code Deletions</strong>: Removed deprecated services</li>
+<li><strong>Documentation</strong>: Added 4 major docs (README, CLOUD_DEPLOYMENT, LOCAL_ACCESS, this postmortem)</li>
+</ul>
+<hr />
+<h2 id="what-went-well">What Went Well</h2>
+<h3 id="1-iterative-approach">1. Iterative Approach</h3>
+<ul>
+<li>Small changes, frequent commits</li>
+<li>Test each layer independently</li>
+<li>Rollback easy if something breaks</li>
+</ul>
+<h3 id="2-comprehensive-documentation">2. Comprehensive Documentation</h3>
+<ul>
+<li>Documented decisions as they were made</li>
+<li>Detailed commit messages</li>
+<li>Created guides for different scenarios (local, cloud)</li>
+</ul>
+<h3 id="3-migration-to-managed-services">3. Migration to Managed Services</h3>
+<ul>
+<li>PostgreSQL migration smooth</li>
+<li>Storage migration phased well</li>
+<li>Reduced operational complexity significantly</li>
+</ul>
+<h3 id="4-automation">4. Automation</h3>
+<ul>
+<li>Vault unsealing automated</li>
+<li>Secret provisioning scripted</li>
+<li>Deployment repeatable</li>
+</ul>
+<h3 id="5-problem-solving-persistence">5. Problem-Solving Persistence</h3>
+<ul>
+<li>Vault unsealing took 5+ attempts</li>
+<li>Routing issues resolved through iteration</li>
+<li>Didn't give up when things got hard</li>
+</ul>
+<hr />
+<h2 id="what-could-have-been-better">What Could Have Been Better</h2>
+<h3 id="1-database-from-day-one">1. Database from Day One</h3>
+<p><strong>Issue</strong>: Started with self-hosted PostgreSQL, then migrated to managed
+<strong>Better Approach</strong>: Start with managed PostgreSQL from the beginning
+<strong>Impact</strong>: Would have saved time and complexity</p>
+<h3 id="2-storage-strategy-earlier">2. Storage Strategy Earlier</h3>
+<p><strong>Issue</strong>: Spent time setting up MinIO, then migrated away
+<strong>Better Approach</strong>: Use cloud S3 from the start
+<strong>Impact</strong>: Would have avoided migration effort</p>
+<h3 id="3-earlier-documentation">3. Earlier Documentation</h3>
+<p><strong>Issue</strong>: Some decisions documented after the fact
+<strong>Better Approach</strong>: Document architectural decisions as they're made (ADRs)
+<strong>Impact</strong>: Better context for future maintainers</p>
+<h3 id="4-testing-environments">4. Testing Environments</h3>
+<p><strong>Issue</strong>: Tested some changes directly in production config
+<strong>Better Approach</strong>: Use Let's Encrypt staging, have dev/staging/prod stacks
+<strong>Impact</strong>: Would have avoided rate limiting</p>
+<h3 id="5-initial-planning">5. Initial Planning</h3>
+<p><strong>Issue</strong>: Underestimated complexity, especially Vault automation
+<strong>Better Approach</strong>: Research Vault best practices before starting
+<strong>Impact</strong>: Might have gone with cloud KMS auto-unseal from start</p>
+<hr />
+<h2 id="lessons-learned">Lessons Learned</h2>
+<h3 id="technical-lessons">Technical Lessons</h3>
+<h4 id="1-use-managed-services-for-critical-infrastructure">1. Use Managed Services for Critical Infrastructure</h4>
+<p><strong>Lesson</strong>: Don't self-host databases or storage in production unless you have a really good reason.</p>
+<p><strong>Rationale</strong>:
+- Managed services are worth the cost
+- Time saved on maintenance is valuable
+- Professional-grade reliability and backups
+- Team can focus on application, not infrastructure</p>
+<p><strong>Application</strong>: Migrated both PostgreSQL and S3 to managed services. Both decisions were correct.</p>
+<hr />
+<h4 id="2-automate-or-document-never-just-know">2. Automate or Document, Never "Just Know"</h4>
+<p><strong>Lesson</strong>: If it requires human memory or manual steps, automate it or document it thoroughly.</p>
+<p><strong>Examples</strong>:
+- ✅ Vault unsealing: Automated with script
+- ✅ Secret provisioning: Scripted bootstrap process
+- ✅ Deployment order: Documented in README
+- ❌ Some manual DNS changes: Should be in Terraform/Pulumi</p>
+<p><strong>Application</strong>: Created scripts for repeatable processes, documentation for manual steps.</p>
+<hr />
+<h4 id="3-design-for-production-first">3. Design for Production First</h4>
+<p><strong>Lesson</strong>: Design infrastructure for production, then add development overrides.</p>
+<p><strong>Anti-pattern</strong>:</p>
+<pre><code class="language-yaml"># Starting with localhost, then trying to make it work in production
+hostname: localhost
+# Now how do I deploy to production?
+</code></pre>
+<p><strong>Better Pattern</strong>:</p>
+<pre><code class="language-yaml"># Production-first design
+hostname: sprocket.mlesports.gg
+
+# Local development overrides
+# hostname: localhost
+# server-ip: 192.168.4.39
+</code></pre>
+<p><strong>Application</strong>: Routing system designed for production domains, with optional IP-based access for development.</p>
+<hr />
+<h4 id="4-secrets-management-requires-strategy">4. Secrets Management Requires Strategy</h4>
+<p><strong>Lesson</strong>: Secret management is more than just "keep them safe" - you need a coherent strategy.</p>
+<p><strong>Our Strategy</strong>:
+1. <strong>Source of Truth</strong>: Doppler (team access, audit trail)
+2. <strong>Runtime Distribution</strong>: Vault (dynamic secrets, policies)
+3. <strong>Container Secrets</strong>: Docker secrets (secure mounting)
+4. <strong>Infrastructure Secrets</strong>: Pulumi config (encrypted)</p>
+<p><strong>Why It Works</strong>:
+- Clear ownership of each secret type
+- Team can manage application secrets via Doppler
+- Infrastructure secrets separated
+- Auditable access</p>
+<hr />
+<h4 id="5-test-the-full-flow-not-just-individual-components">5. Test the Full Flow, Not Just Individual Components</h4>
+<p><strong>Lesson</strong>: Integration testing is critical for infrastructure.</p>
+<p><strong>Example</strong>: Vault unsealing
+- ✅ Vault initializes correctly
+- ✅ Unseal script works
+- ✅ Secrets can be written
+- ❌ But does the <em>entire flow</em> work on container restart?</p>
+<p><strong>Application</strong>: Created verification scripts that test end-to-end flows:
+- <code>quick-test.sh</code>: Basic health checks
+- <code>verify-deployment.sh</code>: Comprehensive verification</p>
+<hr />
+<h4 id="6-git-history-is-invaluable">6. Git History Is Invaluable</h4>
+<p><strong>Lesson</strong>: Detailed commit messages are worth the effort.</p>
+<p><strong>Good Commit</strong>:</p>
+<pre><code>feat(layer_2): migrate to cloud S3 and fix service configurations
+
+Major changes:
+- Replaced local MinIO service with cloud S3-compatible storage
+- Updated SprocketMinioProvider to support direct credentials
+- Fixed N8n PostgreSQL port configuration
+- Removed postgres duplicate parameter
+
+Breaking changes:
+- Services now require s3-endpoint, s3-access-key, s3-secret-key config
+</code></pre>
+<p><strong>Bad Commit</strong>:</p>
+<pre><code>updates
+</code></pre>
+<p><strong>Application</strong>: This postmortem was possible because of detailed commit messages. Future debugging will be easier.</p>
+<hr />
+<h4 id="7-external-dependencies-must-be-documented">7. External Dependencies Must Be Documented</h4>
+<p><strong>Lesson</strong>: Any external system your infrastructure depends on must be clearly documented.</p>
+<p><strong>Our External Dependencies</strong>:
+1. Doppler (secrets)
+2. GitHub Organization (Vault auth)
+3. Digital Ocean (database, storage)
+4. DNS Provider (Let's Encrypt)
+5. Pulumi Backend (state)
+6. Docker Hub (private images)</p>
+<p><strong>Application</strong>: Created <code>EXTERNALITIES_AND_DEPENDENCIES.md</code> with:
+- What each dependency provides
+- Why it's required
+- What happens if it's unavailable
+- How to set it up</p>
+<hr />
+<h3 id="process-lessons">Process Lessons</h3>
+<h4 id="1-break-big-problems-into-smaller-pieces">1. Break Big Problems Into Smaller Pieces</h4>
+<p><strong>Lesson</strong>: Don't try to solve everything at once.</p>
+<p><strong>Example</strong>: Vault automation
+1. First: Get Vault running
+2. Then: Make initialization work
+3. Then: Make unsealing work
+4. Then: Make it repeatable
+5. Finally: Make it automated</p>
+<p><strong>Application</strong>: Layered architecture itself is an example - Layer 1 → Layer 2 → Platform.</p>
+<hr />
+<h4 id="2-document-as-you-learn">2. Document As You Learn</h4>
+<p><strong>Lesson</strong>: Write documentation while the context is fresh.</p>
+<p><strong>Examples</strong>:
+- Sept 19: "docs: update readme with learnings" (while debugging Vault)
+- Oct 27: Created CLOUD_DEPLOYMENT.md (right after solving routing)
+- Nov 8: Created comprehensive documentation package</p>
+<p><strong>Application</strong>: If we'd waited until the end, we'd have forgotten crucial details.</p>
+<hr />
+<h4 id="3-persistence-pays-off">3. Persistence Pays Off</h4>
+<p><strong>Lesson</strong>: Complex infrastructure problems often require multiple attempts.</p>
+<p><strong>Example</strong>: Vault unsealing
+- Attempt 1: Failed (keys in Pulumi)
+- Attempt 2: Failed (manual unsealing)
+- Attempt 3: Failed (keys in MinIO)
+- Attempt 4: Failed (initialization issues)
+- Attempt 5: Success! (bind mount + auto-initialize script)</p>
+<p><strong>Application</strong>: Don't give up on the first failure. Learn from each attempt.</p>
+<hr />
+<h4 id="4-plan-for-multiple-environments">4. Plan for Multiple Environments</h4>
+<p><strong>Lesson</strong>: Local development and production are different beasts.</p>
+<p><strong>Differences</strong>:
+| Aspect | Local | Production |
+|--------|-------|------------|
+| DNS | <code>.localhost</code> | Real domain |
+| Certificates | Self-signed | Let's Encrypt |
+| Routing | IP-based | Host-based |
+| Access | Local network | Public internet |</p>
+<p><strong>Application</strong>: Created separate documentation for each environment (LOCAL_ACCESS.md, CLOUD_DEPLOYMENT.md).</p>
+<hr />
+<h2 id="recommendations-for-future-projects">Recommendations for Future Projects</h2>
+<h3 id="1-start-with-managed-services">1. Start with Managed Services</h3>
+<p>For any new infrastructure project:
+- ✅ Use managed databases (RDS, Digital Ocean, etc.)
+- ✅ Use managed storage (S3, Spaces, GCS)
+- ✅ Use managed secrets (Doppler, AWS Secrets Manager)
+- ❌ Don't self-host unless you have a specific reason</p>
+<p><strong>Rationale</strong>: Your time is valuable. Let professionals manage infrastructure.</p>
+<hr />
+<h3 id="2-invest-in-automation-early">2. Invest in Automation Early</h3>
+<p>Don't wait until deployment is painful to automate:
+- Write deployment scripts from day one
+- Automate secret provisioning
+- Create verification scripts
+- Document the deployment process</p>
+<p><strong>Rationale</strong>: Manual deployments don't scale and lead to errors.</p>
+<hr />
+<h3 id="3-use-infrastructure-as-code">3. Use Infrastructure as Code</h3>
+<p>Everything should be in code:
+- ✅ Infrastructure (Pulumi, Terraform)
+- ✅ Configuration (YAML, JSON in git)
+- ✅ Secrets (references, not values)
+- ✅ Deployment scripts (bash, make)</p>
+<p><strong>Rationale</strong>: If it's not in code, it's not repeatable.</p>
+<hr />
+<h3 id="4-document-architectural-decisions">4. Document Architectural Decisions</h3>
+<p>Create ADRs (Architectural Decision Records) for major decisions:
+- Why did we choose X over Y?
+- What were the trade-offs?
+- What assumptions did we make?
+- When should we revisit this decision?</p>
+<p><strong>Rationale</strong>: Future you (and your team) will thank you.</p>
+<hr />
+<h3 id="5-plan-for-disaster-recovery">5. Plan for Disaster Recovery</h3>
+<p>Before going to production, answer these questions:
+- What if the database goes down?
+- What if Vault is lost?
+- What if Pulumi state is corrupted?
+- What if we lose access to Doppler?
+- How do we restore from backups?</p>
+<p><strong>Rationale</strong>: Hope for the best, plan for the worst.</p>
+<hr />
+<h2 id="open-questions-and-future-work">Open Questions and Future Work</h2>
+<h3 id="1-multi-node-deployment">1. Multi-Node Deployment</h3>
+<p><strong>Question</strong>: How would this architecture scale to multiple nodes?</p>
+<p><strong>Considerations</strong>:
+- Vault unsealing (cloud KMS auto-unseal?)
+- Traefik load balancing
+- Persistent volume management
+- Database connection pooling</p>
+<p><strong>Recommendation</strong>: Test with 3-node setup before scaling to production.</p>
+<hr />
+<h3 id="2-disaster-recovery">2. Disaster Recovery</h3>
+<p><strong>Question</strong>: Can we fully restore from scratch?</p>
+<p><strong>Gaps</strong>:
+- Vault unseal keys (currently on node filesystem)
+- Pulumi state (if backend is lost)
+- Doppler secrets (if account compromised)</p>
+<p><strong>Recommendation</strong>: Document and test full disaster recovery procedure.</p>
+<hr />
+<h3 id="3-cost-optimization">3. Cost Optimization</h3>
+<p><strong>Question</strong>: Can we reduce monthly costs?</p>
+<p><strong>Current Costs</strong>:
+- Digital Ocean Managed PostgreSQL: $15-60/month
+- Digital Ocean Spaces: $5/month
+- AWS S3: Variable
+- Doppler: Free tier (for now)
+- Pulumi: Free tier (for now)</p>
+<p><strong>Recommendation</strong>: Review costs quarterly, look for optimization opportunities.</p>
+<hr />
+<h3 id="4-monitoring-and-alerting">4. Monitoring and Alerting</h3>
+<p><strong>Question</strong>: How do we know when things break?</p>
+<p><strong>Current State</strong>:
+- ✅ Gatus for service monitoring
+- ✅ Grafana for metrics
+- ✅ Loki for logs
+- ❌ No alerting configured
+- ❌ No on-call rotation</p>
+<p><strong>Recommendation</strong>: Set up PagerDuty or similar, configure alerts.</p>
+<hr />
+<h3 id="5-security-hardening">5. Security Hardening</h3>
+<p><strong>Question</strong>: Is the infrastructure secure enough for production?</p>
+<p><strong>Current State</strong>:
+- ✅ Secrets in Vault, not in code
+- ✅ TLS everywhere
+- ✅ Minimal exposed ports
+- ❌ No regular security audits
+- ❌ No automated vulnerability scanning
+- ❌ No WAF or DDoS protection</p>
+<p><strong>Recommendation</strong>: Security audit, implement automated scanning, consider Cloudflare.</p>
+<hr />
+<h2 id="conclusion">Conclusion</h2>
+<p>The Sprocket infrastructure rebuild was a complex, 8-week journey from a partially-functional system to a production-ready platform. The project involved fundamental architectural changes, migration to managed services, and resolution of challenging technical problems.</p>
+<h3 id="key-achievements">Key Achievements</h3>
+<ul>
+<li>✅ <strong>Production-ready infrastructure</strong> serving real users</li>
+<li>✅ <strong>Three-layer architecture</strong> with clear separation of concerns</li>
+<li>✅ <strong>Managed services</strong> for critical components (database, storage)</li>
+<li>✅ <strong>Automated processes</strong> for deployment and secret management</li>
+<li>✅ <strong>Comprehensive documentation</strong> for future maintenance</li>
+</ul>
+<h3 id="critical-success-factors">Critical Success Factors</h3>
+<ol>
+<li><strong>Persistence</strong>: Many problems required multiple attempts</li>
+<li><strong>Iteration</strong>: Small changes, frequent commits, test often</li>
+<li><strong>Managed Services</strong>: Database and storage migrations simplified operations</li>
+<li><strong>Documentation</strong>: Writing things down as we learned saved the project</li>
+<li><strong>Team Collaboration</strong>: Doppler and GitHub org enabled team access</li>
+</ol>
+<h3 id="most-important-lessons">Most Important Lessons</h3>
+<ol>
+<li>Use managed services for critical infrastructure</li>
+<li>Design for production first, add dev overrides later</li>
+<li>Automate secret provisioning to reduce human error</li>
+<li>Document decisions when making them, not after</li>
+<li>Test each layer independently before stacking</li>
+<li>Git history is invaluable for understanding evolution</li>
+</ol>
+<h3 id="final-thoughts">Final Thoughts</h3>
+<p>This project demonstrates that even complex infrastructure challenges can be solved through:
+- Systematic problem-solving
+- Willingness to iterate and learn
+- Good documentation practices
+- Appropriate use of managed services
+- Team collaboration</p>
+<p>The result is a robust, maintainable infrastructure that serves as a foundation for the Sprocket gaming platform. While there's always room for improvement (security hardening, better monitoring, disaster recovery testing), the infrastructure is production-ready and serving users successfully.</p>
+<p><strong>The most valuable output of this project isn't just working infrastructure - it's the knowledge captured in documentation, code, and this postmortem that will enable future teams to maintain, extend, and learn from this work.</strong></p>
+<hr />
+<p><strong>Project Status</strong>: ✅ COMPLETE
+<strong>Documentation Status</strong>: ✅ COMPREHENSIVE
+<strong>Production Status</strong>: ✅ LIVE AND SERVING USERS
+<strong>Team Satisfaction</strong>: 🎉 HIGH</p>
+<hr />
+<p><em>This postmortem was generated from project documentation, git history, and architectural analysis. For detailed technical information, see the companion documents: TECHNICAL_CHALLENGES.md, CONTEXT_SUMMARY.md, EXTERNALITIES_AND_DEPENDENCIES.md, and GIT_HISTORY_ANALYSIS.md.</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../../../..", "features": [], "search": "../../../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,5609 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://minor-league-esports.github.io/knowledgeBase/departments/development/systems/production-infrastructure/OPERATIONS_RUNBOOK/">
+      
+      
+        <link rel="prev" href="../DEPLOYMENT_GUIDE/">
+      
+      
+        <link rel="next" href="../EXTERNALITIES_AND_DEPENDENCIES/">
+      
+      
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.18">
+    
+    
+      
+        <title>Operations Runbook - Knowledge Base</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="yellow" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sprocket-infrastructure-operations-runbook" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../.." title="Knowledge Base" class="md-header__button md-logo" aria-label="Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Knowledge Base
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Operations Runbook
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/minor-league-esports/knowledgeBase" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="Knowledge Base" class="md-nav__button md-logo" aria-label="Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Knowledge Base
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/minor-league-esports/knowledgeBase" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Departments
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Departments
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../rocket-league-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Rocket League Operations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../trackmania-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Trackmania Operations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../community/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Community
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Development
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../development/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../new-team-members/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    New Team Members
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3" id="__nav_2_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Systems
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Systems
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../systems-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modmail/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Modmail KB
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sprocket-identity-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprocket Identity System
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4" id="__nav_2_4_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Production Infrastructure
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_4_3_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_4_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            Production Infrastructure
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_2" id="__nav_2_4_3_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-START-HERE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Quick Start
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../README.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    README
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CONTEXT_SUMMARY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Context Summary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_3" id="__nav_2_4_3_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Architecture & Design
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Architecture & Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ARCHITECTURE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Architecture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GLOSSARY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_4" id="__nav_2_4_3_4_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Deployment & Operations
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_4_3_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            Deployment & Operations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DEPLOYMENT_GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Deployment Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Operations Runbook
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Operations Runbook
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      Table of Contents
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#daily-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Daily Operations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Daily Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#morning-health-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      Morning Health Check
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Morning Health Check">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Checklist
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#normal-vs-abnormal-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Normal vs Abnormal Examples
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expected-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      Expected Output
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#escalation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Escalation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#weekly-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      Weekly Review
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Weekly Review">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#checklist_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Checklist
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tasks
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#service-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Service Management
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Service Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#starting-a-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      Starting a Service
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stopping-a-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stopping a Service
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restarting-a-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      Restarting a Service
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updating-a-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      Updating a Service
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Updating a Service">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#update-image-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update Image Version
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update-environment-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update Environment Variables
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rolling-back-a-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rolling Back a Service
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#monitoring-alerts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitoring &amp; Alerts
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Monitoring &amp; Alerts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#monitoring-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitoring Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-level-agreements-slas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Service Level Agreements (SLAs)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Service Level Agreements (SLAs)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#availability-targets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Availability Targets
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performance-targets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Performance Targets
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resource-utilization-targets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Resource Utilization Targets
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recovery-time-targets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Recovery Time Targets
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alert-response-targets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alert Response Targets
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sla-monitoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      SLA Monitoring
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-metrics-to-monitor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Metrics to Monitor
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Metrics to Monitor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#system-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      System Metrics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#application-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Application Metrics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-health" class="md-nav__link">
+    <span class="md-ellipsis">
+      Service Health
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#accessing-monitoring-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      Accessing Monitoring Tools
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Accessing Monitoring Tools">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#grafana-unified-logs-and-metrics-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      Grafana Unified Logs and Metrics Interface
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gatus-service-monitoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gatus Service Monitoring
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#digital-ocean-master-node-access-for-debugging" class="md-nav__link">
+    <span class="md-ellipsis">
+      Digital Ocean Master Node Access for Debugging
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setting-up-alerts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting Up Alerts
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Setting Up Alerts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#alert-channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alert Channels
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conversation-derived-alert-thresholds" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conversation-Derived Alert Thresholds
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-alert-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Alert Rules
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#backup-recovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      Backup &amp; Recovery
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Backup &amp; Recovery">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#database-backups" class="md-nav__link">
+    <span class="md-ellipsis">
+      Database Backups
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Database Backups">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#automated-backups-digital-ocean" class="md-nav__link">
+    <span class="md-ellipsis">
+      Automated Backups (Digital Ocean)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manual-database-backup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Manual Database Backup
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#database-restore" class="md-nav__link">
+    <span class="md-ellipsis">
+      Database Restore
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vault-backups" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vault Backups
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Vault Backups">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#backup-vault-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Backup Vault Data
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restore-vault" class="md-nav__link">
+    <span class="md-ellipsis">
+      Restore Vault
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pulumi-state-backups" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pulumi State Backups
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disaster-recovery-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disaster Recovery Test
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Disaster Recovery Test">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#procedure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Procedure
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scaling-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scaling Operations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Scaling Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vertical-scaling-single-node" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vertical Scaling (Single Node)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Vertical Scaling (Single Node)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scale-up-node-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scale Up Node Resources
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-to-scale-up" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to Scale Up
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#horizontal-scaling-multiple-nodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Horizontal Scaling (Multiple Nodes)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Horizontal Scaling (Multiple Nodes)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add-node-to-swarm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Add Node to Swarm
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scale-services-across-nodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scale Services Across Nodes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scaling-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scaling Considerations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auto-scaling-future" class="md-nav__link">
+    <span class="md-ellipsis">
+      Auto-Scaling (Future)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security Operations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Security Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#secret-rotation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Secret Rotation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Secret Rotation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rotate-database-password" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rotate Database Password
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rotate-vault-root-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rotate Vault Root Token
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rotate-oauth-credentials" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rotate OAuth Credentials
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#access-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      Access Review
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Access Review">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#checklist_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Checklist
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security-scanning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security Scanning
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#certificate-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Certificate Management
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#incident-response" class="md-nav__link">
+    <span class="md-ellipsis">
+      Incident Response
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Incident Response">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#severity-levels" class="md-nav__link">
+    <span class="md-ellipsis">
+      Severity Levels
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#incident-response-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      Incident Response Process
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Incident Response Process">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Detection
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-triage" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Triage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-investigation" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Investigation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-mitigation" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Mitigation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-communication" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Communication
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-resolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Resolution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-post-incident-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Post-Incident Review
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#maintenance-procedures" class="md-nav__link">
+    <span class="md-ellipsis">
+      Maintenance Procedures
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Maintenance Procedures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#updating-docker-images" class="md-nav__link">
+    <span class="md-ellipsis">
+      Updating Docker Images
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updating-infrastructure-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      Updating Infrastructure Code
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#system-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      System Updates
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#database-maintenance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Database Maintenance
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Tasks
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Tasks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#view-service-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      View Service Logs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-service-health" class="md-nav__link">
+    <span class="md-ellipsis">
+      Check Service Health
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exec-into-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exec into Container
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-network-connectivity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Check Network Connectivity
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clear-docker-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      Clear Docker Resources
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#emergency-contacts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Emergency Contacts
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Emergency Contacts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#on-call-rotation" class="md-nav__link">
+    <span class="md-ellipsis">
+      On-Call Rotation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#contact-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      Contact Methods
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#external-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      External Support
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-status-pages" class="md-nav__link">
+    <span class="md-ellipsis">
+      Service Status Pages
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix" class="md-nav__link">
+    <span class="md-ellipsis">
+      Appendix
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Appendix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#useful-commands-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Useful Commands Reference
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quick-reference-urls" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Reference URLs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting-guide-from-development-experience" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting Guide (From Development Experience)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting Guide (From Development Experience)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vault-unsealing-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vault Unsealing Issues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-environment-routing-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multi-Environment Routing Issues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-network-connectivity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Service Network Connectivity
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#environment-variable-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Environment Variable Issues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#storage-migration-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Storage Migration Issues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#certificate-and-https-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Certificate and HTTPS Issues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#development-vs-production-differences" class="md-nav__link">
+    <span class="md-ellipsis">
+      Development vs Production Differences
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../EXTERNALITIES_AND_DEPENDENCIES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Externalities & Dependencies
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_5" id="__nav_2_4_3_4_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Project History
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            Project History
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../POSTMORTEM/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Postmortem
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TECHNICAL_CHALLENGES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Technical Challenges
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GIT_HISTORY_ANALYSIS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Git History Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CLAUDE_CONVERSATIONS_SUMMARY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Claude Conversations Summary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CLAUDE_CONVERSATION_ANALYSIS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Claude Conversation Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TECHNICAL_CHALLENGES_FROM_CLAUDE_CONVERSATIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Technical Challenges from Claude
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_6" id="__nav_2_4_3_4_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Meta Documentation
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            Meta Documentation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DOCUMENTATION_REVIEW_RECOMMENDATIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Documentation Review
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TRANSFER_INSTRUCTIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Transfer Instructions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_7" id="__nav_2_4_3_4_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Templates
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            Templates
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../INCIDENT_POSTMORTEM_TEMPLATE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Incident Postmortem Template
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_4" id="__nav_2_4_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Features and Designs
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            Features and Designs
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../features-and-designs/sprocket-v2-unified-matchmaking-proposal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprocket v2 Unified Matchmaking
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../marketing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Marketing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../production/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Production
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      Table of Contents
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#daily-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Daily Operations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Daily Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#morning-health-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      Morning Health Check
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Morning Health Check">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Checklist
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#normal-vs-abnormal-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Normal vs Abnormal Examples
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expected-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      Expected Output
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#escalation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Escalation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#weekly-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      Weekly Review
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Weekly Review">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#checklist_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Checklist
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tasks
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#service-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Service Management
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Service Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#starting-a-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      Starting a Service
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stopping-a-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stopping a Service
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restarting-a-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      Restarting a Service
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updating-a-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      Updating a Service
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Updating a Service">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#update-image-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update Image Version
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update-environment-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update Environment Variables
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rolling-back-a-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rolling Back a Service
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#monitoring-alerts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitoring &amp; Alerts
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Monitoring &amp; Alerts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#monitoring-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitoring Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-level-agreements-slas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Service Level Agreements (SLAs)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Service Level Agreements (SLAs)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#availability-targets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Availability Targets
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performance-targets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Performance Targets
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resource-utilization-targets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Resource Utilization Targets
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recovery-time-targets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Recovery Time Targets
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alert-response-targets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alert Response Targets
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sla-monitoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      SLA Monitoring
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-metrics-to-monitor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Metrics to Monitor
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Metrics to Monitor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#system-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      System Metrics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#application-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Application Metrics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-health" class="md-nav__link">
+    <span class="md-ellipsis">
+      Service Health
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#accessing-monitoring-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      Accessing Monitoring Tools
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Accessing Monitoring Tools">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#grafana-unified-logs-and-metrics-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      Grafana Unified Logs and Metrics Interface
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gatus-service-monitoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gatus Service Monitoring
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#digital-ocean-master-node-access-for-debugging" class="md-nav__link">
+    <span class="md-ellipsis">
+      Digital Ocean Master Node Access for Debugging
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setting-up-alerts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting Up Alerts
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Setting Up Alerts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#alert-channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alert Channels
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conversation-derived-alert-thresholds" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conversation-Derived Alert Thresholds
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-alert-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Alert Rules
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#backup-recovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      Backup &amp; Recovery
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Backup &amp; Recovery">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#database-backups" class="md-nav__link">
+    <span class="md-ellipsis">
+      Database Backups
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Database Backups">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#automated-backups-digital-ocean" class="md-nav__link">
+    <span class="md-ellipsis">
+      Automated Backups (Digital Ocean)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manual-database-backup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Manual Database Backup
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#database-restore" class="md-nav__link">
+    <span class="md-ellipsis">
+      Database Restore
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vault-backups" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vault Backups
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Vault Backups">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#backup-vault-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Backup Vault Data
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restore-vault" class="md-nav__link">
+    <span class="md-ellipsis">
+      Restore Vault
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pulumi-state-backups" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pulumi State Backups
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disaster-recovery-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disaster Recovery Test
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Disaster Recovery Test">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#procedure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Procedure
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scaling-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scaling Operations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Scaling Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vertical-scaling-single-node" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vertical Scaling (Single Node)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Vertical Scaling (Single Node)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scale-up-node-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scale Up Node Resources
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-to-scale-up" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to Scale Up
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#horizontal-scaling-multiple-nodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Horizontal Scaling (Multiple Nodes)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Horizontal Scaling (Multiple Nodes)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add-node-to-swarm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Add Node to Swarm
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scale-services-across-nodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scale Services Across Nodes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scaling-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scaling Considerations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auto-scaling-future" class="md-nav__link">
+    <span class="md-ellipsis">
+      Auto-Scaling (Future)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security Operations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Security Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#secret-rotation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Secret Rotation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Secret Rotation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rotate-database-password" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rotate Database Password
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rotate-vault-root-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rotate Vault Root Token
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rotate-oauth-credentials" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rotate OAuth Credentials
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#access-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      Access Review
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Access Review">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#checklist_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Checklist
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security-scanning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security Scanning
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#certificate-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Certificate Management
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#incident-response" class="md-nav__link">
+    <span class="md-ellipsis">
+      Incident Response
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Incident Response">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#severity-levels" class="md-nav__link">
+    <span class="md-ellipsis">
+      Severity Levels
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#incident-response-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      Incident Response Process
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Incident Response Process">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Detection
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-triage" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Triage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-investigation" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Investigation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-mitigation" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Mitigation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-communication" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Communication
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-resolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Resolution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-post-incident-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Post-Incident Review
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#maintenance-procedures" class="md-nav__link">
+    <span class="md-ellipsis">
+      Maintenance Procedures
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Maintenance Procedures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#updating-docker-images" class="md-nav__link">
+    <span class="md-ellipsis">
+      Updating Docker Images
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updating-infrastructure-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      Updating Infrastructure Code
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#system-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      System Updates
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#database-maintenance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Database Maintenance
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Tasks
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Tasks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#view-service-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      View Service Logs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-service-health" class="md-nav__link">
+    <span class="md-ellipsis">
+      Check Service Health
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exec-into-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exec into Container
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-network-connectivity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Check Network Connectivity
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clear-docker-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      Clear Docker Resources
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#emergency-contacts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Emergency Contacts
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Emergency Contacts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#on-call-rotation" class="md-nav__link">
+    <span class="md-ellipsis">
+      On-Call Rotation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#contact-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      Contact Methods
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#external-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      External Support
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-status-pages" class="md-nav__link">
+    <span class="md-ellipsis">
+      Service Status Pages
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix" class="md-nav__link">
+    <span class="md-ellipsis">
+      Appendix
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Appendix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#useful-commands-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Useful Commands Reference
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quick-reference-urls" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Reference URLs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting-guide-from-development-experience" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting Guide (From Development Experience)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting Guide (From Development Experience)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vault-unsealing-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vault Unsealing Issues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-environment-routing-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multi-Environment Routing Issues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-network-connectivity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Service Network Connectivity
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#environment-variable-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Environment Variable Issues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#storage-migration-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Storage Migration Issues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#certificate-and-https-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Certificate and HTTPS Issues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#development-vs-production-differences" class="md-nav__link">
+    <span class="md-ellipsis">
+      Development vs Production Differences
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="sprocket-infrastructure-operations-runbook">Sprocket Infrastructure Operations Runbook</h1>
+<p><strong>Version</strong>: 1.1
+<strong>Last Updated</strong>: December 4, 2025
+<strong>Audience</strong>: Operations Team, DevOps Engineers</p>
+<hr />
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#daily-operations">Daily Operations</a></li>
+<li><a href="#service-management">Service Management</a></li>
+<li><a href="#monitoring--alerts">Monitoring &amp; Alerts</a></li>
+<li><a href="#backup--recovery">Backup &amp; Recovery</a></li>
+<li><a href="#scaling-operations">Scaling Operations</a></li>
+<li><a href="#security-operations">Security Operations</a></li>
+<li><a href="#incident-response">Incident Response</a></li>
+<li><a href="#maintenance-procedures">Maintenance Procedures</a></li>
+<li><a href="#common-tasks">Common Tasks</a></li>
+<li><a href="#emergency-contacts">Emergency Contacts</a></li>
+</ol>
+<hr />
+<h2 id="daily-operations">Daily Operations</h2>
+<h3 id="morning-health-check">Morning Health Check</h3>
+<p><strong>Frequency</strong>: Every weekday morning
+<strong>Duration</strong>: ~10 minutes
+<strong>Responsibility</strong>: On-call engineer</p>
+<h4 id="checklist">Checklist</h4>
+<pre><code class="language-bash"># 1. Check all services are running
+docker service ls
+
+# All services should show N/N replicas (e.g., 1/1, 3/3)
+# If any show 0/N or X/N (where X &lt; N), investigate
+
+# 2. Check system resources
+docker node ls
+docker stats --no-stream
+
+# CPU/Memory should be &lt; 80% on average
+# If consistently high, consider scaling
+
+# 3. Run health check script
+./quick-test.sh
+
+# Should show all green checks
+
+# 4. Check recent errors
+docker service logs traefik --since 24h | grep -i error | wc -l
+docker service logs prod-sprocket-core-service --since 24h | grep -i error | head -20
+
+# Review any ERROR level logs
+
+# 5. Check Gatus dashboard
+# Navigate to https://gatus.sprocket.mlesports.gg
+# All services should be &quot;UP&quot;
+
+# 6. Check Grafana dashboards
+# Navigate to https://grafana.sprocket.mlesports.gg
+# Review key metrics:
+# - Request rate
+# - Error rate
+# - Response times
+# - Database connections
+</code></pre>
+<h4 id="normal-vs-abnormal-examples">Normal vs Abnormal Examples</h4>
+<p><strong>✅ NORMAL - All Services Running</strong></p>
+<pre><code>$ docker service ls
+ID             NAME                              MODE         REPLICAS   IMAGE
+abc123def456   prod-sprocket-web-service         replicated   1/1        asaxplayinghorse/sprocket-web:main
+bcd234efg567   prod-sprocket-core-service        replicated   1/1        asaxplayinghorse/sprocket-core:main
+cde345fgh678   prod-discord-bot-service          replicated   1/1        asaxplayinghorse/sprocket-discord-bot:main
+def456ghi789   layer2redis-redis-primary         replicated   1/1        redis:6-alpine
+efg567hij890   rabbitmq-service                  replicated   1/1        rabbitmq:3-management
+
+(All showing N/N replicas = healthy)
+</code></pre>
+<p><strong>❌ ABNORMAL - Service Not Running</strong></p>
+<pre><code>$ docker service ls
+ID             NAME                              MODE         REPLICAS   IMAGE
+abc123def456   prod-sprocket-web-service         replicated   0/1        asaxplayinghorse/sprocket-web:main
+                                                              ^^^--- PROBLEM: Service has 0/1 replicas
+
+Action required: Check logs with `docker service logs prod-sprocket-web-service --tail 100`
+</code></pre>
+<p><strong>✅ NORMAL - System Resources</strong></p>
+<pre><code>$ docker stats --no-stream
+CONTAINER           CPU %     MEM USAGE / LIMIT     MEM %     NET I/O
+sprocket-web        2.5%      450MiB / 8GiB        5.62%     1.2MB / 3.4MB
+sprocket-core       5.3%      680MiB / 8GiB        8.50%     4.5MB / 12MB
+redis               0.8%      120MiB / 8GiB        1.50%     500KB / 800KB
+postgres            3.2%      400MiB / 8GiB        5.00%     2MB / 5MB
+
+(All containers &lt;10% CPU, &lt;15% Memory = healthy)
+</code></pre>
+<p><strong>❌ ABNORMAL - High Resource Usage</strong></p>
+<pre><code>$ docker stats --no-stream
+CONTAINER           CPU %     MEM USAGE / LIMIT     MEM %
+sprocket-core       95.2%     7.2GiB / 8GiB        90.0%
+                    ^^^^      ^^^^^^^^^^^^        ^^^^--- PROBLEM: Near memory limit
+                    High CPU usage
+
+Possible causes:
+- Memory leak (check for gradual growth over time in Grafana)
+- Traffic spike (check request rate in Grafana)
+- Inefficient query (check slow query logs)
+- Infinite loop or runaway process
+
+Action: Check logs, review Grafana metrics, consider restarting service if unresponsive
+</code></pre>
+<p><strong>✅ NORMAL - Error Logs</strong></p>
+<pre><code>$ docker service logs prod-sprocket-core-service --since 24h | grep -i error
+2025-11-08T10:23:15Z WARN: Retry attempt 1 for external API call
+2025-11-08T11:45:32Z WARN: User authentication failed (invalid token)
+2025-11-08T13:12:08Z INFO: Error handled gracefully, returned 400 to client
+
+(Occasional warnings and handled errors = normal)
+(Total count &lt;50 errors/day = healthy)
+</code></pre>
+<p><strong>❌ ABNORMAL - High Error Rate</strong></p>
+<pre><code>$ docker service logs prod-sprocket-core-service --since 24h | grep -i error | wc -l
+2847
+^^^^--- PROBLEM: 2,847 errors in 24 hours (should be &lt;50)
+
+$ docker service logs prod-sprocket-core-service --since 1h | grep -i error | head -5
+2025-11-08T14:01:23Z ERROR: Database connection timeout
+2025-11-08T14:01:25Z ERROR: Database connection timeout
+2025-11-08T14:01:27Z ERROR: Database connection timeout
+2025-11-08T14:01:29Z ERROR: Database connection timeout
+2025-11-08T14:01:31Z ERROR: Database connection timeout
+                              ^^^--- PROBLEM: Repeated database errors
+
+Action: Check database connectivity and health immediately
+</code></pre>
+<p><strong>✅ NORMAL - Gatus Dashboard</strong></p>
+<pre><code>Service Status Dashboard (https://gatus.sprocket.mlesports.gg)
+
+Sprocket Web          ✓ UP      Response: 145ms    Uptime: 99.98%
+Sprocket API          ✓ UP      Response: 67ms     Uptime: 99.95%
+Discord Bot           ✓ UP      Response: N/A      Uptime: 99.92%
+PostgreSQL            ✓ UP      Response: 12ms     Uptime: 100%
+Redis                 ✓ UP      Response: 2ms      Uptime: 99.99%
+
+(All services UP, response times &lt;500ms = healthy)
+</code></pre>
+<p><strong>❌ ABNORMAL - Service Down in Gatus</strong></p>
+<pre><code>Service Status Dashboard
+
+Sprocket Web          ✗ DOWN    Last check: 2min ago    Uptime: 97.23%
+                      ^^^^^^--- PROBLEM: Service unreachable
+
+Sprocket API          ⚠ SLOW    Response: 5,234ms       Uptime: 99.15%
+                      ^^^^^^    ^^^^^^^^^^^^^--- PROBLEM: Very slow response (should be &lt;500ms)
+
+Recent Failures:
+- 14:23: Sprocket Web returned 502 Bad Gateway
+- 14:24: Sprocket Web connection timeout
+- 14:25: Sprocket API response time &gt;5s (threshold: 1s)
+
+Action: Immediately check service health, review logs, check upstream dependencies
+</code></pre>
+<p><strong>✅ NORMAL - Grafana Metrics</strong></p>
+<pre><code>Request Rate:           350 requests/min       (steady)
+Error Rate:             0.2%                   (&lt;1% = healthy)
+P95 Response Time:      245ms                  (&lt;500ms = healthy)
+Database Connections:   12/100                 (well below limit)
+CPU Usage:              45%                    (plenty of headroom)
+Memory Usage:           4.2GB / 8GB (52%)      (healthy)
+</code></pre>
+<p><strong>❌ ABNORMAL - Grafana Metrics</strong></p>
+<pre><code>Request Rate:           1,850 requests/min     (normally 350) ⚠ SPIKE
+Error Rate:             15.3%                  (normally &lt;1%) ❌ HIGH
+P95 Response Time:      4,523ms                (normally &lt;500ms) ❌ SLOW
+Database Connections:   98/100                 (near limit) ⚠ WARNING
+CPU Usage:              92%                    (sustained high) ⚠ WARNING
+Memory Usage:           7.6GB / 8GB (95%)      (near limit) ❌ CRITICAL
+
+Pattern suggests: Traffic spike combined with performance degradation
+Likely cause: DDoS attack, viral event, or system degradation
+Action: Check traffic sources, implement rate limiting, scale if legitimate traffic
+</code></pre>
+<h4 id="expected-output">Expected Output</h4>
+<pre><code>✓ All services running (15/15)
+✓ System resources healthy (&lt;70% utilization)
+✓ No critical errors in last 24h
+✓ All health checks passing
+✓ Metrics within normal range
+</code></pre>
+<h4 id="escalation">Escalation</h4>
+<p>If health check fails:
+1. Check <a href="#incident-response">Incident Response</a> section
+2. Notify team in #infrastructure-alerts Slack channel
+3. Begin investigation immediately</p>
+<hr />
+<h3 id="weekly-review">Weekly Review</h3>
+<p><strong>Frequency</strong>: Every Monday
+<strong>Duration</strong>: ~30 minutes
+<strong>Responsibility</strong>: Team lead</p>
+<h4 id="checklist_1">Checklist</h4>
+<ul>
+<li>[ ] Review uptime metrics (target: 99.9%+)</li>
+<li>[ ] Review error rate trends</li>
+<li>[ ] Check disk usage (alert if &gt;80%)</li>
+<li>[ ] Review database performance</li>
+<li>[ ] Check certificate expiration dates</li>
+<li>[ ] Review pending updates</li>
+<li>[ ] Check backup status</li>
+<li>[ ] Review access logs for anomalies</li>
+</ul>
+<h4 id="tasks">Tasks</h4>
+<pre><code class="language-bash"># 1. Generate uptime report
+# From Gatus dashboard: https://gatus.sprocket.mlesports.gg
+# Export last 7 days uptime data
+
+# 2. Check disk usage
+docker system df
+df -h
+
+# If disk usage &gt;80%:
+# - Clean old images: docker image prune -a
+# - Clean old logs: docker system prune
+# - Check volume sizes: docker volume ls
+
+# 3. Check certificate expiration
+echo | openssl s_client -connect sprocket.mlesports.gg:443 -servername sprocket.mlesports.gg 2&gt;/dev/null | openssl x509 -noout -dates
+
+# Should show expiration &gt;30 days in future
+# Let's Encrypt auto-renews at 30 days
+
+# 4. Check database metrics
+# In Grafana: PostgreSQL dashboard
+# Review:
+# - Connection count
+# - Query performance
+# - Table sizes
+# - Cache hit ratio
+
+# 5. Check pending updates
+docker images | grep -v &quot;latest\|main&quot;
+# Review image versions, check for updates
+
+# 6. Verify backups
+# Check Digital Ocean console
+# Verify daily backups are running
+# Last backup should be &lt;24 hours old
+</code></pre>
+<hr />
+<h2 id="service-management">Service Management</h2>
+<h3 id="starting-a-service">Starting a Service</h3>
+<pre><code class="language-bash"># Update service if stopped
+docker service update --force &lt;service-name&gt;
+
+# Or scale from 0 to 1
+docker service scale &lt;service-name&gt;=1
+
+# Wait for service to start
+docker service ps &lt;service-name&gt;
+
+# Check logs
+docker service logs -f &lt;service-name&gt;
+</code></pre>
+<h3 id="stopping-a-service">Stopping a Service</h3>
+<pre><code class="language-bash"># Scale to 0 (keeps service definition)
+docker service scale &lt;service-name&gt;=0
+
+# Or remove completely
+docker service rm &lt;service-name&gt;
+
+# Note: Removing requires redeployment via Pulumi
+</code></pre>
+<h3 id="restarting-a-service">Restarting a Service</h3>
+<pre><code class="language-bash"># Force update (rolling restart)
+docker service update --force &lt;service-name&gt;
+
+# Or with zero downtime (if replicas &gt; 1)
+docker service update --force --update-parallelism 1 &lt;service-name&gt;
+
+# Monitor restart
+watch -n 2 &quot;docker service ps &lt;service-name&gt; | head -10&quot;
+</code></pre>
+<h3 id="updating-a-service">Updating a Service</h3>
+<h4 id="update-image-version">Update Image Version</h4>
+<pre><code class="language-bash">cd platform
+
+# Update image tag in Pulumi config
+pulumi config set image-tag v1.2.3
+
+# Preview changes
+pulumi preview
+
+# Apply update
+pulumi up
+
+# Monitor rollout
+docker service logs -f prod-sprocket-web-service
+</code></pre>
+<h4 id="update-environment-variables">Update Environment Variables</h4>
+<pre><code class="language-bash"># Update via Pulumi config
+cd platform
+pulumi config set some-config-value new-value
+
+# Or update service directly (temporary)
+docker service update \
+  --env-add NEW_VAR=value \
+  &lt;service-name&gt;
+
+# Permanent changes should go through Pulumi
+</code></pre>
+<h3 id="rolling-back-a-service">Rolling Back a Service</h3>
+<pre><code class="language-bash"># Roll back to previous image
+docker service update --rollback &lt;service-name&gt;
+
+# Or via Pulumi
+cd platform
+pulumi stack export &gt; backup-before-rollback.json
+# Restore previous stack state
+pulumi stack import &lt; previous-backup.json
+pulumi up
+</code></pre>
+<hr />
+<h2 id="monitoring-alerts">Monitoring &amp; Alerts</h2>
+<h3 id="monitoring-architecture">Monitoring Architecture</h3>
+<p><strong>⚠️ Important Context</strong>: The monitoring diagram below shows a <strong>generic cloud monitoring pattern</strong> using GCP services. Our actual monitoring uses <strong>self-hosted open-source tools</strong> on our Docker Swarm infrastructure.</p>
+<p><img alt="Monitoring and Alerting Architecture" src="monitoring-alerting-architecture.png" /></p>
+<p><strong>Our Actual Monitoring Stack</strong>:
+- <strong>Data Sources</strong>: Docker containers (Sprocket services), system metrics (CPU, memory, disk), application logs
+- <strong>Collection</strong>: Telegraf (metrics collector), Docker log drivers (log collection)
+- <strong>Storage</strong>: InfluxDB (time-series metrics), Loki (log aggregation), PostgreSQL (structured data)
+- <strong>Visualization</strong>: Grafana (dashboards and graphs)
+- <strong>Health Monitoring</strong>: Gatus (uptime monitoring and health checks)
+- <strong>Alerts</strong>: Grafana alerts (email, webhook) - <strong>not yet fully configured</strong></p>
+<p>The diagram represents a <strong>future cloud-native monitoring setup</strong> or conceptual reference. Our current implementation is fully self-hosted on our infrastructure.</p>
+<h3 id="service-level-agreements-slas">Service Level Agreements (SLAs)</h3>
+<p><strong>Target Performance Standards</strong></p>
+<p>Our infrastructure aims to meet the following service level agreements. These targets guide our monitoring, alerting, and capacity planning decisions.</p>
+<h4 id="availability-targets">Availability Targets</h4>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Uptime Target</th>
+<th>Max Downtime/Month</th>
+<th>Max Downtime/Year</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Web Application</strong></td>
+<td>99.9%</td>
+<td>43 minutes</td>
+<td>8.76 hours</td>
+</tr>
+<tr>
+<td><strong>GraphQL API</strong></td>
+<td>99.9%</td>
+<td>43 minutes</td>
+<td>8.76 hours</td>
+</tr>
+<tr>
+<td><strong>Discord Bot</strong></td>
+<td>99.5%</td>
+<td>3.6 hours</td>
+<td>43.8 hours</td>
+</tr>
+<tr>
+<td><strong>Database (PostgreSQL)</strong></td>
+<td>99.99%</td>
+<td>4.3 minutes</td>
+<td>52.6 minutes</td>
+</tr>
+<tr>
+<td><strong>Redis Cache</strong></td>
+<td>99.9%</td>
+<td>43 minutes</td>
+<td>8.76 hours</td>
+</tr>
+<tr>
+<td><strong>Overall Platform</strong></td>
+<td>99.9%</td>
+<td>43 minutes</td>
+<td>8.76 hours</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why these targets?</strong>
+- <strong>99.9%</strong> (three nines): Industry standard for SaaS applications, balances reliability with cost
+- <strong>99.99%</strong> (four nines): For managed database - Digital Ocean provides this SLA
+- <strong>99.5%</strong> for Discord bot: Lower target acceptable as Discord integration is supplementary, not critical path</p>
+<p><strong>Current Performance</strong> (as of November 2025):
+- Web Application: 99.95% (exceeding target)
+- API: 99.92% (exceeding target)
+- Discord Bot: 99.87% (exceeding target)
+- Database: 100% (managed service)</p>
+<h4 id="performance-targets">Performance Targets</h4>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Target</th>
+<th>Warning Threshold</th>
+<th>Critical Threshold</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>API Response Time (p95)</strong></td>
+<td>&lt;500ms</td>
+<td>&gt;800ms</td>
+<td>&gt;2000ms</td>
+<td>95% of requests should complete in &lt;500ms</td>
+</tr>
+<tr>
+<td><strong>API Response Time (p99)</strong></td>
+<td>&lt;1000ms</td>
+<td>&gt;1500ms</td>
+<td>&gt;3000ms</td>
+<td>99% of requests should complete in &lt;1s</td>
+</tr>
+<tr>
+<td><strong>Web Page Load Time</strong></td>
+<td>&lt;2s</td>
+<td>&gt;3s</td>
+<td>&gt;5s</td>
+<td>First contentful paint</td>
+</tr>
+<tr>
+<td><strong>Error Rate</strong></td>
+<td>&lt;1%</td>
+<td>&gt;2%</td>
+<td>&gt;5%</td>
+<td>Percentage of requests returning 5xx errors</td>
+</tr>
+<tr>
+<td><strong>Database Query Time (p95)</strong></td>
+<td>&lt;50ms</td>
+<td>&gt;100ms</td>
+<td>&gt;500ms</td>
+<td>95% of queries &lt;50ms</td>
+</tr>
+<tr>
+<td><strong>Cache Hit Rate (Redis)</strong></td>
+<td>&gt;80%</td>
+<td>&lt;70%</td>
+<td>&lt;50%</td>
+<td>Percentage of cache hits vs. misses</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why these targets?</strong>
+- <strong>500ms p95</strong>: Industry research shows users perceive &lt;500ms as "instant"
+- <strong>&lt;1% error rate</strong>: Allows for transient failures while maintaining quality
+- <strong>&gt;80% cache hit rate</strong>: Ensures Redis is effectively reducing database load</p>
+<h4 id="resource-utilization-targets">Resource Utilization Targets</h4>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>Normal Range</th>
+<th>Warning Threshold</th>
+<th>Critical Threshold</th>
+<th>Action Required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CPU Usage</strong></td>
+<td>30-70%</td>
+<td>&gt;80% sustained</td>
+<td>&gt;90% sustained</td>
+<td>Scale up or optimize</td>
+</tr>
+<tr>
+<td><strong>Memory Usage</strong></td>
+<td>40-70%</td>
+<td>&gt;85%</td>
+<td>&gt;95%</td>
+<td>Investigate memory leaks or scale</td>
+</tr>
+<tr>
+<td><strong>Disk Usage</strong></td>
+<td>&lt;60%</td>
+<td>&gt;80%</td>
+<td>&gt;90%</td>
+<td>Clean up logs/images or expand storage</td>
+</tr>
+<tr>
+<td><strong>Database Connections</strong></td>
+<td>&lt;50/100</td>
+<td>&gt;80/100</td>
+<td>&gt;95/100</td>
+<td>Optimize connection pooling or scale</td>
+</tr>
+<tr>
+<td><strong>Network Bandwidth</strong></td>
+<td>&lt;50%</td>
+<td>&gt;70%</td>
+<td>&gt;90%</td>
+<td>Check for DDoS or scale bandwidth</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why these ranges?</strong>
+- <strong>30-70% CPU</strong>: Leaves headroom for traffic spikes while not wasting resources
+- <strong>&lt;50 DB connections</strong>: Managed PostgreSQL has 100 connection limit; staying well below avoids contention
+- <strong>&lt;60% disk</strong>: Growth buffer; log retention and image storage can grow quickly</p>
+<h4 id="recovery-time-targets">Recovery Time Targets</h4>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Target RTO</th>
+<th>Target RPO</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Service Restart</strong></td>
+<td>&lt;5 minutes</td>
+<td>0 (no data loss)</td>
+<td>Automated restart via Docker Swarm</td>
+</tr>
+<tr>
+<td><strong>Layer Redeployment</strong></td>
+<td>&lt;30 minutes</td>
+<td>0 (no data loss)</td>
+<td>Using Pulumi with existing state</td>
+</tr>
+<tr>
+<td><strong>Database Restore</strong></td>
+<td>&lt;2 hours</td>
+<td>&lt;24 hours</td>
+<td>From Digital Ocean automated backups</td>
+</tr>
+<tr>
+<td><strong>Full Infrastructure Rebuild</strong></td>
+<td>&lt;6 hours</td>
+<td>&lt;24 hours</td>
+<td>From scratch using docs + backups</td>
+</tr>
+<tr>
+<td><strong>Vault Recovery</strong></td>
+<td>&lt;30 minutes</td>
+<td>0 (no data loss)</td>
+<td>Unseal keys stored locally</td>
+</tr>
+</tbody>
+</table>
+<p><strong>RTO</strong> (Recovery Time Objective): How long to restore service
+<strong>RPO</strong> (Recovery Point Objective): Maximum data loss acceptable</p>
+<p><strong>Why these targets?</strong>
+- <strong>&lt;5min service restart</strong>: Automated health checks trigger restarts
+- <strong>&lt;6hr full rebuild</strong>: Documented in DEPLOYMENT_GUIDE.md, tested quarterly
+- <strong>&lt;24hr RPO</strong>: Daily database backups provide acceptable data loss window</p>
+<h4 id="alert-response-targets">Alert Response Targets</h4>
+<table>
+<thead>
+<tr>
+<th>Alert Severity</th>
+<th>Response Time</th>
+<th>Resolution Time</th>
+<th>Escalation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Critical</strong> (platform down)</td>
+<td>&lt;15 minutes</td>
+<td>&lt;2 hours</td>
+<td>Immediate: Page on-call engineer</td>
+</tr>
+<tr>
+<td><strong>High</strong> (degraded performance)</td>
+<td>&lt;30 minutes</td>
+<td>&lt;4 hours</td>
+<td>Within 30min: Notify team lead</td>
+</tr>
+<tr>
+<td><strong>Medium</strong> (service issue)</td>
+<td>&lt;2 hours</td>
+<td>&lt;8 hours</td>
+<td>Next business day: Review in daily standup</td>
+</tr>
+<tr>
+<td><strong>Low</strong> (informational)</td>
+<td>&lt;24 hours</td>
+<td>&lt;1 week</td>
+<td>Track in backlog</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Critical Alerts</strong> (page immediately):
+- Platform completely down
+- Database unreachable
+- Error rate &gt;10%
+- Multiple services down
+- Security breach detected</p>
+<p><strong>High Alerts</strong> (notify within 30min):
+- Single service down
+- Response time &gt;2x normal
+- Error rate &gt;5%
+- Disk usage &gt;90%
+- Memory usage &gt;95%</p>
+<h4 id="sla-monitoring">SLA Monitoring</h4>
+<p><strong>Weekly SLA Review</strong>:</p>
+<pre><code class="language-bash"># Check uptime from Gatus
+# Navigate to: https://gatus.sprocket.mlesports.gg
+# Export uptime report for last 7 days
+
+# Calculate current month uptime
+# Target: &gt;99.9% (43 minutes downtime budget/month)
+# If &lt;99.9%, investigate root causes
+</code></pre>
+<p><strong>Monthly SLA Report</strong>:
+- Total downtime this month
+- Incidents that caused downtime
+- Performance vs. targets (response times, error rates)
+- Resource utilization trends
+- Capacity planning recommendations</p>
+<p><strong>SLA Breach Process</strong>:
+1. Document incident (when, what, why, how long)
+2. Calculate impact on monthly SLA
+3. Conduct post-mortem (see <a href="#incident-response">Incident Response</a>)
+4. Identify preventive measures
+5. Update runbooks/monitoring as needed</p>
+<p><strong>Current SLA Status</strong>:</p>
+<pre><code>Month: November 2025
+Uptime target: 99.9% (43min downtime budget)
+Current uptime: 99.95% (21min downtime)
+Remaining budget: 22 minutes
+
+✓ On track to meet SLA
+</code></pre>
+<h3 id="key-metrics-to-monitor">Key Metrics to Monitor</h3>
+<h4 id="system-metrics">System Metrics</h4>
+<ul>
+<li><strong>CPU Usage</strong>: &lt;80% average</li>
+<li><strong>Memory Usage</strong>: &lt;80% average</li>
+<li><strong>Disk Usage</strong>: &lt;80% total</li>
+<li><strong>Network I/O</strong>: Monitor for anomalies</li>
+</ul>
+<h4 id="application-metrics">Application Metrics</h4>
+<ul>
+<li><strong>Request Rate</strong>: Baseline ~100 req/min</li>
+<li><strong>Error Rate</strong>: &lt;1% of requests</li>
+<li><strong>Response Time</strong>: p95 &lt;500ms, p99 &lt;1s</li>
+<li><strong>Active Users</strong>: Monitor trends</li>
+</ul>
+<h4 id="service-health">Service Health</h4>
+<ul>
+<li><strong>Service Replicas</strong>: All N/N</li>
+<li><strong>Container Restarts</strong>: &lt;3 per day per service</li>
+<li><strong>Failed Health Checks</strong>: 0</li>
+</ul>
+<h3 id="accessing-monitoring-tools">Accessing Monitoring Tools</h3>
+<h4 id="grafana-unified-logs-and-metrics-interface">Grafana Unified Logs and Metrics Interface</h4>
+<p><strong>Unified Access Point</strong>: https://grafana.sprocket.mlesports.gg</p>
+<p>Grafana provides a <strong>unified interface</strong> for both logs and metrics, consolidating monitoring into a single dashboard:</p>
+<pre><code class="language-bash"># URL: https://grafana.sprocket.mlesports.gg
+# Login: admin / &lt;password from Vault&gt;
+
+# Unified Interface Features:
+# - Metrics: Real-time system and application metrics via InfluxDB/Telegraf
+# - Logs: Centralized log aggregation via Loki
+# - Correlation: View metrics and logs side-by-side for troubleshooting
+# - Time-sync: Correlate events across logs and metrics with unified timeline
+
+# Key Dashboards:
+# - System Overview: Node resources, Docker stats, CPU, memory, disk
+# - Application Metrics: Request rates, latencies, error rates
+# - Database: PostgreSQL performance, connection pools, query times
+# - Service Health: Container states, restarts, health checks
+# - Logs Explorer: Query and filter logs from all services
+
+# Log Query Examples (in Explore view):
+# {service=&quot;prod-sprocket-core-service&quot;} |= &quot;ERROR&quot;
+# {service=&quot;traefik&quot;} |= &quot;404&quot;
+# {service=&quot;vault&quot;} |~ &quot;unseal|seal&quot;
+</code></pre>
+<p><strong>How to Use the Unified Interface</strong>:</p>
+<ol>
+<li><strong>View Metrics</strong>:</li>
+<li>Navigate to <strong>Dashboards</strong> → Select dashboard</li>
+<li>View real-time graphs and metrics</li>
+<li>
+<p>Drill down into specific time ranges</p>
+</li>
+<li>
+<p><strong>Query Logs</strong>:</p>
+</li>
+<li>Navigate to <strong>Explore</strong> (compass icon)</li>
+<li>Select <strong>Loki</strong> as data source</li>
+<li>Use LogQL queries to filter logs</li>
+<li>
+<p>Example: <code>{service="prod-sprocket-core-service"} |= "ERROR"</code></p>
+</li>
+<li>
+<p><strong>Correlate Logs and Metrics</strong>:</p>
+</li>
+<li>In <strong>Explore</strong>, add multiple queries</li>
+<li>Use split view to compare metrics and logs</li>
+<li>Sync time ranges to correlate events</li>
+<li>
+<p>Click on metric spikes to see corresponding logs</p>
+</li>
+<li>
+<p><strong>Common Workflows</strong>:</p>
+</li>
+<li><strong>Debugging</strong>: Select time range on metric graph → View corresponding logs</li>
+<li><strong>Performance</strong>: Compare response time metrics with error logs</li>
+<li><strong>Capacity</strong>: Monitor resource metrics while reviewing application logs</li>
+</ol>
+<h4 id="gatus-service-monitoring">Gatus Service Monitoring</h4>
+<pre><code class="language-bash"># URL: https://gatus.sprocket.mlesports.gg
+
+# Shows:
+# - Uptime percentage
+# - Response times
+# - Recent downtime events
+# - Health check history
+</code></pre>
+<h4 id="digital-ocean-master-node-access-for-debugging">Digital Ocean Master Node Access for Debugging</h4>
+<p>The infrastructure runs on a single Digital Ocean Droplet that serves as the Docker Swarm master node. You can access it via the Digital Ocean UI for direct debugging:</p>
+<p><strong>Access Methods</strong>:</p>
+<ol>
+<li>
+<p><strong>Via Digital Ocean Console (Web-based SSH)</strong>:
+   <code>bash
+   # 1. Log into Digital Ocean console: https://cloud.digitalocean.com
+   # 2. Navigate to: Droplets → Select your droplet (e.g., "sprocket-master-node")
+   # 3. Click "Console" in the top-right (or "Access" → "Launch Droplet Console")
+   # 4. Login with root or your configured user</code></p>
+</li>
+<li>
+<p><strong>Via SSH (Direct)</strong>:
+   <code>bash
+   # From your local machine
+   ssh root@&lt;droplet-ip&gt;
+   # Or if using SSH keys:
+   ssh -i ~/.ssh/your-key root@&lt;droplet-ip&gt;</code></p>
+</li>
+</ol>
+<p><strong>Common Debugging Tasks on the Master Node</strong>:</p>
+<p><strong>1. Check Service Health</strong>:</p>
+<pre><code class="language-bash"># List all Docker services
+docker service ls
+
+# Check specific service status
+docker service ps prod-sprocket-core-service
+
+# View service logs
+docker service logs -f prod-sprocket-core-service --tail 100
+
+# Check resource usage
+docker stats --no-stream
+</code></pre>
+<p><strong>2. Inspect Container State</strong>:</p>
+<pre><code class="language-bash"># List running containers
+docker ps
+
+# Get container ID for a service
+CONTAINER_ID=$(docker ps -q -f name=prod-sprocket-core)
+
+# Exec into running container for debugging
+docker exec -it $CONTAINER_ID sh
+# Or bash if available:
+docker exec -it $CONTAINER_ID bash
+
+# Inside container, check:
+env                    # Environment variables
+netstat -tuln         # Network connections
+ps aux                # Running processes
+df -h                 # Disk usage
+</code></pre>
+<p><strong>3. Check System Resources</strong>:</p>
+<pre><code class="language-bash"># Disk usage
+df -h
+du -sh /var/lib/docker/*
+
+# Memory usage
+free -h
+
+# CPU usage
+top
+# Press 'q' to quit
+
+# Docker storage
+docker system df
+</code></pre>
+<p><strong>4. Network Debugging</strong>:</p>
+<pre><code class="language-bash"># Test DNS resolution
+nslookup vault.sprocket.mlesports.gg
+
+# Test internal service connectivity
+curl http://layer2redis-redis-primary:6379
+curl http://rabbitmq-service:5672
+
+# Check Docker networks
+docker network ls
+docker network inspect traefik-ingress
+</code></pre>
+<p><strong>5. View Docker Swarm Status</strong>:</p>
+<pre><code class="language-bash"># Check swarm status
+docker info | grep Swarm
+
+# List nodes (should show master + workers if multi-node)
+docker node ls
+
+# View swarm tasks
+docker service ps $(docker service ls -q)
+</code></pre>
+<p><strong>Security Note</strong>: Access to the master node provides full control over the infrastructure. Only authorized personnel should have SSH access. Consider:
+- Using SSH key authentication (disable password auth)
+- Restricting SSH access to specific IP addresses via firewall
+- Using tools like <code>fail2ban</code> to prevent brute-force attacks
+- Enabling audit logging for SSH sessions</p>
+<h3 id="setting-up-alerts">Setting Up Alerts</h3>
+<h4 id="alert-channels">Alert Channels</h4>
+<p>Configure in Grafana:
+1. Navigate to Alerting → Notification channels
+2. Add Slack, Email, or PagerDuty
+3. Test notification</p>
+<p><strong>Note</strong>: Based on development conversations, alerting is not yet fully configured. This is a priority for operational readiness.</p>
+<h4 id="conversation-derived-alert-thresholds">Conversation-Derived Alert Thresholds</h4>
+<p>From the Claude conversations, these thresholds were identified as critical:
+- <strong>Critical</strong>: Service down, error rate &gt;10%, certificate expiring &lt;7 days
+- <strong>Warning</strong>: Response time &gt;2x normal, resource usage &gt;85%
+- <strong>Info</strong>: Certificate expiring &lt;30 days, resource usage &gt;70%</p>
+<p>These thresholds were determined through iterative testing during the rebuild process.</p>
+<h4 id="example-alert-rules">Example Alert Rules</h4>
+<p><strong>High Error Rate</strong>:</p>
+<pre><code>Alert Name: High Error Rate
+Condition: Error rate &gt; 5% for 5 minutes
+Severity: Critical
+Notification: #infrastructure-alerts
+</code></pre>
+<p><strong>Service Down</strong>:</p>
+<pre><code>Alert Name: Service Unavailable
+Condition: Service replicas &lt; desired for 2 minutes
+Severity: Critical
+Notification: PagerDuty + #infrastructure-alerts
+</code></pre>
+<p><strong>High CPU Usage</strong>:</p>
+<pre><code>Alert Name: High CPU Usage
+Condition: CPU &gt; 85% for 10 minutes
+Severity: Warning
+Notification: #infrastructure-alerts
+</code></pre>
+<hr />
+<h2 id="backup-recovery">Backup &amp; Recovery</h2>
+<h3 id="database-backups">Database Backups</h3>
+<h4 id="automated-backups-digital-ocean">Automated Backups (Digital Ocean)</h4>
+<pre><code class="language-bash"># Backups run automatically via Digital Ocean
+# Frequency: Daily
+# Retention: 7 days
+# Time: ~2 AM UTC
+
+# Verify backups:
+# 1. Log into Digital Ocean console
+# 2. Navigate to Databases → sprocketbot-postgres
+# 3. Backups tab
+# 4. Verify latest backup &lt; 24 hours old
+</code></pre>
+<h4 id="manual-database-backup">Manual Database Backup</h4>
+<pre><code class="language-bash"># Create snapshot
+PGPASSWORD='your-password' pg_dump \
+  -h sprocketbot-postgres-...j.db.ondigitalocean.com \
+  -p 25060 \
+  -U doadmin \
+  -d defaultdb \
+  -F c \
+  -f backup-$(date +%Y%m%d-%H%M%S).dump
+
+# Upload to S3
+aws s3 cp backup-*.dump s3://sprocket-backups/database/ \
+  --endpoint-url https://nyc3.digitaloceanspaces.com
+</code></pre>
+<h4 id="database-restore">Database Restore</h4>
+<pre><code class="language-bash"># From automated backup (Digital Ocean):
+# 1. Go to Digital Ocean console
+# 2. Database → Backups
+# 3. Select backup
+# 4. Click &quot;Restore&quot;
+# 5. Choose to restore to new cluster or existing
+# 6. Wait for restore to complete (~10-30 minutes)
+# 7. Update Pulumi configs with new connection details if new cluster
+
+# From manual backup:
+PGPASSWORD='your-password' pg_restore \
+  -h sprocketbot-postgres-...j.db.ondigitalocean.com \
+  -p 25060 \
+  -U doadmin \
+  -d defaultdb \
+  -c \
+  backup-20251108-120000.dump
+
+# Verify restore
+PGPASSWORD='your-password' psql \
+  -h sprocketbot-postgres-...j.db.ondigitalocean.com \
+  -p 25060 \
+  -U doadmin \
+  -d defaultdb \
+  -c &quot;SELECT COUNT(*) FROM users;&quot;
+</code></pre>
+<h3 id="vault-backups">Vault Backups</h3>
+<h4 id="backup-vault-data">Backup Vault Data</h4>
+<pre><code class="language-bash"># Vault data is stored in S3 (Digital Ocean Spaces)
+# Bucket: vault-secrets
+# Path: vault_storage/
+
+# Backup entire bucket
+aws s3 sync s3://vault-secrets/ ./vault-backup-$(date +%Y%m%d)/ \
+  --endpoint-url https://nyc3.digitaloceanspaces.com
+
+# Backup unseal keys (CRITICAL!)
+cp -r global/services/vault/unseal-tokens/ ~/vault-unseal-backup-$(date +%Y%m%d)/
+
+# Store securely (encrypted, off-site)
+tar -czf vault-backup-$(date +%Y%m%d).tar.gz \
+  vault-backup-*/
+
+# Encrypt
+gpg -c vault-backup-$(date +%Y%m%d).tar.gz
+
+# Upload to secure location
+aws s3 cp vault-backup-$(date +%Y%m%d).tar.gz.gpg \
+  s3://sprocket-secure-backups/vault/
+</code></pre>
+<h4 id="restore-vault">Restore Vault</h4>
+<pre><code class="language-bash"># 1. Restore S3 data
+aws s3 sync ./vault-backup-20251108/ s3://vault-secrets/ \
+  --endpoint-url https://nyc3.digitaloceanspaces.com
+
+# 2. Restore unseal keys
+cp -r ~/vault-unseal-backup-20251108/ global/services/vault/unseal-tokens/
+
+# 3. Restart Vault service
+docker service update --force vault-service
+
+# 4. Vault should auto-unseal using restored keys
+
+# 5. Verify Vault status
+export VAULT_ADDR=https://vault.sprocket.mlesports.gg
+export VAULT_TOKEN=$(cat global/services/vault/unseal-tokens/root_token.txt)
+
+vault status
+# Should show: Sealed: false
+
+# 6. Verify secrets
+vault kv list platform/sprocket/manual/oauth
+</code></pre>
+<h3 id="pulumi-state-backups">Pulumi State Backups</h3>
+<pre><code class="language-bash"># Export current state (all stacks)
+cd layer_1
+pulumi stack export &gt; ~/pulumi-backups/layer_1-$(date +%Y%m%d).json
+
+cd ../layer_2
+pulumi stack export &gt; ~/pulumi-backups/layer_2-$(date +%Y%m%d).json
+
+cd ../platform
+pulumi stack export &gt; ~/pulumi-backups/platform-$(date +%Y%m%d).json
+
+# Backup to S3
+cd ~/pulumi-backups
+tar -czf pulumi-state-$(date +%Y%m%d).tar.gz *.json
+
+aws s3 cp pulumi-state-$(date +%Y%m%d).tar.gz \
+  s3://sprocket-backups/pulumi-state/
+</code></pre>
+<h3 id="disaster-recovery-test">Disaster Recovery Test</h3>
+<p><strong>Frequency</strong>: Quarterly
+<strong>Duration</strong>: 4-6 hours
+<strong>Responsibility</strong>: Team lead + ops engineer</p>
+<h4 id="procedure">Procedure</h4>
+<ol>
+<li><strong>Prepare Test Environment</strong></li>
+<li>Provision separate test node</li>
+<li>Clone repository</li>
+<li>
+<p>Set up Pulumi backend access</p>
+</li>
+<li>
+<p><strong>Test Database Restore</strong></p>
+</li>
+<li>Restore latest automated backup to new cluster</li>
+<li>Verify data integrity</li>
+<li>
+<p>Test application connectivity</p>
+</li>
+<li>
+<p><strong>Test Vault Restore</strong></p>
+</li>
+<li>Restore Vault S3 data to test bucket</li>
+<li>Deploy Vault with test backend</li>
+<li>
+<p>Unseal and verify secrets</p>
+</li>
+<li>
+<p><strong>Test Full Deployment</strong></p>
+</li>
+<li>Deploy Layer 1 from scratch</li>
+<li>Deploy Layer 2</li>
+<li>Deploy Platform</li>
+<li>
+<p>Verify all services working</p>
+</li>
+<li>
+<p><strong>Document Results</strong></p>
+</li>
+<li>Record time to restore</li>
+<li>Document issues encountered</li>
+<li>
+<p>Update runbook if needed</p>
+</li>
+<li>
+<p><strong>Cleanup</strong></p>
+</li>
+<li>Destroy test resources</li>
+<li>Delete test data</li>
+</ol>
+<hr />
+<h2 id="scaling-operations">Scaling Operations</h2>
+<h3 id="vertical-scaling-single-node">Vertical Scaling (Single Node)</h3>
+<h4 id="scale-up-node-resources">Scale Up Node Resources</h4>
+<pre><code class="language-bash"># Digital Ocean:
+# 1. Power off node
+# 2. Resize droplet (more CPU/RAM)
+# 3. Power on node
+# 4. Verify services restart
+
+# Or with zero downtime (if multi-node):
+# 1. Add new larger node to swarm
+# 2. Drain old node
+# 3. Remove old node
+# 4. Destroy old node
+</code></pre>
+<h4 id="when-to-scale-up">When to Scale Up</h4>
+<ul>
+<li>CPU consistently &gt;70%</li>
+<li>Memory consistently &gt;70%</li>
+<li>Disk I/O bottlenecks</li>
+<li>Network bandwidth saturated</li>
+</ul>
+<h3 id="horizontal-scaling-multiple-nodes">Horizontal Scaling (Multiple Nodes)</h3>
+<h4 id="add-node-to-swarm">Add Node to Swarm</h4>
+<pre><code class="language-bash"># On manager node (current node)
+docker swarm join-token worker
+
+# Output will be:
+# docker swarm join --token SWMTKN-1-xxx... &lt;manager-ip&gt;:2377
+
+# On new worker node
+docker swarm join --token SWMTKN-1-xxx... &lt;manager-ip&gt;:2377
+
+# Verify node joined
+docker node ls
+# Should show new node
+
+# Label node (optional)
+docker node update --label-add role=worker node-2
+</code></pre>
+<h4 id="scale-services-across-nodes">Scale Services Across Nodes</h4>
+<pre><code class="language-bash"># Increase replicas
+docker service scale prod-sprocket-web-service=3
+
+# Service will distribute across available nodes
+
+# Constrain service to specific nodes (optional)
+docker service update \
+  --constraint-add node.labels.role==worker \
+  prod-sprocket-web-service
+
+# Verify distribution
+docker service ps prod-sprocket-web-service
+</code></pre>
+<h4 id="scaling-considerations">Scaling Considerations</h4>
+<p><strong>Stateless Services</strong> (can scale horizontally):
+- Sprocket Web
+- Sprocket API
+- Discord Bot
+- All microservices</p>
+<p><strong>Stateful Services</strong> (need careful planning):
+- Redis (requires Redis Cluster for multi-node)
+- RabbitMQ (requires clustering)
+- Vault (requires HA setup with Consul/etcd)</p>
+<h3 id="auto-scaling-future">Auto-Scaling (Future)</h3>
+<p>Currently manual scaling only. Future improvements:
+- Docker Swarm auto-scaling (via custom scripts)
+- Metrics-based scaling triggers
+- Load-based node addition</p>
+<hr />
+<h2 id="security-operations">Security Operations</h2>
+<h3 id="secret-rotation">Secret Rotation</h3>
+<h4 id="rotate-database-password">Rotate Database Password</h4>
+<pre><code class="language-bash"># 1. Generate new password
+NEW_PASSWORD=$(openssl rand -base64 32)
+
+# 2. Update Digital Ocean database
+# Via console: Settings → Users → Reset Password
+
+# 3. Update Vault
+vault kv put infrastructure/data/postgres password=&quot;$NEW_PASSWORD&quot;
+
+# 4. Update Pulumi config
+cd layer_1
+pulumi config set --secret postgres-password &quot;$NEW_PASSWORD&quot;
+
+# 5. Update services
+cd ../platform
+pulumi up
+
+# 6. Verify connectivity
+docker service logs prod-sprocket-core-service | grep -i &quot;database connection&quot;
+</code></pre>
+<h4 id="rotate-vault-root-token">Rotate Vault Root Token</h4>
+<pre><code class="language-bash"># 1. Generate new root token
+vault token create -policy=root
+
+# Output:
+# Key                  Value
+# ---                  -----
+# token                s.xxxxxxxxxxxxxx
+
+# 2. Update environment variable
+export VAULT_TOKEN=s.xxxxxxxxxxxxxx
+
+# 3. Revoke old root token (if not the initial root token)
+vault token revoke &lt;old-token&gt;
+
+# 4. Store new token securely
+echo &quot;s.xxxxxxxxxxxxxx&quot; &gt; global/services/vault/unseal-tokens/root_token.txt
+
+# 5. Update documentation
+</code></pre>
+<h4 id="rotate-oauth-credentials">Rotate OAuth Credentials</h4>
+<pre><code class="language-bash"># 1. Generate new credentials in provider console
+# (Google Cloud Console, Discord Developer Portal, etc.)
+
+# 2. Update Doppler
+doppler secrets set GOOGLE_CLIENT_ID=&quot;new-id&quot;
+doppler secrets set GOOGLE_CLIENT_SECRET=&quot;new-secret&quot;
+
+# 3. Re-run bootstrap script
+cd scripts
+export VAULT_ADDR=https://vault.sprocket.mlesports.gg
+export VAULT_TOKEN=$(cat ../global/services/vault/unseal-tokens/root_token.txt)
+./bootstrap-vault-secrets.sh
+
+# 4. Restart affected services
+docker service update --force prod-sprocket-core-service
+</code></pre>
+<h3 id="access-review">Access Review</h3>
+<p><strong>Frequency</strong>: Quarterly
+<strong>Responsibility</strong>: Security lead</p>
+<h4 id="checklist_2">Checklist</h4>
+<ul>
+<li>[ ] Review GitHub organization members</li>
+<li>[ ] Review Vault policies and access</li>
+<li>[ ] Review Doppler project access</li>
+<li>[ ] Review SSH key access to nodes</li>
+<li>[ ] Review Digital Ocean account access</li>
+<li>[ ] Review Pulumi backend access</li>
+<li>[ ] Revoke unnecessary access</li>
+<li>[ ] Update access documentation</li>
+</ul>
+<h3 id="security-scanning">Security Scanning</h3>
+<pre><code class="language-bash"># Scan Docker images for vulnerabilities
+# Using Trivy (install first: https://github.com/aquasecurity/trivy)
+trivy image asaxplayinghorse/sprocket-web:main
+
+# Scan infrastructure code
+# Using Checkov (install: pip install checkov)
+cd layer_1
+checkov -d .
+
+# Review results and address HIGH/CRITICAL findings
+</code></pre>
+<h3 id="certificate-management">Certificate Management</h3>
+<pre><code class="language-bash"># Check certificate expiration
+echo | openssl s_client -connect sprocket.mlesports.gg:443 -servername sprocket.mlesports.gg 2&gt;/dev/null | openssl x509 -noout -dates
+
+# Output:
+# notBefore=Oct 10 00:00:00 2025 GMT
+# notAfter=Jan 8 00:00:00 2026 GMT  # Auto-renews at 30 days before
+
+# Let's Encrypt certificates auto-renew via Traefik
+# Monitor Traefik logs for renewal errors:
+docker service logs traefik | grep -i &quot;renew\|acme&quot;
+
+# If renewal fails:
+# 1. Check DNS is correct
+# 2. Check port 80 is accessible
+# 3. Check Let's Encrypt rate limits
+# 4. Restart Traefik: docker service update --force traefik
+
+#### Certificate Issues from Development
+
+Based on Claude conversations, these specific certificate issues were encountered:
+- Rate limiting (50 certificates/week per domain)
+- DNS propagation delays
+- Certificate provisioning timing (60+ seconds per attempt)
+
+**Recovery from Rate Limits**:
+- Wait 1 hour for soft limit reset
+- Use staging environment for testing
+- Verify DNS before requesting production certs
+</code></pre>
+<hr />
+<h2 id="incident-response">Incident Response</h2>
+<h3 id="severity-levels">Severity Levels</h3>
+<p><strong>P0 - Critical</strong>:
+- Complete platform outage
+- Data loss/corruption
+- Security breach</p>
+<p><strong>P1 - High</strong>:
+- Major feature unavailable
+- Significant performance degradation
+- High error rates (&gt;5%)</p>
+<p><strong>P2 - Medium</strong>:
+- Minor feature unavailable
+- Moderate performance issues
+- Elevated error rates (1-5%)</p>
+<p><strong>P3 - Low</strong>:
+- Cosmetic issues
+- Non-critical bugs
+- Low error rates (&lt;1%)</p>
+<h3 id="incident-response-process">Incident Response Process</h3>
+<h4 id="1-detection">1. Detection</h4>
+<pre><code class="language-bash"># Incident detected via:
+# - Automated alerts (Gatus, Grafana)
+# - User reports
+# - Monitoring dashboards
+# - Health checks
+</code></pre>
+<h4 id="2-triage">2. Triage</h4>
+<pre><code class="language-bash"># Determine severity
+# P0/P1: Page on-call immediately
+# P2: Notify team, begin investigation
+# P3: Create ticket for next business day
+
+# Create incident channel
+# Slack: #incident-YYYYMMDD-description
+</code></pre>
+<h4 id="3-investigation">3. Investigation</h4>
+<pre><code class="language-bash"># Gather information
+# 1. Check service status
+docker service ls
+
+# 2. Check recent logs
+docker service logs --since 1h &lt;affected-service&gt; | tail -100
+
+# 3. Check system resources
+docker stats --no-stream
+
+# 4. Check recent changes
+cd platform
+git log --since=&quot;2 hours ago&quot; --oneline
+
+# 5. Check external dependencies
+# - Database (Digital Ocean console)
+# - DNS (check propagation)
+# - Network (ping, traceroute)
+</code></pre>
+<h4 id="4-mitigation">4. Mitigation</h4>
+<p><strong>Service Down</strong>:</p>
+<pre><code class="language-bash"># Restart service
+docker service update --force &lt;service-name&gt;
+
+# Or rollback recent deployment
+docker service update --rollback &lt;service-name&gt;
+</code></pre>
+<p><strong>High Load</strong>:</p>
+<pre><code class="language-bash"># Scale up
+docker service scale &lt;service-name&gt;=3
+
+# Or throttle requests (Traefik rate limiting)
+# Update Traefik config to add rate limiter
+</code></pre>
+<p><strong>Database Issues</strong>:</p>
+<pre><code class="language-bash"># Check connections
+# In Digital Ocean console: Metrics → Connections
+
+# Kill long-running queries
+PGPASSWORD='pass' psql -h host -p 25060 -U doadmin -d defaultdb \
+  -c &quot;SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE state = 'active' AND query_start &lt; now() - interval '5 minutes';&quot;
+</code></pre>
+<p><strong>Certificate Expired</strong>:</p>
+<pre><code class="language-bash"># Force cert renewal
+docker service update --force traefik
+
+# Monitor logs
+docker service logs -f traefik | grep -i acme
+</code></pre>
+<h4 id="5-communication">5. Communication</h4>
+<pre><code class="language-bash"># Update status page (if exists)
+# Post in #incidents channel
+# Message template:
+</code></pre>
+<pre><code>🚨 Incident Update 🚨
+
+Incident: [P0/P1/P2] Service Unavailable
+Time: YYYY-MM-DD HH:MM UTC
+Status: Investigating / Mitigating / Resolved
+Impact: [describe user impact]
+
+Details:
+[brief description]
+
+Next Update: [time]
+</code></pre>
+<h4 id="6-resolution">6. Resolution</h4>
+<pre><code class="language-bash"># Verify fix
+./quick-test.sh
+
+# Monitor for 30 minutes
+watch -n 60 &quot;docker service ls &amp;&amp; docker stats --no-stream&quot;
+
+# Declare resolved when:
+# - Service restored
+# - No errors in logs
+# - Metrics normal
+# - User reports cleared
+</code></pre>
+<h4 id="7-post-incident-review">7. Post-Incident Review</h4>
+<pre><code class="language-markdown"># Post-Incident Report Template
+
+## Incident Summary
+- **Date**: YYYY-MM-DD
+- **Duration**: X hours
+- **Severity**: PX
+- **Services Affected**: [list]
+
+## Timeline
+- HH:MM - Incident detected
+- HH:MM - Investigation started
+- HH:MM - Root cause identified
+- HH:MM - Fix implemented
+- HH:MM - Incident resolved
+
+## Root Cause
+[Detailed explanation]
+
+## Resolution
+[How it was fixed]
+
+## Impact
+- Users affected: ~X
+- Revenue impact: $X
+- Downtime: X minutes
+
+## Action Items
+- [ ] [Preventive measure 1]
+- [ ] [Preventive measure 2]
+- [ ] [Documentation update]
+
+## Lessons Learned
+[What we learned]
+</code></pre>
+<hr />
+<h2 id="maintenance-procedures">Maintenance Procedures</h2>
+<h3 id="updating-docker-images">Updating Docker Images</h3>
+<pre><code class="language-bash"># Update image tag
+cd platform
+pulumi config set image-tag v1.2.3
+
+# Preview changes
+pulumi preview
+
+# Apply update (rolling)
+pulumi up
+
+# Monitor rollout
+docker service ps prod-sprocket-web-service --no-trunc
+docker service logs -f prod-sprocket-web-service
+</code></pre>
+<h3 id="updating-infrastructure-code">Updating Infrastructure Code</h3>
+<pre><code class="language-bash"># Pull latest code
+cd sprocket-infra
+git pull origin main
+
+# Install dependencies (if changed)
+cd layer_1
+npm install
+
+cd ../layer_2
+npm install
+
+cd ../platform
+npm install
+
+# Preview changes
+pulumi preview
+
+# If changes look good:
+pulumi up
+</code></pre>
+<h3 id="system-updates">System Updates</h3>
+<pre><code class="language-bash"># Update node OS (requires downtime for single-node)
+# 1. Schedule maintenance window
+# 2. Notify users
+# 3. Export Pulumi state (backup)
+pulumi stack export &gt; backup.json
+
+# 4. Update OS
+sudo apt update &amp;&amp; sudo apt upgrade -y
+
+# 5. Reboot if kernel updated
+sudo reboot
+
+# 6. Wait for node to come back
+
+# 7. Verify Docker Swarm is active
+docker info | grep Swarm
+
+# 8. Verify services restarted
+docker service ls
+
+# 9. Run health check
+./quick-test.sh
+</code></pre>
+<h3 id="database-maintenance">Database Maintenance</h3>
+<pre><code class="language-bash"># Database maintenance is handled by Digital Ocean
+# They perform:
+# - OS updates
+# - PostgreSQL updates
+# - Security patches
+# - Performance tuning
+
+# You can schedule maintenance windows in DO console:
+# Database → Settings → Maintenance Window
+# Recommended: Off-peak hours (2-4 AM)
+
+# Manual maintenance tasks:
+
+# 1. Analyze tables (improves query performance)
+PGPASSWORD='pass' psql -h host -p 25060 -U doadmin -d defaultdb \
+  -c &quot;ANALYZE;&quot;
+
+# 2. Vacuum (reclaim storage)
+PGPASSWORD='pass' psql -h host -p 25060 -U doadmin -d defaultdb \
+  -c &quot;VACUUM;&quot;
+
+# 3. Check table bloat
+PGPASSWORD='pass' psql -h host -p 25060 -U doadmin -d defaultdb \
+  -c &quot;SELECT schemaname, tablename, pg_size_pretty(pg_total_relation_size(schemaname||'.'||tablename)) AS size FROM pg_tables WHERE schemaname NOT IN ('pg_catalog', 'information_schema') ORDER BY pg_total_relation_size(schemaname||'.'||tablename) DESC LIMIT 10;&quot;
+
+#### Database Issues from Development
+
+From Claude conversations, these specific database issues were encountered:
+- Connection timeouts: Check network connectivity, firewall rules
+- Too many connections: Scale connection pool, optimize queries
+- Authentication failures: Verify credentials in Vault, check user permissions
+
+**Connection Management**:
+- Managed PostgreSQL has 100 connection limit
+- Stay well below limit to avoid contention
+- Monitor connection count in Digital Ocean console
+</code></pre>
+<hr />
+<h2 id="common-tasks">Common Tasks</h2>
+<h3 id="view-service-logs">View Service Logs</h3>
+<pre><code class="language-bash"># Tail logs
+docker service logs -f &lt;service-name&gt;
+
+# Tail last 100 lines
+docker service logs --tail 100 &lt;service-name&gt;
+
+# Since specific time
+docker service logs --since 2h &lt;service-name&gt;
+
+# Filter for errors
+docker service logs &lt;service-name&gt; 2&gt;&amp;1 | grep -i error
+
+# Follow multiple services
+docker service logs -f \
+  prod-sprocket-web-service \
+  prod-sprocket-core-service
+</code></pre>
+<h3 id="check-service-health">Check Service Health</h3>
+<pre><code class="language-bash"># Service replicas
+docker service ls | grep &lt;service-name&gt;
+
+# Service tasks
+docker service ps &lt;service-name&gt;
+
+# Service details
+docker service inspect &lt;service-name&gt;
+
+# Service logs
+docker service logs &lt;service-name&gt; --tail 50
+</code></pre>
+<h3 id="exec-into-container">Exec into Container</h3>
+<pre><code class="language-bash"># Get container ID
+CONTAINER_ID=$(docker ps -q -f name=&lt;service-name&gt;)
+
+# Exec into container
+docker exec -it $CONTAINER_ID sh
+
+# Or bash (if available)
+docker exec -it $CONTAINER_ID bash
+
+# Common tasks in container:
+# - Check environment variables: env
+# - Check processes: ps aux
+# - Check network: netstat -tuln
+# - Check disk: df -h
+# - Check files: ls -la /app
+</code></pre>
+<h3 id="check-network-connectivity">Check Network Connectivity</h3>
+<pre><code class="language-bash"># From node to external service
+curl https://api.external.com
+
+# From container to external service
+docker exec $CONTAINER_ID curl https://api.external.com
+
+# Between containers
+docker exec $CONTAINER_ID ping &lt;other-service-name&gt;
+docker exec $CONTAINER_ID curl http://&lt;other-service-name&gt;:&lt;port&gt;
+
+# DNS resolution
+docker exec $CONTAINER_ID nslookup &lt;service-name&gt;
+</code></pre>
+<h3 id="clear-docker-resources">Clear Docker Resources</h3>
+<p><strong>Background</strong>: Docker storage can grow significantly over time due to:
+- Container layer duplication in overlay2
+- Unlimited log growth from services
+- Unused images and volumes
+- Build cache accumulation</p>
+<p><strong>Monitoring Storage</strong>:</p>
+<pre><code class="language-bash"># Check overall Docker disk usage
+docker system df
+
+# Check detailed breakdown
+docker system df -v
+
+# Check overlay2 directory size
+du -sh /var/lib/docker/overlay2
+
+# Check system disk usage
+df -h /var/lib/docker
+</code></pre>
+<p><strong>Storage Management Improvements</strong> (implemented Nov 2025):
+- Enhanced log rotation: 5MB max size, 5 files, compression enabled
+- Volume size limits: Redis (2GB), MinIO (10GB), InfluxDB (5GB), Airbyte (5GB)
+- Automated cleanup scripts available in repository root</p>
+<p><strong>Cleanup Commands</strong>:</p>
+<pre><code class="language-bash"># Remove stopped containers
+docker container prune -f
+
+# Remove unused images
+docker image prune -a -f
+
+# Remove unused volumes (⚠️ CAREFUL! May delete data)
+docker volume prune -f
+
+# Remove unused networks
+docker network prune -f
+
+# All at once (recommended for routine cleanup)
+docker system prune -a -f
+
+# Check space saved
+docker system df
+</code></pre>
+<p><strong>Automated Cleanup Script</strong>:</p>
+<pre><code class="language-bash"># Use the automated cleanup script (if available)
+./docker-storage-cleanup.sh
+
+# This script:
+# - Prunes all unused Docker resources
+# - Analyzes overlay2 directory
+# - Reports storage savings
+# - Provides recommendations
+</code></pre>
+<p><strong>When to Run Cleanup</strong>:
+- Monthly maintenance (scheduled)
+- When disk usage &gt;80%
+- After major deployments
+- When Docker overlay2 exceeds 15GB</p>
+<p><strong>Expected Results</strong>:
+- Typical cleanup: Reclaim 2-5GB
+- Major cleanup (after months): Reclaim 10-18GB
+- Post-cleanup overlay2: ~6-10GB (with containers running)</p>
+<p><strong>RabbitMQ Connection Management</strong> (added Nov 2025):
+RabbitMQ services now include improved connection handling:
+- Proper health checks to prevent connection leaks
+- Connection pooling configuration
+- Auto-reconnect on connection failures</p>
+<p>If experiencing RabbitMQ connection issues:</p>
+<pre><code class="language-bash"># Check RabbitMQ service health
+docker service ps rabbitmq-service
+
+# View RabbitMQ logs
+docker service logs rabbitmq-service --tail 100
+
+# Restart RabbitMQ if needed
+docker service update --force rabbitmq-service
+</code></pre>
+<hr />
+<h2 id="emergency-contacts">Emergency Contacts</h2>
+<h3 id="on-call-rotation">On-Call Rotation</h3>
+<table>
+<thead>
+<tr>
+<th>Week</th>
+<th>Primary</th>
+<th>Secondary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TBD</td>
+<td>Engineer 1</td>
+<td>Engineer 2</td>
+</tr>
+<tr>
+<td>TBD</td>
+<td>Engineer 2</td>
+<td>Engineer 3</td>
+</tr>
+<tr>
+<td>TBD</td>
+<td>Engineer 3</td>
+<td>Engineer 1</td>
+</tr>
+</tbody>
+</table>
+<h3 id="contact-methods">Contact Methods</h3>
+<p><strong>During Business Hours</strong> (9 AM - 5 PM):
+- Slack: #infrastructure channel
+- Email: infra-team@example.com</p>
+<p><strong>After Hours / Emergencies</strong>:
+- PagerDuty: (if configured)
+- Phone: On-call engineer
+- Escalation: Team lead</p>
+<h3 id="external-support">External Support</h3>
+<p><strong>Digital Ocean Support</strong>:
+- Priority Support: https://cloud.digitalocean.com/support
+- Phone: +1 (XXX) XXX-XXXX
+- Email: support@digitalocean.com</p>
+<p><strong>Pulumi Support</strong>:
+- Slack: Pulumi Community
+- Email: support@pulumi.com
+- Docs: https://www.pulumi.com/docs/</p>
+<p><strong>GitHub Support</strong>:
+- Email: support@github.com
+- Status: https://www.githubstatus.com/</p>
+<h3 id="service-status-pages">Service Status Pages</h3>
+<ul>
+<li>Digital Ocean: https://status.digitalocean.com/</li>
+<li>GitHub: https://www.githubstatus.com/</li>
+<li>Docker Hub: https://status.docker.com/</li>
+</ul>
+<hr />
+<h2 id="appendix">Appendix</h2>
+<h3 id="useful-commands-reference">Useful Commands Reference</h3>
+<pre><code class="language-bash"># Docker Swarm
+docker swarm init                    # Initialize swarm
+docker node ls                       # List nodes
+docker service ls                    # List services
+docker service ps &lt;service&gt;          # List service tasks
+docker service logs &lt;service&gt;        # View service logs
+
+# Docker System
+docker system df                     # Show disk usage
+docker system prune                  # Clean up unused resources
+docker stats                         # Show resource usage
+
+# Pulumi
+pulumi preview                       # Preview changes
+pulumi up                            # Apply changes
+pulumi destroy                       # Destroy resources
+pulumi stack export                  # Export state
+pulumi config                        # View configuration
+
+# Vault
+vault status                         # Check Vault status
+vault operator unseal                # Unseal Vault
+vault kv get &lt;path&gt;                  # Get secret
+vault kv put &lt;path&gt; key=value        # Put secret
+
+# PostgreSQL
+psql -h &lt;host&gt; -p &lt;port&gt; -U &lt;user&gt; -d &lt;db&gt;    # Connect
+pg_dump -h &lt;host&gt; -p &lt;port&gt; -U &lt;user&gt; -d &lt;db&gt; # Backup
+pg_restore -h &lt;host&gt; -p &lt;port&gt; -U &lt;user&gt; -d &lt;db&gt; &lt;file&gt; # Restore
+</code></pre>
+<h3 id="quick-reference-urls">Quick Reference URLs</h3>
+<ul>
+<li><strong>Traefik Dashboard</strong>: https://traefik.sprocket.mlesports.gg</li>
+<li><strong>Vault UI</strong>: https://vault.sprocket.mlesports.gg</li>
+<li><strong>Grafana</strong>: https://grafana.sprocket.mlesports.gg</li>
+<li><strong>Gatus</strong>: https://gatus.sprocket.mlesports.gg</li>
+<li><strong>Sprocket Web</strong>: https://sprocket.mlesports.gg</li>
+<li><strong>Sprocket API</strong>: https://api.sprocket.mlesports.gg</li>
+</ul>
+<hr />
+<p><strong>Operations Runbook Version</strong>: 1.1
+<strong>Last Updated</strong>: December 4, 2025
+<strong>Review Cycle</strong>: Quarterly
+<strong>Next Review</strong>: March 2026</p>
+<hr />
+<h2 id="troubleshooting-guide-from-development-experience">Troubleshooting Guide (From Development Experience)</h2>
+<p>This section contains specific solutions derived from the Claude conversation history during the infrastructure rebuild project. These are proven solutions to problems that were encountered and resolved during development.</p>
+<h3 id="vault-unsealing-issues">Vault Unsealing Issues</h3>
+<p><strong>Problem</strong>: Vault shows as sealed after restart
+<strong>Root Cause</strong>: Auto-unseal script not working or unseal keys missing
+<strong>Solution</strong>:</p>
+<pre><code class="language-bash"># Check if unseal tokens exist
+ls -la global/services/vault/unseal-tokens/
+
+# If missing, manually unseal with stored keys
+vault operator unseal
+# Enter first unseal key from your secure storage
+
+# Repeat 2 more times with different keys
+vault status  # Should show &quot;Sealed: false&quot;
+</code></pre>
+<p><strong>Prevention</strong>: Ensure unseal keys are backed up securely and the auto-initialization script is working.</p>
+<h3 id="multi-environment-routing-issues">Multi-Environment Routing Issues</h3>
+<p><strong>Problem</strong>: 404 errors when accessing via different methods (localhost, IP, domain)
+<strong>Root Cause</strong>: Traefik routing rules not configured for all access patterns
+<strong>Solution</strong>:</p>
+<pre><code class="language-bash"># Test each access method
+curl -H &quot;Host: sprocket.mlesports.gg&quot; http://localhost
+curl -H &quot;Host: 192.168.4.39&quot; http://localhost
+
+# Check Traefik routers
+docker exec traefik wget -q -O- http://localhost:8080/api/http/routers | jq
+</code></pre>
+<p><strong>Configuration</strong>: Ensure Pulumi config includes appropriate routing rules:</p>
+<pre><code class="language-yaml"># For local development
+hostname: localhost
+server-ip: 192.168.4.39
+tailscale-ip: 100.110.185.84
+
+# For production (remove IP-based routing)
+hostname: sprocket.mlesports.gg
+</code></pre>
+<h3 id="service-network-connectivity">Service Network Connectivity</h3>
+<p><strong>Problem</strong>: Services can't connect to RabbitMQ, Redis, or other Layer 2 services
+<strong>Root Cause</strong>: Network isolation or DNS resolution issues between layers
+<strong>Solution</strong>:</p>
+<pre><code class="language-bash"># Check service discovery from container
+docker exec &lt;service-container&gt; nslookup layer2_rabbitmq
+docker exec &lt;service-container&gt; ping layer2_redis
+
+# Verify network membership
+docker network inspect &lt;network-name&gt; | grep -A5 &quot;Containers&quot;
+
+# Test connections
+docker exec &lt;service-container&gt; curl http://layer2_rabbitmq:5672
+docker exec &lt;service-container&gt; redis-cli -h layer2_redis ping
+</code></pre>
+<p><strong>Prevention</strong>: Ensure all services are on the correct Docker networks and DNS resolution is working.</p>
+<h3 id="environment-variable-issues">Environment Variable Issues</h3>
+<p><strong>Problem</strong>: JWT secrets malformed, duplicate variables, line breaks in tokens
+<strong>Root Cause</strong>: Manual environment variable management
+<strong>Solution</strong>: Use the bootstrap script approach:</p>
+<pre><code class="language-bash"># Bootstrap all secrets from Doppler to Vault
+export VAULT_ADDR=https://vault.sprocket.mlesports.gg
+export VAULT_TOKEN=&lt;root-token&gt;
+./scripts/bootstrap-vault-secrets.sh
+
+# Verify secrets in Vault
+vault kv get platform/sprocket/manual/oauth/google
+</code></pre>
+<p><strong>Historical Context</strong>: The <code>generate-env.sh</code> script caused ongoing issues during development, leading to the current Vault-based approach.</p>
+<h3 id="storage-migration-issues">Storage Migration Issues</h3>
+<p><strong>Problem</strong>: S3 connectivity issues after migration from MinIO
+<strong>Root Cause</strong>: Configuration changes or credential issues
+<strong>Solution</strong>:</p>
+<pre><code class="language-bash"># Test S3 connectivity
+aws s3 ls --endpoint-url https://nyc3.digitaloceanspaces.com
+
+# Check Vault S3 backend
+vault status  # Should show initialized: true
+
+# Verify configuration
+pulumi config get s3-endpoint
+pulumi config get s3-access-key
+</code></pre>
+<p><strong>Migration Process</strong>: The conversations revealed a phased approach:
+1. Dual operation (keep MinIO, add cloud S3)
+2. Migrate Vault backend to cloud S3 first
+3. Migrate application services
+4. Remove MinIO completely</p>
+<h3 id="certificate-and-https-issues">Certificate and HTTPS Issues</h3>
+<p><strong>Problem</strong>: Let's Encrypt certificate renewal failures
+<strong>Root Cause</strong>: Rate limiting, DNS issues, or configuration problems
+<strong>Solution</strong>:</p>
+<pre><code class="language-bash"># Check certificate expiration
+echo | openssl s_client -connect sprocket.mlesports.gg:443 -servername sprocket.mlesports.gg | openssl x509 -noout -dates
+
+# Monitor Traefik logs
+docker service logs traefik | grep -i &quot;acme\|renew\|certificate&quot;
+
+# Force renewal if needed
+docker service update --force traefik
+</code></pre>
+<p><strong>Known Issues from Development</strong>:
+- Rate limiting: 50 certificates/week per domain
+- DNS propagation delays
+- Certificate provisioning takes 60+ seconds</p>
+<p><strong>Recovery</strong>: Use staging environment for testing, wait 1 hour for rate limit reset.</p>
+<h3 id="development-vs-production-differences">Development vs Production Differences</h3>
+<p>Based on conversations during development, key differences between dev and prod environments:</p>
+<p><strong>Development Environment</strong>:
+- Uses IP-based routing (localhost, LAN IP, Tailscale IP)
+- Self-signed certificates acceptable
+- <code>/etc/hosts</code> modifications for local testing
+- More permissive network access</p>
+<p><strong>Production Environment</strong>:
+- Real domain names only
+- Let's Encrypt certificates required
+- Proper DNS configuration mandatory
+- Stricter security controls</p>
+<p><strong>Configuration Strategy</strong>:</p>
+<pre><code class="language-yaml"># Development - multiple access patterns
+hostname: localhost
+server-ip: 192.168.4.39
+tailscale-ip: 100.110.185.84
+
+# Production - domain-based only
+hostname: sprocket.mlesports.gg
+# Remove server-ip and tailscale-ip configs
+</code></pre>
+<hr />
+<p><em>This runbook is a living document. Please update it as procedures change or new issues are discovered.</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../../../..", "features": [], "search": "../../../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+    
+  </body>
+</html>
