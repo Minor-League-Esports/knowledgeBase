@@ -9,7 +9,9 @@ theme:
 nav:
   - Home: index.md
   - Departments:
-    - Rocket League Operations: departments/rocket-league-operations.md
+    - Rocket League Operations: 
+      - Overview: departments/rllo/rocket-league-operations.md
+      - Player Management: departments/rllo/player-management.md
     - Trackmania Operations: departments/trackmania-operations.md
     - Community: departments/community.md
     - Development:
