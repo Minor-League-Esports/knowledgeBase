@@ -1,0 +1,3138 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://minor-league-esports.github.io/knowledgeBase/departments/development/systems/production-infrastructure/GIT_HISTORY_ANALYSIS/">
+      
+      
+        <link rel="prev" href="../TECHNICAL_CHALLENGES/">
+      
+      
+        <link rel="next" href="../CLAUDE_CONVERSATIONS_SUMMARY/">
+      
+      
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.18">
+    
+    
+      
+        <title>Git History Analysis - Knowledge Base</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="yellow" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#git-history-analysis-deployment-journey" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../.." title="Knowledge Base" class="md-header__button md-logo" aria-label="Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Knowledge Base
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Git History Analysis
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/minor-league-esports/knowledgeBase" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="Knowledge Base" class="md-nav__button md-logo" aria-label="Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Knowledge Base
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/minor-league-esports/knowledgeBase" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Departments
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Departments
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../rocket-league-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Rocket League Operations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../trackmania-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Trackmania Operations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../community/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Community
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Development
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../development/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../new-team-members/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    New Team Members
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3" id="__nav_2_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Systems
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Systems
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../systems-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modmail/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Modmail KB
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sprocket-identity-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprocket Identity System
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4" id="__nav_2_4_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Production Infrastructure
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_4_3_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_4_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            Production Infrastructure
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_2" id="__nav_2_4_3_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-START-HERE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Quick Start
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../README.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    README
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CONTEXT_SUMMARY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Context Summary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_3" id="__nav_2_4_3_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Architecture & Design
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Architecture & Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ARCHITECTURE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Architecture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GLOSSARY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_4" id="__nav_2_4_3_4_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Deployment & Operations
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            Deployment & Operations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DEPLOYMENT_GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Deployment Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OPERATIONS_RUNBOOK/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Operations Runbook
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../EXTERNALITIES_AND_DEPENDENCIES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Externalities & Dependencies
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_5" id="__nav_2_4_3_4_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Project History
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_4_3_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            Project History
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../POSTMORTEM/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Postmortem
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TECHNICAL_CHALLENGES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Technical Challenges
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Git History Analysis
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Git History Analysis
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#commit-timeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Commit Timeline
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Commit Timeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#foundation-period-sept-14-19-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      Foundation Period: Sept 14-19, 2025
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Foundation Period: Sept 14-19, 2025">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#8e2c54d-sept-16-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      8e2c54d - Sept 16, 2025
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3126c6d-sept-14-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      3126c6d - Sept 14, 2025
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vault-struggles-period-sept-17-23-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vault Struggles Period: Sept 17-23, 2025
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Vault Struggles Period: Sept 17-23, 2025">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#5de5d04-sept-17-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      5de5d04 - Sept 17, 2025
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cde2961-sept-18-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      cde2961 - Sept 18, 2025
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5057afc-sept-19-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      5057afc - Sept 19, 2025
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#346c2a9-sept-19-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      346c2a9 - Sept 19, 2025
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fff0c3c-sept-19-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      fff0c3c - Sept 19, 2025
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#07ee345-sept-21-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      07ee345 - Sept 21, 2025
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2103358-sept-21-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      2103358 - Sept 21, 2025
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ac9ac81-sept-21-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      ac9ac81 - Sept 21, 2025
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#debugging-and-integration-sept-22-23-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      Debugging and Integration: Sept 22-23, 2025
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Debugging and Integration: Sept 22-23, 2025">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#38e8d13-sept-22-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      38e8d13 - Sept 22, 2025
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1dc12a9-sept-23-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      1dc12a9 - Sept 23, 2025
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#storage-migration-period-sept-30-oct-8-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      Storage Migration Period: Sept 30 - Oct 8, 2025
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Storage Migration Period: Sept 30 - Oct 8, 2025">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3f32a74-sept-30-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      3f32a74 - Sept 30, 2025
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#de363dd-oct-6-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      de363dd - Oct 6, 2025
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3b45f27-oct-8-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      3b45f27 - Oct 8, 2025
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#platform-stabilization-oct-26-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      Platform Stabilization: Oct 26, 2025
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Platform Stabilization: Oct 26, 2025">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#6395d01-oct-26-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      6395d01 - Oct 26, 2025
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#routing-and-access-period-oct-26-27-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      Routing and Access Period: Oct 26-27, 2025
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Routing and Access Period: Oct 26-27, 2025">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#7486e02-oct-27-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      7486e02 - Oct 27, 2025
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#final-push-to-production-nov-3-8-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      Final Push to Production: Nov 3-8, 2025
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Final Push to Production: Nov 3-8, 2025">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#acf4e4e-nov-4-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      acf4e4e - Nov 4, 2025
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f0f2ef5-nov-7-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      f0f2ef5 - Nov 7, 2025
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#e0d8785-nov-7-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      e0d8785 - Nov 7, 2025
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a2862ea-nov-8-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      a2862ea - Nov 8, 2025 ✨
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#historical-commits-before-sept-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      Historical Commits (Before Sept 2025)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Historical Commits (Before Sept 2025)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#early-2025-maintenance-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Early 2025: Maintenance Updates
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Early 2025: Maintenance Updates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#9429e1c-jan-13-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      9429e1c - Jan 13, 2025
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7b0e5cb-jan-13-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      7b0e5cb - Jan 13, 2025
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2024-feature-development" class="md-nav__link">
+    <span class="md-ellipsis">
+      2024: Feature Development
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2022-initial-infrastructure-development" class="md-nav__link">
+    <span class="md-ellipsis">
+      2022: Initial Infrastructure Development
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment-phases-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deployment Phases Summary
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deployment Phases Summary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-foundation-2022" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 1: Foundation (2022)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-maintenance-2022-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 2: Maintenance (2022-2024)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-major-rebuild-sept-nov-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 3: Major Rebuild (Sept-Nov 2025)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-patterns-in-commit-history" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Patterns in Commit History
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Patterns in Commit History">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-iterative-problem-solving" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Iterative Problem Solving
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-documentation-commits" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Documentation Commits
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-feature-toggles" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Feature Toggles
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-configuration-refinement" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Configuration Refinement
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-breaking-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Breaking Changes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#commit-message-quality-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Commit Message Quality Analysis
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Commit Message Quality Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#excellent-commits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Excellent Commits
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#standard-commits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Standard Commits
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vague-commits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vague Commits
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-the-git-history-tells-us" class="md-nav__link">
+    <span class="md-ellipsis">
+      What the Git History Tells Us
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What the Git History Tells Us">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-the-problem-was-hard" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. The Problem Was Hard
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-persistence-pays-off" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Persistence Pays Off
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-external-dependencies-matter" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. External Dependencies Matter
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-documentation-is-crucial" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Documentation Is Crucial
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-evolution-over-revolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Evolution Over Revolution
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recommended-git-practices-based-on-this-history" class="md-nav__link">
+    <span class="md-ellipsis">
+      Recommended Git Practices (Based on This History)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Recommended Git Practices (Based on This History)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#do" class="md-nav__link">
+    <span class="md-ellipsis">
+      DO:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dont" class="md-nav__link">
+    <span class="md-ellipsis">
+      DON'T:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#timeline-visualization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Timeline Visualization
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CLAUDE_CONVERSATIONS_SUMMARY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Claude Conversations Summary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CLAUDE_CONVERSATION_ANALYSIS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Claude Conversation Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TECHNICAL_CHALLENGES_FROM_CLAUDE_CONVERSATIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Technical Challenges from Claude
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_6" id="__nav_2_4_3_4_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Meta Documentation
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            Meta Documentation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DOCUMENTATION_REVIEW_RECOMMENDATIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Documentation Review
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TRANSFER_INSTRUCTIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Transfer Instructions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_7" id="__nav_2_4_3_4_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Templates
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            Templates
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../INCIDENT_POSTMORTEM_TEMPLATE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Incident Postmortem Template
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_4" id="__nav_2_4_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Features and Designs
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            Features and Designs
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../features-and-designs/sprocket-v2-unified-matchmaking-proposal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprocket v2 Unified Matchmaking
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../marketing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Marketing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../production/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Production
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#commit-timeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Commit Timeline
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Commit Timeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#foundation-period-sept-14-19-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      Foundation Period: Sept 14-19, 2025
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Foundation Period: Sept 14-19, 2025">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#8e2c54d-sept-16-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      8e2c54d - Sept 16, 2025
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3126c6d-sept-14-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      3126c6d - Sept 14, 2025
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vault-struggles-period-sept-17-23-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vault Struggles Period: Sept 17-23, 2025
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Vault Struggles Period: Sept 17-23, 2025">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#5de5d04-sept-17-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      5de5d04 - Sept 17, 2025
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cde2961-sept-18-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      cde2961 - Sept 18, 2025
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5057afc-sept-19-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      5057afc - Sept 19, 2025
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#346c2a9-sept-19-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      346c2a9 - Sept 19, 2025
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fff0c3c-sept-19-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      fff0c3c - Sept 19, 2025
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#07ee345-sept-21-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      07ee345 - Sept 21, 2025
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2103358-sept-21-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      2103358 - Sept 21, 2025
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ac9ac81-sept-21-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      ac9ac81 - Sept 21, 2025
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#debugging-and-integration-sept-22-23-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      Debugging and Integration: Sept 22-23, 2025
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Debugging and Integration: Sept 22-23, 2025">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#38e8d13-sept-22-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      38e8d13 - Sept 22, 2025
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1dc12a9-sept-23-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      1dc12a9 - Sept 23, 2025
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#storage-migration-period-sept-30-oct-8-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      Storage Migration Period: Sept 30 - Oct 8, 2025
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Storage Migration Period: Sept 30 - Oct 8, 2025">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3f32a74-sept-30-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      3f32a74 - Sept 30, 2025
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#de363dd-oct-6-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      de363dd - Oct 6, 2025
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3b45f27-oct-8-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      3b45f27 - Oct 8, 2025
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#platform-stabilization-oct-26-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      Platform Stabilization: Oct 26, 2025
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Platform Stabilization: Oct 26, 2025">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#6395d01-oct-26-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      6395d01 - Oct 26, 2025
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#routing-and-access-period-oct-26-27-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      Routing and Access Period: Oct 26-27, 2025
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Routing and Access Period: Oct 26-27, 2025">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#7486e02-oct-27-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      7486e02 - Oct 27, 2025
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#final-push-to-production-nov-3-8-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      Final Push to Production: Nov 3-8, 2025
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Final Push to Production: Nov 3-8, 2025">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#acf4e4e-nov-4-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      acf4e4e - Nov 4, 2025
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f0f2ef5-nov-7-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      f0f2ef5 - Nov 7, 2025
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#e0d8785-nov-7-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      e0d8785 - Nov 7, 2025
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a2862ea-nov-8-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      a2862ea - Nov 8, 2025 ✨
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#historical-commits-before-sept-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      Historical Commits (Before Sept 2025)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Historical Commits (Before Sept 2025)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#early-2025-maintenance-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Early 2025: Maintenance Updates
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Early 2025: Maintenance Updates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#9429e1c-jan-13-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      9429e1c - Jan 13, 2025
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7b0e5cb-jan-13-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      7b0e5cb - Jan 13, 2025
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2024-feature-development" class="md-nav__link">
+    <span class="md-ellipsis">
+      2024: Feature Development
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2022-initial-infrastructure-development" class="md-nav__link">
+    <span class="md-ellipsis">
+      2022: Initial Infrastructure Development
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment-phases-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deployment Phases Summary
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deployment Phases Summary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-foundation-2022" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 1: Foundation (2022)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-maintenance-2022-2024" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 2: Maintenance (2022-2024)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-major-rebuild-sept-nov-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 3: Major Rebuild (Sept-Nov 2025)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-patterns-in-commit-history" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Patterns in Commit History
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Patterns in Commit History">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-iterative-problem-solving" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Iterative Problem Solving
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-documentation-commits" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Documentation Commits
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-feature-toggles" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Feature Toggles
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-configuration-refinement" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Configuration Refinement
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-breaking-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Breaking Changes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#commit-message-quality-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Commit Message Quality Analysis
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Commit Message Quality Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#excellent-commits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Excellent Commits
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#standard-commits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Standard Commits
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vague-commits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vague Commits
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-the-git-history-tells-us" class="md-nav__link">
+    <span class="md-ellipsis">
+      What the Git History Tells Us
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What the Git History Tells Us">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-the-problem-was-hard" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. The Problem Was Hard
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-persistence-pays-off" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Persistence Pays Off
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-external-dependencies-matter" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. External Dependencies Matter
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-documentation-is-crucial" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Documentation Is Crucial
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-evolution-over-revolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Evolution Over Revolution
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recommended-git-practices-based-on-this-history" class="md-nav__link">
+    <span class="md-ellipsis">
+      Recommended Git Practices (Based on This History)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Recommended Git Practices (Based on This History)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#do" class="md-nav__link">
+    <span class="md-ellipsis">
+      DO:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dont" class="md-nav__link">
+    <span class="md-ellipsis">
+      DON'T:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#timeline-visualization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Timeline Visualization
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="git-history-analysis-deployment-journey">Git History Analysis - Deployment Journey</h1>
+<p>Complete analysis of the git commit history showing the evolution of the Sprocket infrastructure from inception to production deployment.</p>
+<h2 id="commit-timeline">Commit Timeline</h2>
+<h3 id="foundation-period-sept-14-19-2025">Foundation Period: Sept 14-19, 2025</h3>
+<p><strong>Goal</strong>: Establish basic infrastructure and get Layer 1 working</p>
+<h4 id="8e2c54d-sept-16-2025"><code>8e2c54d</code> - Sept 16, 2025</h4>
+<p><strong>"feat: layer_2 config started"</strong>
+- Initial Layer 2 configuration
+- Setting up data services</p>
+<h4 id="3126c6d-sept-14-2025"><code>3126c6d</code> - Sept 14, 2025</h4>
+<p><strong>"feat: layer_1 now runs again!"</strong>
+- Layer 1 infrastructure working
+- Core services deploying</p>
+<hr />
+<h3 id="vault-struggles-period-sept-17-23-2025">Vault Struggles Period: Sept 17-23, 2025</h3>
+<p><strong>Goal</strong>: Get Vault initialization and unsealing working reliably</p>
+<h4 id="5de5d04-sept-17-2025"><code>5de5d04</code> - Sept 17, 2025</h4>
+<p><strong>"feat: bootstrapping problems with minio and other vault secrets"</strong>
+- Encountering issues with Vault + MinIO integration
+- Secret bootstrapping not working smoothly</p>
+<h4 id="cde2961-sept-18-2025"><code>cde2961</code> - Sept 18, 2025</h4>
+<p><strong>"feat: Accessing vault now works on localhost"</strong>
+- Progress on Vault access
+- Can connect to Vault locally
+- Still not fully automated</p>
+<h4 id="5057afc-sept-19-2025"><code>5057afc</code> - Sept 19, 2025</h4>
+<p><strong>"feat: vault actually unseals!"</strong>
+- <strong>BREAKTHROUGH</strong>: Automatic unsealing working
+- Major milestone in Vault automation</p>
+<h4 id="346c2a9-sept-19-2025"><code>346c2a9</code> - Sept 19, 2025</h4>
+<p><strong>"docs: update readme with learnings"</strong>
+- Documented what was learned about Vault
+- Captured knowledge for future reference</p>
+<h4 id="fff0c3c-sept-19-2025"><code>fff0c3c</code> - Sept 19, 2025</h4>
+<p><strong>"feat: still polishing layer_1 to be repeatable"</strong>
+- Working on making Layer 1 deployment repeatable
+- Not just working once, but reliably</p>
+<h4 id="07ee345-sept-21-2025"><code>07ee345</code> - Sept 21, 2025</h4>
+<p><strong>"feat: relative paths in vault script"</strong>
+- Improving Vault automation scripts
+- Making them more portable</p>
+<h4 id="2103358-sept-21-2025"><code>2103358</code> - Sept 21, 2025</h4>
+<p><strong>"feat: all tokens working now. Vault should be good!"</strong>
+- <strong>MAJOR MILESTONE</strong>: Vault fully functional
+- All token generation working
+- Vault considered stable</p>
+<h4 id="ac9ac81-sept-21-2025"><code>ac9ac81</code> - Sept 21, 2025</h4>
+<p><strong>"fix: changed org in refs, and keep the vault container up and running"</strong>
+- Container stability improvements
+- Organization references corrected</p>
+<hr />
+<h3 id="debugging-and-integration-sept-22-23-2025">Debugging and Integration: Sept 22-23, 2025</h3>
+<h4 id="38e8d13-sept-22-2025"><code>38e8d13</code> - Sept 22, 2025</h4>
+<p><strong>"feat: Making progress, vault now has secrets and provides them appropriately"</strong>
+- Vault not just working, but serving secrets to services
+- Integration with rest of stack</p>
+<h4 id="1dc12a9-sept-23-2025"><code>1dc12a9</code> - Sept 23, 2025</h4>
+<p><strong>"feat: some debugging progress"</strong>
+- Continued debugging and refinement</p>
+<hr />
+<h3 id="storage-migration-period-sept-30-oct-8-2025">Storage Migration Period: Sept 30 - Oct 8, 2025</h3>
+<p><strong>Goal</strong>: Move from self-hosted MinIO to cloud S3 storage</p>
+<h4 id="3f32a74-sept-30-2025"><code>3f32a74</code> - Sept 30, 2025</h4>
+<p><strong>"feat(layer_2): migrate to cloud S3 and fix service configurations"</strong></p>
+<p><strong>Major changes</strong>:
+- Replaced local MinIO service with cloud S3-compatible storage
+- Updated SprocketMinioProvider to support direct credentials and SSL configuration
+- Fixed PostgreSQL provider to set superuser=false for non-superuser connections</p>
+<p><strong>Service fixes</strong>:
+- N8n: Added N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS env var
+- N8n: Fixed PostgreSQL port to use config instead of hardcoded 5432
+- Gatus: Removed ingress node placement constraint to allow scheduling</p>
+<p><strong>Configuration</strong>:
+- Added s3-endpoint, s3-access-key, and s3-secret-key config support
+- Removed postgres duplicate parameter from Monitoring component
+- Updated layer_2 exports to use S3 endpoint instead of local MinIO</p>
+<h4 id="de363dd-oct-6-2025"><code>de363dd</code> - Oct 6, 2025</h4>
+<p><strong>"org: move deprecated pulumi files"</strong>
+- Cleanup and organization
+- Moving old files out of the way</p>
+<h4 id="3b45f27-oct-8-2025"><code>3b45f27</code> - Oct 8, 2025</h4>
+<p><strong>"feat: Move from MinIO to AWS. Remove postgres network."</strong>
+- <strong>COMPLETED MIGRATION</strong>: MinIO fully removed
+- Using AWS S3 / cloud storage exclusively
+- Removed PostgreSQL-specific networking</p>
+<hr />
+<h3 id="platform-stabilization-oct-26-2025">Platform Stabilization: Oct 26, 2025</h3>
+<p><strong>Goal</strong>: Get application platform working</p>
+<h4 id="6395d01-oct-26-2025"><code>6395d01</code> - Oct 26, 2025</h4>
+<p><strong>"feat: Sprocket is alive!"</strong>
+- <strong>MAJOR MILESTONE</strong>: Platform is running!
+- Application services working
+- First time everything comes together</p>
+<hr />
+<h3 id="routing-and-access-period-oct-26-27-2025">Routing and Access Period: Oct 26-27, 2025</h3>
+<p><strong>Goal</strong>: Support multiple access patterns (localhost, LAN, cloud)</p>
+<h4 id="7486e02-oct-27-2025"><code>7486e02</code> - Oct 27, 2025</h4>
+<p><strong>"feat: add localhost-based routing and cloud deployment documentation"</strong></p>
+<p><strong>This commit includes infrastructure changes and documentation for both local development and cloud production deployments.</strong></p>
+<p><strong>Configuration Updates</strong>:
+- Set layer_1 hostname to 'localhost' for local development
+- Set platform hostname to 'localhost' for local development
+- Added server-ip config support for LAN access (192.168.4.39)
+- Added tailscale-ip config support for remote access (100.110.185.84)</p>
+<p><strong>Platform Routing Enhancements</strong>:
+- Modified Platform.ts to support IP-based routing alongside hostname routing
+- Web service now accepts requests via: localhost domains, LAN IP, and Tailscale IP
+- Routing rules: <code>Host(\</code>sprocket.localhost`) || Host(`192.168.4.39`) || Host(`100.110.185.84`)`
+- Resolved duplicate router issues that were causing 404 errors</p>
+<p><strong>Documentation</strong>:
+- Added CLOUD_DEPLOYMENT.md with comprehensive cloud deployment guide
+- Includes DNS configuration, firewall setup, deployment order
+- Troubleshooting section for common issues
+- Documents differences between local and cloud deployments</p>
+<p><strong>Bug Fixes</strong>:
+- Fixed Traefik routing issues caused by duplicate service instances
+- Resolved 404 errors by cleaning up orphaned Docker service tasks
+- Fixed hostname configuration mismatch between layer_1 and platform</p>
+<p><strong>Deployment Verification</strong>:
+- Successfully tested HTTPS access via localhost domains
+- Verified HTTPS access via LAN IP (192.168.4.39)
+- Verified HTTPS access via Tailscale IP (100.110.185.84)
+- All services routing correctly with proper TLS</p>
+<p><strong>Local Development Access</strong>:
+Services accessible at:
+- https://sprocket.localhost (main web UI)
+- https://api.sprocket.localhost (API)
+- https://image-generation.sprocket.localhost (image generation)
+- https://192.168.4.39 (LAN access)
+- https://100.110.185.84 (Tailscale access)</p>
+<hr />
+<h3 id="final-push-to-production-nov-3-8-2025">Final Push to Production: Nov 3-8, 2025</h3>
+<p><strong>Goal</strong>: Deploy to production with real domain and complete the project</p>
+<h4 id="acf4e4e-nov-4-2025"><code>acf4e4e</code> - Nov 4, 2025</h4>
+<p><strong>"feat: so close!"</strong>
+- Near completion
+- Final debugging</p>
+<h4 id="f0f2ef5-nov-7-2025"><code>f0f2ef5</code> - Nov 7, 2025</h4>
+<p><strong>"Final stretch."</strong>
+- Last mile work
+- Production deployment imminent</p>
+<h4 id="e0d8785-nov-7-2025"><code>e0d8785</code> - Nov 7, 2025</h4>
+<p><strong>"Platform is up and running"</strong>
+- Platform deployed to production
+- Services running</p>
+<h4 id="a2862ea-nov-8-2025"><code>a2862ea</code> - Nov 8, 2025  ✨</h4>
+<p><strong>"feat: Sprocket v1 is finally up and running completely."</strong>
+- <strong>🎉 PROJECT COMPLETE</strong>: Full production deployment
+- All services running
+- Users being served
+- Infrastructure stable</p>
+<hr />
+<h2 id="historical-commits-before-sept-2025">Historical Commits (Before Sept 2025)</h2>
+<h3 id="early-2025-maintenance-updates">Early 2025: Maintenance Updates</h3>
+<h4 id="9429e1c-jan-13-2025"><code>9429e1c</code> - Jan 13, 2025</h4>
+<p><strong>"chore: update to match with newest dockerhub api"</strong>
+- Keeping dependencies current</p>
+<h4 id="7b0e5cb-jan-13-2025"><code>7b0e5cb</code> - Jan 13, 2025</h4>
+<p><strong>"chore: add flake for consistent dev environments"</strong>
+- Added Nix flake for reproducible environments</p>
+<hr />
+<h3 id="2024-feature-development">2024: Feature Development</h3>
+<p>Multiple commits throughout 2024 for:
+- Playground configuration
+- Core service updates
+- Discord token updates
+- Vault policy adjustments
+- Service configurations
+- Monitoring additions (Gatus)
+- Workflow automation (N8n)
+- Various bug fixes and features</p>
+<hr />
+<h3 id="2022-initial-infrastructure-development">2022: Initial Infrastructure Development</h3>
+<p>The infrastructure was originally built in 2022 with commits showing:
+- Initial Pulumi setup (<code>640a75f</code> - Apr 5, 2022)
+- Platform deployments
+- Service additions (Chatwoot, InfluxDB, Neo4j, etc.)
+- Vault policies
+- Authentication setups
+- Configuration management</p>
+<hr />
+<h2 id="deployment-phases-summary">Deployment Phases Summary</h2>
+<h3 id="phase-1-foundation-2022">Phase 1: Foundation (2022)</h3>
+<ul>
+<li>Initial Pulumi infrastructure</li>
+<li>Core services defined</li>
+<li>Basic deployment working</li>
+</ul>
+<h3 id="phase-2-maintenance-2022-2024">Phase 2: Maintenance (2022-2024)</h3>
+<ul>
+<li>Feature additions</li>
+<li>Service updates</li>
+<li>Configuration refinements</li>
+<li>Bug fixes</li>
+</ul>
+<h3 id="phase-3-major-rebuild-sept-nov-2025">Phase 3: Major Rebuild (Sept-Nov 2025)</h3>
+<p>The recent commits show a <strong>complete infrastructure rebuild</strong>:</p>
+<ol>
+<li><strong>Week 1 (Sept 14-19)</strong>: Vault automation breakthrough</li>
+<li><strong>Week 2 (Sept 22-23)</strong>: Service integration</li>
+<li><strong>Weeks 3-4 (Sept 30 - Oct 8)</strong>: Storage migration (MinIO → S3)</li>
+<li><strong>Week 5-6 (Oct 26-27)</strong>: Platform alive, routing solved</li>
+<li><strong>Week 7-8 (Nov 3-8)</strong>: Production deployment completed</li>
+</ol>
+<hr />
+<h2 id="key-patterns-in-commit-history">Key Patterns in Commit History</h2>
+<h3 id="1-iterative-problem-solving">1. Iterative Problem Solving</h3>
+<p>Multiple commits on same issue show persistence:
+- Vault unsealing: 5+ commits over 4 days
+- Routing issues: Multiple attempts to get right
+- Storage migration: Phased approach over 2 weeks</p>
+<h3 id="2-documentation-commits">2. Documentation Commits</h3>
+<p>Several commits dedicated to documentation:
+- <code>346c2a9</code>: README updates with learnings
+- <code>7486e02</code>: Comprehensive deployment documentation
+- Shows learning was captured along the way</p>
+<h3 id="3-feature-toggles">3. Feature Toggles</h3>
+<p>Commits show features being added, tested, sometimes reverted:
+- Statping-ng added then reverted (multiple commits Dec 2022)
+- Shows willingness to try and abandon what doesn't work</p>
+<h3 id="4-configuration-refinement">4. Configuration Refinement</h3>
+<p>Many "chore: config" commits show:
+- Continuous tuning
+- Environment-specific adjustments
+- Learning what works in production</p>
+<h3 id="5-breaking-changes">5. Breaking Changes</h3>
+<p>Some commits forced by external changes:
+- DockerHub API updates
+- Service version upgrades
+- Platform migrations</p>
+<hr />
+<h2 id="commit-message-quality-analysis">Commit Message Quality Analysis</h2>
+<h3 id="excellent-commits">Excellent Commits</h3>
+<ul>
+<li><code>7486e02</code>: Full description of changes, why they were made, and how to use</li>
+<li><code>3f32a74</code>: Detailed breakdown of service fixes and configuration changes</li>
+<li>These make understanding the project history possible</li>
+</ul>
+<h3 id="standard-commits">Standard Commits</h3>
+<ul>
+<li>Clear feat/fix/chore prefixes</li>
+<li>Concise descriptions</li>
+<li>Easy to scan</li>
+</ul>
+<h3 id="vague-commits">Vague Commits</h3>
+<ul>
+<li><code>f0f2ef5</code>: "Final stretch" - doesn't say what changed</li>
+<li><code>1dc12a9</code>: "some debugging progress" - lacks specifics</li>
+<li>These make it hard to understand what was done</li>
+</ul>
+<p><strong>Lesson</strong>: Detailed commit messages are invaluable for postmortems and future maintenance.</p>
+<hr />
+<h2 id="what-the-git-history-tells-us">What the Git History Tells Us</h2>
+<h3 id="1-the-problem-was-hard">1. The Problem Was Hard</h3>
+<ul>
+<li>Months of work from initial setup to production</li>
+<li>Multiple false starts and revisions</li>
+<li>Complex interdependencies between services</li>
+</ul>
+<h3 id="2-persistence-pays-off">2. Persistence Pays Off</h3>
+<ul>
+<li>Many attempts at Vault automation before success</li>
+<li>Routing issues solved through iteration</li>
+<li>Migration to managed services was worth the effort</li>
+</ul>
+<h3 id="3-external-dependencies-matter">3. External Dependencies Matter</h3>
+<ul>
+<li>Storage backend changes (MinIO → S3)</li>
+<li>Database changes (self-hosted → managed)</li>
+<li>These decisions simplified the architecture</li>
+</ul>
+<h3 id="4-documentation-is-crucial">4. Documentation Is Crucial</h3>
+<ul>
+<li>Commits with good messages help future understanding</li>
+<li>Documentation commits show learning was captured</li>
+<li>Missing docs would make this postmortem much harder</li>
+</ul>
+<h3 id="5-evolution-over-revolution">5. Evolution Over Revolution</h3>
+<ul>
+<li>Gradual migration of storage</li>
+<li>Phased deployment approach</li>
+<li>Small changes, frequent commits</li>
+</ul>
+<hr />
+<h2 id="recommended-git-practices-based-on-this-history">Recommended Git Practices (Based on This History)</h2>
+<h3 id="do">DO:</h3>
+<p>✅ Write detailed commit messages for complex changes
+✅ Commit frequently with small, focused changes
+✅ Document learnings in dedicated commits
+✅ Use conventional commit prefixes (feat/fix/docs/chore)
+✅ Include "why" in commit messages, not just "what"</p>
+<h3 id="dont">DON'T:</h3>
+<p>❌ Use vague messages like "updates" or "changes"
+❌ Commit too many unrelated changes together
+❌ Skip documentation of important decisions
+❌ Forget to explain context in commit message</p>
+<hr />
+<h2 id="timeline-visualization">Timeline Visualization</h2>
+<pre><code>Sept 14 ─┬─ Layer 1 running
+          │
+Sept 17 ─┼─ Vault struggles begin
+          │
+Sept 19 ─┼─ ✨ Vault unseals! (breakthrough)
+          │
+Sept 21 ─┼─ ✨ Vault fully working
+          │
+Sept 30 ─┼─ Storage migration begins
+          │
+Oct 8 ──┼─ ✨ MinIO removed, cloud storage only
+          │
+Oct 26 ─┼─ ✨ Platform alive!
+          │
+Oct 27 ─┼─ Routing and access solved
+          │
+Nov 4 ──┼─ Almost there
+          │
+Nov 7 ──┼─ Platform running
+          │
+Nov 8 ──┴─ 🎉 PRODUCTION COMPLETE!
+</code></pre>
+<p><strong>Total duration of rebuild</strong>: ~8 weeks
+<strong>Total commits</strong>: 20+ in the rebuild phase
+<strong>Key milestones</strong>: 5 major breakthroughs
+<strong>Final status</strong>: Production-ready infrastructure serving users</p>
+<hr />
+<p>This git history represents a journey from a broken/outdated infrastructure to a fully functional, production-ready platform. The commit messages tell a story of persistence, learning, and iterative improvement.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../../../..", "features": [], "search": "../../../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+    
+  </body>
+</html>

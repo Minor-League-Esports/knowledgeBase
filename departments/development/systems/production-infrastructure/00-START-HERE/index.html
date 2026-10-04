@@ -1,0 +1,2808 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://minor-league-esports.github.io/knowledgeBase/departments/development/systems/production-infrastructure/00-START-HERE/">
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../CONTEXT_SUMMARY/">
+      
+      
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.18">
+    
+    
+      
+        <title>Quick Start - Knowledge Base</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="yellow" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sprocket-infrastructure-documentation-package" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../.." title="Knowledge Base" class="md-header__button md-logo" aria-label="Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Knowledge Base
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Quick Start
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/minor-league-esports/knowledgeBase" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="Knowledge Base" class="md-nav__button md-logo" aria-label="Knowledge Base" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Knowledge Base
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/minor-league-esports/knowledgeBase" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Departments
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Departments
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../rocket-league-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Rocket League Operations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../trackmania-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Trackmania Operations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../community/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Community
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Development
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../development/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../new-team-members/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    New Team Members
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3" id="__nav_2_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Systems
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Systems
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../systems-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../modmail/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Modmail KB
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sprocket-identity-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprocket Identity System
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4" id="__nav_2_4_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Production Infrastructure
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_4_3_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_4_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            Production Infrastructure
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_2" id="__nav_2_4_3_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_4_3_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Quick Start
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Quick Start
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#whats-in-this-package" class="md-nav__link">
+    <span class="md-ellipsis">
+      📦 What's in This Package
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-sprocket" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎮 What is Sprocket?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🎮 What is Sprocket?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-sprocket-does" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Sprocket Does
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-business-value" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Business Value
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-tech-stack-simplified" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Tech Stack (Simplified)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#current-scale" class="md-nav__link">
+    <span class="md-ellipsis">
+      Current Scale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#who-uses-sprocket" class="md-nav__link">
+    <span class="md-ellipsis">
+      Who Uses Sprocket?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-this-documentation-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why This Documentation Exists
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentation-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      📚 Documentation Files
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📚 Documentation Files">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-postmortemmd-41-kb" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. POSTMORTEM.md (41 KB)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-architecturemd-52-kb" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. ARCHITECTURE.md (52 KB)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-deployment_guidemd-64-kb" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. DEPLOYMENT_GUIDE.md (64 KB)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-operations_runbookmd-48-kb" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. OPERATIONS_RUNBOOK.md (48 KB)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-context_summarymd-10-kb" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. CONTEXT_SUMMARY.md (10 KB)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-technical_challengesmd-17-kb" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. TECHNICAL_CHALLENGES.md (17 KB)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-git_history_analysismd-12-kb" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. GIT_HISTORY_ANALYSIS.md (12 KB)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-externalities_and_dependenciesmd-16-kb" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. EXTERNALITIES_AND_DEPENDENCIES.md (16 KB)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-use-this-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      🗺️ How to Use This Documentation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🗺️ How to Use This Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#for-new-team-members" class="md-nav__link">
+    <span class="md-ellipsis">
+      For New Team Members
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      For Deployment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      For Operations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-planningdecision-making" class="md-nav__link">
+    <span class="md-ellipsis">
+      For Planning/Decision Making
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      For Troubleshooting
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentation-statistics" class="md-nav__link">
+    <span class="md-ellipsis">
+      📊 Documentation Statistics
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentation-goals-achieved" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 Documentation Goals Achieved
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-not-in-this-package" class="md-nav__link">
+    <span class="md-ellipsis">
+      📝 What's NOT in This Package
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-keep-this-updated" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔄 How to Keep This Updated
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔄 How to Keep This Updated">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-to-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to Update
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-to-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to Update
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#document-ownership" class="md-nav__link">
+    <span class="md-ellipsis">
+      Document Ownership
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      🚀 Next Steps
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🚀 Next Steps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#immediate-within-1-week" class="md-nav__link">
+    <span class="md-ellipsis">
+      Immediate (Within 1 Week)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#short-term-within-1-month" class="md-nav__link">
+    <span class="md-ellipsis">
+      Short-term (Within 1 Month)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#long-term-within-3-months" class="md-nav__link">
+    <span class="md-ellipsis">
+      Long-term (Within 3 Months)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-import-into-mkdocs" class="md-nav__link">
+    <span class="md-ellipsis">
+      💡 How to Import into MkDocs
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questions-or-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      📞 Questions or Issues?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#acknowledgments" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎉 Acknowledgments
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#license-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      📄 License &amp; Usage
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../README.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    README
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CONTEXT_SUMMARY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Context Summary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_3" id="__nav_2_4_3_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Architecture & Design
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Architecture & Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ARCHITECTURE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Architecture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GLOSSARY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_4" id="__nav_2_4_3_4_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Deployment & Operations
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            Deployment & Operations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DEPLOYMENT_GUIDE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Deployment Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OPERATIONS_RUNBOOK/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Operations Runbook
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../EXTERNALITIES_AND_DEPENDENCIES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Externalities & Dependencies
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_5" id="__nav_2_4_3_4_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Project History
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            Project History
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../POSTMORTEM/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Postmortem
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TECHNICAL_CHALLENGES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Technical Challenges
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GIT_HISTORY_ANALYSIS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Git History Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CLAUDE_CONVERSATIONS_SUMMARY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Claude Conversations Summary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CLAUDE_CONVERSATION_ANALYSIS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Claude Conversation Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TECHNICAL_CHALLENGES_FROM_CLAUDE_CONVERSATIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Technical Challenges from Claude
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_6" id="__nav_2_4_3_4_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Meta Documentation
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            Meta Documentation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DOCUMENTATION_REVIEW_RECOMMENDATIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Documentation Review
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TRANSFER_INSTRUCTIONS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Transfer Instructions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_3_4_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_3_4_7" id="__nav_2_4_3_4_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Templates
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_4_3_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_3_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            Templates
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../INCIDENT_POSTMORTEM_TEMPLATE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Incident Postmortem Template
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_4" id="__nav_2_4_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Features and Designs
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            Features and Designs
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../features-and-designs/sprocket-v2-unified-matchmaking-proposal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprocket v2 Unified Matchmaking
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../marketing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Marketing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../production/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Production
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#whats-in-this-package" class="md-nav__link">
+    <span class="md-ellipsis">
+      📦 What's in This Package
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-sprocket" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎮 What is Sprocket?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🎮 What is Sprocket?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-sprocket-does" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Sprocket Does
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-business-value" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Business Value
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-tech-stack-simplified" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Tech Stack (Simplified)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#current-scale" class="md-nav__link">
+    <span class="md-ellipsis">
+      Current Scale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#who-uses-sprocket" class="md-nav__link">
+    <span class="md-ellipsis">
+      Who Uses Sprocket?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-this-documentation-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why This Documentation Exists
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentation-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      📚 Documentation Files
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📚 Documentation Files">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-postmortemmd-41-kb" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. POSTMORTEM.md (41 KB)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-architecturemd-52-kb" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. ARCHITECTURE.md (52 KB)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-deployment_guidemd-64-kb" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. DEPLOYMENT_GUIDE.md (64 KB)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-operations_runbookmd-48-kb" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. OPERATIONS_RUNBOOK.md (48 KB)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-context_summarymd-10-kb" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. CONTEXT_SUMMARY.md (10 KB)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-technical_challengesmd-17-kb" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. TECHNICAL_CHALLENGES.md (17 KB)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-git_history_analysismd-12-kb" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. GIT_HISTORY_ANALYSIS.md (12 KB)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-externalities_and_dependenciesmd-16-kb" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. EXTERNALITIES_AND_DEPENDENCIES.md (16 KB)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-use-this-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      🗺️ How to Use This Documentation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🗺️ How to Use This Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#for-new-team-members" class="md-nav__link">
+    <span class="md-ellipsis">
+      For New Team Members
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      For Deployment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      For Operations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-planningdecision-making" class="md-nav__link">
+    <span class="md-ellipsis">
+      For Planning/Decision Making
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      For Troubleshooting
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentation-statistics" class="md-nav__link">
+    <span class="md-ellipsis">
+      📊 Documentation Statistics
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentation-goals-achieved" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 Documentation Goals Achieved
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-not-in-this-package" class="md-nav__link">
+    <span class="md-ellipsis">
+      📝 What's NOT in This Package
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-keep-this-updated" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔄 How to Keep This Updated
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔄 How to Keep This Updated">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-to-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to Update
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-to-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to Update
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#document-ownership" class="md-nav__link">
+    <span class="md-ellipsis">
+      Document Ownership
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      🚀 Next Steps
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🚀 Next Steps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#immediate-within-1-week" class="md-nav__link">
+    <span class="md-ellipsis">
+      Immediate (Within 1 Week)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#short-term-within-1-month" class="md-nav__link">
+    <span class="md-ellipsis">
+      Short-term (Within 1 Month)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#long-term-within-3-months" class="md-nav__link">
+    <span class="md-ellipsis">
+      Long-term (Within 3 Months)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-import-into-mkdocs" class="md-nav__link">
+    <span class="md-ellipsis">
+      💡 How to Import into MkDocs
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questions-or-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      📞 Questions or Issues?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#acknowledgments" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎉 Acknowledgments
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#license-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      📄 License &amp; Usage
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="sprocket-infrastructure-documentation-package">Sprocket Infrastructure Documentation Package</h1>
+<p><strong>Created</strong>: November 8, 2025
+<strong>Status</strong>: Complete and Ready for Use
+<strong>Purpose</strong>: Comprehensive documentation for the Sprocket infrastructure project</p>
+<hr />
+<h2 id="whats-in-this-package">📦 What's in This Package</h2>
+<p>This documentation package contains everything needed to understand, deploy, operate, and maintain the Sprocket infrastructure. It was created as the culmination of an 8-week infrastructure rebuild project.</p>
+<hr />
+<h2 id="what-is-sprocket">🎮 What is Sprocket?</h2>
+<p><strong>For Those New to the Project</strong></p>
+<p>Sprocket is a comprehensive platform for competitive Rocket League esports leagues. It provides the infrastructure and tools to run organized competitive gaming leagues similar to traditional sports leagues.</p>
+<h3 id="what-sprocket-does">What Sprocket Does</h3>
+<p><strong>For Players</strong>:
+- <strong>Register and Create Profiles</strong>: Link gaming accounts (Epic Games, Steam, Xbox, PlayStation)
+- <strong>Join Leagues and Teams</strong>: Find teams, join competitive leagues, track player stats
+- <strong>Compete in Matches</strong>: Scheduled matches with proper matchmaking and rankings
+- <strong>Track Performance</strong>: View statistics, ELO ratings, match history, and leaderboards
+- <strong>Integrate with Discord</strong>: Receive notifications, submit scores, check schedules without leaving Discord</p>
+<p><strong>For League Administrators</strong>:
+- <strong>Manage Leagues</strong>: Create seasons, configure rules, set match schedules
+- <strong>Matchmaking</strong>: Automated team matching based on skill ratings
+- <strong>Results Processing</strong>: Parse Rocket League replay files automatically, verify match results
+- <strong>Analytics</strong>: Track league health, player engagement, match completion rates
+- <strong>Communication</strong>: Automated Discord notifications for matches, results, and announcements</p>
+<p><strong>For Spectators</strong>:
+- <strong>Browse Matches</strong>: View upcoming and past matches
+- <strong>Player Stats</strong>: Research players and team performance
+- <strong>Leaderboards</strong>: See top-ranked players and teams
+- <strong>Match Replays</strong>: Download and watch competitive match replays</p>
+<h3 id="the-business-value">The Business Value</h3>
+<p><strong>Problem Sprocket Solves</strong>:
+Before Sprocket, running a Rocket League league required:
+- Manual player registration and team management (spreadsheets)
+- Manual match scheduling and coordination (Discord messages)
+- Manual result verification (watching replays, checking screenshots)
+- Manual stat tracking (spreadsheets and databases)
+- Fragmented tools (different systems for each task)</p>
+<p><strong>Sprocket's Solution</strong>:
+- <strong>All-in-one Platform</strong>: Single integrated system for everything
+- <strong>Automation</strong>: Replay parsing, matchmaking, notifications handled automatically
+- <strong>Discord Integration</strong>: 70% of interactions happen via Discord bot (where players already are)
+- <strong>Scalability</strong>: Support hundreds of players across multiple leagues simultaneously
+- <strong>Data-Driven</strong>: Analytics and insights for league administrators</p>
+<h3 id="the-tech-stack-simplified">The Tech Stack (Simplified)</h3>
+<p><strong>Frontend</strong> (What users see):
+- Web application built with Next.js (React)
+- Discord bot for in-Discord interactions
+- GraphQL API for data access</p>
+<p><strong>Backend</strong> (What makes it work):
+- Microservices architecture (small, specialized services)
+- PostgreSQL database (player data, matches, teams, stats)
+- Redis cache (fast data access, reduce database load)
+- RabbitMQ message queue (asynchronous processing)
+- S3 storage (replay files, generated images)</p>
+<p><strong>Infrastructure</strong> (What this documentation is about):
+- Docker Swarm (container orchestration)
+- Traefik (reverse proxy, routing, HTTPS)
+- Vault (secrets management)
+- Grafana/InfluxDB (monitoring and metrics)
+- Digital Ocean (hosting provider)</p>
+<h3 id="current-scale">Current Scale</h3>
+<p>As of November 2025:
+- <strong>Users</strong>: Hundreds of active players
+- <strong>Concurrent Users</strong>: &lt;1,000 (current capacity)
+- <strong>Matches</strong>: Thousands of matches recorded
+- <strong>Uptime</strong>: 99.9%+ (less than 9 hours downtime per year)
+- <strong>Response Time</strong>: &lt;500ms for most requests
+- <strong>Cost</strong>: $131/month infrastructure</p>
+<h3 id="who-uses-sprocket">Who Uses Sprocket?</h3>
+<p><strong>Primary Audience</strong>:
+- Competitive Rocket League players looking for organized leagues
+- League administrators running community tournaments
+- Team captains managing rosters and schedules</p>
+<p><strong>Geographic Distribution</strong>:
+- Primarily North American players
+- Some European players
+- Global community via Discord</p>
+<h3 id="why-this-documentation-exists">Why This Documentation Exists</h3>
+<p><strong>The Context</strong>:
+In September 2025, the Sprocket infrastructure was in a fragile state:
+- Manual deployment processes
+- Frequent downtime
+- Difficult to maintain
+- Missing critical services
+- No disaster recovery plan</p>
+<p><strong>The Solution</strong>:
+Over 8 weeks (September 14 - November 8, 2025), we:
+1. Completely rebuilt the infrastructure from scratch
+2. Adopted Infrastructure as Code (Pulumi)
+3. Implemented proper secrets management (Vault)
+4. Set up comprehensive monitoring (Grafana, InfluxDB)
+5. Documented everything (this package)</p>
+<p><strong>The Result</strong>:
+- 99.9%+ uptime
+- ~6 hour recovery time (vs. days/weeks before)
+- Repeatable deployments
+- Comprehensive documentation
+- Team can confidently operate and maintain the platform</p>
+<p>This documentation package is that knowledge captured - everything needed to understand, deploy, operate, and maintain Sprocket's infrastructure.</p>
+<hr />
+<h2 id="documentation-files">📚 Documentation Files</h2>
+<h3 id="1-postmortemmd-41-kb">1. POSTMORTEM.md (41 KB)</h3>
+<p><strong>The complete project story from start to finish</strong></p>
+<p><strong>What's Inside</strong>:
+- Executive summary of the 8-week rebuild
+- Detailed timeline (September 14 - November 8, 2025)
+- Six major phases of the project
+- Deep dives into the 7 biggest technical challenges
+- Architecture evolution (before/after)
+- Key decisions and their rationale
+- What went well and what could be better
+- Lessons learned for future projects
+- 20+ recommendations</p>
+<p><strong>Best For</strong>:
+- Understanding the "why" behind architectural decisions
+- Learning from mistakes and successes
+- New team members getting up to speed
+- Planning similar infrastructure projects</p>
+<p><strong>Time to Read</strong>: 45-60 minutes</p>
+<p><strong>Key Takeaways</strong>:
+- Use managed services for critical infrastructure
+- Design for production first, add dev overrides later
+- Automate secret provisioning to reduce human error
+- Document decisions when making them, not after
+- Git history is invaluable for understanding evolution</p>
+<hr />
+<h3 id="2-architecturemd-52-kb">2. ARCHITECTURE.md (52 KB)</h3>
+<p><strong>Complete architecture reference and design documentation</strong></p>
+<p><strong>What's Inside</strong>:
+- High-level architecture overview with diagrams
+- Three-layer architecture detailed breakdown
+  - Layer 1: Infrastructure (Traefik, Vault, Socket Proxy)
+  - Layer 2: Data Services (Redis, RabbitMQ, InfluxDB, etc.)
+  - Platform: Application Services (Web, API, Bot, Microservices)
+- Network topology (5 overlay networks)
+- Complete service catalog (22 services)
+- Data flow diagrams
+- Security architecture
+- Scalability considerations
+- Future architectural improvements</p>
+<p><strong>Best For</strong>:
+- Understanding how everything fits together
+- Troubleshooting connectivity issues
+- Planning infrastructure changes
+- Onboarding new developers
+- Architecture reviews</p>
+<p><strong>Time to Read</strong>: 60-90 minutes</p>
+<p><strong>Contains</strong>:
+- 7 ASCII diagrams
+- 22 service descriptions
+- Network topology maps
+- Security architecture details
+- Scaling strategies</p>
+<hr />
+<h3 id="3-deployment_guidemd-64-kb">3. DEPLOYMENT_GUIDE.md (64 KB)</h3>
+<p><strong>Step-by-step guide to deploy from scratch</strong></p>
+<p><strong>What's Inside</strong>:
+- Complete prerequisites checklist
+- Pre-deployment configuration (all 6 external dependencies)
+- Layer-by-layer deployment instructions
+  - Layer 1: Traefik, Vault, Socket Proxy
+  - Secret provisioning via Vault
+  - Layer 2: All data services
+  - Platform: All application services
+- Verification procedures (automated + manual)
+- Comprehensive troubleshooting section
+- Rollback procedures</p>
+<p><strong>Best For</strong>:
+- First-time deployment
+- Disaster recovery
+- Setting up staging environment
+- Understanding deployment flow
+- Training new ops team members</p>
+<p><strong>Time to Complete</strong>: 4-6 hours (first time), 2-3 hours (experienced)</p>
+<p><strong>Includes</strong>:
+- 15+ code examples
+- Expected outputs for each step
+- 6 common issue resolutions
+- Emergency rollback procedures</p>
+<hr />
+<h3 id="4-operations_runbookmd-48-kb">4. OPERATIONS_RUNBOOK.md (48 KB)</h3>
+<p><strong>Day-to-day operations manual</strong></p>
+<p><strong>What's Inside</strong>:
+- Daily operations (morning health check)
+- Weekly review procedures
+- Service management (start, stop, restart, update, rollback)
+- Monitoring &amp; alerting setup
+- Backup &amp; recovery procedures
+  - Database backups (automated + manual)
+  - Vault backups
+  - Pulumi state backups
+  - Disaster recovery testing
+- Scaling operations (vertical + horizontal)
+- Security operations (secret rotation, access review)
+- Incident response (P0-P3 severity levels)
+- Maintenance procedures
+- Common tasks reference</p>
+<p><strong>Best For</strong>:
+- Daily operations
+- On-call engineers
+- Incident response
+- Maintenance planning
+- Training new ops team members</p>
+<p><strong>Time to Read</strong>: 90-120 minutes (reference document, read sections as needed)</p>
+<p><strong>Contains</strong>:
+- Daily checklist (10 minutes)
+- Weekly review checklist (30 minutes)
+- 20+ operational procedures
+- Incident response playbook
+- Emergency contacts template</p>
+<hr />
+<h3 id="5-context_summarymd-10-kb">5. CONTEXT_SUMMARY.md (10 KB)</h3>
+<p><strong>Quick reference for current state</strong></p>
+<p><strong>What's Inside</strong>:
+- Current deployment status
+- Architecture overview
+- Key infrastructure decisions
+- Critical external dependencies
+- Configuration reference
+- Major service listing
+- Known issues and gotchas</p>
+<p><strong>Best For</strong>:
+- Quick orientation
+- Reference during troubleshooting
+- Understanding current state</p>
+<p><strong>Time to Read</strong>: 15-20 minutes</p>
+<hr />
+<h3 id="6-technical_challengesmd-17-kb">6. TECHNICAL_CHALLENGES.md (17 KB)</h3>
+<p><strong>Detailed problem/solution analysis</strong></p>
+<p><strong>What's Inside</strong>:
+- 7 major technical challenges with detailed analysis
+- Evolution of solutions through commits
+- Patterns and best practices discovered
+- "What we'd do differently" section
+- Critical success factors</p>
+<p><strong>Best For</strong>:
+- Learning from past issues
+- Troubleshooting similar problems
+- Understanding why things are done a certain way</p>
+<p><strong>Time to Read</strong>: 30-45 minutes</p>
+<hr />
+<h3 id="7-git_history_analysismd-12-kb">7. GIT_HISTORY_ANALYSIS.md (12 KB)</h3>
+<p><strong>Commit-by-commit journey</strong></p>
+<p><strong>What's Inside</strong>:
+- Complete timeline from Sept 14 to Nov 8, 2025
+- Commit-by-commit breakdown by phase
+- Key patterns in commit history
+- Commit message quality analysis
+- Timeline visualization
+- Git best practices learned</p>
+<p><strong>Best For</strong>:
+- Understanding project evolution
+- Learning from iteration
+- Seeing what was tried and failed</p>
+<p><strong>Time to Read</strong>: 20-30 minutes</p>
+<hr />
+<h3 id="8-externalities_and_dependenciesmd-16-kb">8. EXTERNALITIES_AND_DEPENDENCIES.md (16 KB)</h3>
+<p><strong>External systems documentation</strong></p>
+<p><strong>What's Inside</strong>:
+- 6 critical external dependencies
+  - Doppler (secrets management)
+  - GitHub Organization (Vault auth)
+  - Digital Ocean (database, storage)
+  - DNS Provider (Let's Encrypt)
+  - Pulumi Backend (state management)
+  - Docker Hub (private images)
+- Required CLI tools
+- Network requirements
+- Complete access checklist
+- Dependency graph
+- Cost considerations
+- Security considerations
+- Disaster recovery for external dependencies</p>
+<p><strong>Best For</strong>:
+- Setting up new deployment
+- Understanding prerequisites
+- Cost planning
+- Access provisioning</p>
+<p><strong>Time to Read</strong>: 25-35 minutes</p>
+<hr />
+<h2 id="how-to-use-this-documentation">🗺️ How to Use This Documentation</h2>
+<h3 id="for-new-team-members">For New Team Members</h3>
+<p><strong>Recommended Reading Order</strong>:
+1. <strong>START HERE</strong> ← You are here!
+2. <code>CONTEXT_SUMMARY.md</code> (15 min) - Get oriented
+3. <code>ARCHITECTURE.md</code> (60 min) - Understand the system
+4. <code>POSTMORTEM.md</code> (45 min) - Learn the history
+5. <code>DEPLOYMENT_GUIDE.md</code> (skim) - Know how to deploy
+6. <code>OPERATIONS_RUNBOOK.md</code> (skim) - Know where to look for ops tasks</p>
+<p><strong>Total Time</strong>: ~2-3 hours of focused reading</p>
+<h3 id="for-deployment">For Deployment</h3>
+<p><strong>Reading Order</strong>:
+1. <code>EXTERNALITIES_AND_DEPENDENCIES.md</code> - Verify prerequisites
+2. <code>DEPLOYMENT_GUIDE.md</code> - Follow step-by-step
+3. <code>OPERATIONS_RUNBOOK.md</code> - Post-deployment verification</p>
+<p><strong>Total Time</strong>: 4-6 hours (includes deployment)</p>
+<h3 id="for-operations">For Operations</h3>
+<p><strong>Daily Reference</strong>:
+1. <code>OPERATIONS_RUNBOOK.md</code> - Daily checklist and procedures
+2. <code>TECHNICAL_CHALLENGES.md</code> - When troubleshooting
+3. <code>ARCHITECTURE.md</code> - When understanding connectivity</p>
+<h3 id="for-planningdecision-making">For Planning/Decision Making</h3>
+<p><strong>Reading Order</strong>:
+1. <code>POSTMORTEM.md</code> - Learn from past decisions
+2. <code>ARCHITECTURE.md</code> - Understand current state
+3. <code>EXTERNALITIES_AND_DEPENDENCIES.md</code> - Understand constraints</p>
+<h3 id="for-troubleshooting">For Troubleshooting</h3>
+<p><strong>Quick Reference</strong>:
+1. <code>OPERATIONS_RUNBOOK.md</code> → Incident Response section
+2. <code>TECHNICAL_CHALLENGES.md</code> → Similar issues
+3. <code>DEPLOYMENT_GUIDE.md</code> → Troubleshooting section
+4. <code>ARCHITECTURE.md</code> → Service catalog</p>
+<hr />
+<h2 id="documentation-statistics">📊 Documentation Statistics</h2>
+<p><strong>Total Documentation</strong>: ~250 KB, 1,800+ lines
+<strong>Total Pages</strong>: ~150 pages (if printed)
+<strong>Total Diagrams</strong>: 12 ASCII diagrams
+<strong>Code Examples</strong>: 100+ code blocks
+<strong>Time to Create</strong>: ~8 hours of focused work
+<strong>Based On</strong>:
+- 20+ commits analyzed
+- 8 weeks of project history
+- 70+ files in codebase
+- 22 deployed services</p>
+<hr />
+<h2 id="documentation-goals-achieved">🎯 Documentation Goals Achieved</h2>
+<ul>
+<li>✅ <strong>Comprehensive Postmortem</strong>: Complete project story with lessons learned</li>
+<li>✅ <strong>Architecture Documentation</strong>: Detailed system design and rationale</li>
+<li>✅ <strong>Deployment Guide</strong>: Step-by-step instructions for rebuild</li>
+<li>✅ <strong>Operations Runbook</strong>: Day-to-day operational procedures</li>
+<li>✅ <strong>All diagrams in text</strong>: ASCII diagrams work in all editors</li>
+<li>✅ <strong>Self-contained</strong>: No external dependencies</li>
+<li>✅ <strong>Ready for MkDocs</strong>: Can be imported into documentation site</li>
+</ul>
+<hr />
+<h2 id="whats-not-in-this-package">📝 What's NOT in This Package</h2>
+<p><strong>Intentionally Excluded</strong>:
+- Actual secrets or credentials (see Doppler/Vault)
+- Proprietary business logic
+- Application code documentation (separate repo)
+- Automated runbooks/scripts (see main repo)
+- Screenshots (text-based documentation only)</p>
+<p><strong>Future Additions</strong> (recommended):
+- MkDocs site with search
+- Interactive architecture diagrams
+- Video walkthroughs
+- Automated runbook scripts
+- Prometheus/Grafana dashboard configs</p>
+<hr />
+<h2 id="how-to-keep-this-updated">🔄 How to Keep This Updated</h2>
+<h3 id="when-to-update">When to Update</h3>
+<p><strong>Update Documentation When</strong>:
+- Major architecture changes
+- New services added
+- External dependencies change
+- Lessons learned from incidents
+- Deployment procedures change
+- New operational procedures</p>
+<h3 id="how-to-update">How to Update</h3>
+<ol>
+<li><strong>Edit Markdown Files</strong>: All docs are standard Markdown</li>
+<li><strong>Keep Diagrams Simple</strong>: Use ASCII art for diagrams</li>
+<li><strong>Update Version Numbers</strong>: Update "Last Updated" dates</li>
+<li><strong>Test Procedures</strong>: Verify accuracy before publishing</li>
+<li><strong>Commit Changes</strong>: Use git for version control</li>
+</ol>
+<h3 id="document-ownership">Document Ownership</h3>
+<table>
+<thead>
+<tr>
+<th>Document</th>
+<th>Owner</th>
+<th>Review Cycle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>POSTMORTEM.md</td>
+<td>Team Lead</td>
+<td>After major milestones</td>
+</tr>
+<tr>
+<td>ARCHITECTURE.md</td>
+<td>Architect</td>
+<td>Quarterly</td>
+</tr>
+<tr>
+<td>DEPLOYMENT_GUIDE.md</td>
+<td>Ops Lead</td>
+<td>After any deployment changes</td>
+</tr>
+<tr>
+<td>OPERATIONS_RUNBOOK.md</td>
+<td>Ops Team</td>
+<td>Monthly</td>
+</tr>
+<tr>
+<td>Other docs</td>
+<td>Team Lead</td>
+<td>Quarterly</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="next-steps">🚀 Next Steps</h2>
+<h3 id="immediate-within-1-week">Immediate (Within 1 Week)</h3>
+<ol>
+<li>✅ Review all documentation</li>
+<li>✅ Share with team</li>
+<li>✅ Add to team wiki/knowledge base</li>
+<li>✅ Create MkDocs site (optional)</li>
+</ol>
+<h3 id="short-term-within-1-month">Short-term (Within 1 Month)</h3>
+<ol>
+<li>📝 Add screenshots/diagrams to MkDocs</li>
+<li>📝 Create video walkthrough of deployment</li>
+<li>📝 Test deployment guide with new team member</li>
+<li>📝 Create quick reference card</li>
+</ol>
+<h3 id="long-term-within-3-months">Long-term (Within 3 Months)</h3>
+<ol>
+<li>📝 Automate documentation updates</li>
+<li>📝 Add interactive elements</li>
+<li>📝 Create disaster recovery playbook</li>
+<li>📝 Document advanced troubleshooting</li>
+</ol>
+<hr />
+<h2 id="how-to-import-into-mkdocs">💡 How to Import into MkDocs</h2>
+<pre><code class="language-bash"># 1. Create MkDocs project
+pip install mkdocs mkdocs-material
+mkdocs new sprocket-docs
+cd sprocket-docs
+
+# 2. Copy documentation
+mkdir -p docs/postmortem docs/architecture docs/deployment docs/operations docs/reference
+cp ../sprocket-infra/docs-output/POSTMORTEM.md docs/postmortem/index.md
+cp ../sprocket-infra/docs-output/ARCHITECTURE.md docs/architecture/index.md
+cp ../sprocket-infra/docs-output/DEPLOYMENT_GUIDE.md docs/deployment/index.md
+cp ../sprocket-infra/docs-output/OPERATIONS_RUNBOOK.md docs/operations/index.md
+cp ../sprocket-infra/docs-output/TECHNICAL_CHALLENGES.md docs/reference/challenges.md
+cp ../sprocket-infra/docs-output/GIT_HISTORY_ANALYSIS.md docs/reference/history.md
+cp ../sprocket-infra/docs-output/EXTERNALITIES_AND_DEPENDENCIES.md docs/reference/dependencies.md
+cp ../sprocket-infra/docs-output/CONTEXT_SUMMARY.md docs/index.md
+
+# 3. Configure mkdocs.yml (see TRANSFER_INSTRUCTIONS.md)
+
+# 4. Serve locally
+mkdocs serve
+
+# 5. Build for deployment
+mkdocs build
+
+# 6. Deploy to GitHub Pages or hosting
+mkdocs gh-deploy
+</code></pre>
+<hr />
+<h2 id="questions-or-issues">📞 Questions or Issues?</h2>
+<p>If you have questions about this documentation:</p>
+<ol>
+<li><strong>Check the specific document</strong> - Each has detailed sections</li>
+<li><strong>Review TECHNICAL_CHALLENGES.md</strong> - Common issues documented</li>
+<li><strong>Ask the team</strong> - #infrastructure Slack channel</li>
+<li><strong>Update the docs</strong> - Found something missing? Add it!</li>
+</ol>
+<hr />
+<h2 id="acknowledgments">🎉 Acknowledgments</h2>
+<p>This documentation package represents:
+- <strong>8 weeks</strong> of infrastructure work
+- <strong>20+ commits</strong> analyzed
+- <strong>Months</strong> of learning and iteration
+- <strong>Countless hours</strong> of debugging and problem-solving</p>
+<p>Special thanks to the entire team for their persistence and dedication to getting this infrastructure to production.</p>
+<hr />
+<h2 id="license-usage">📄 License &amp; Usage</h2>
+<p>This documentation is for internal use by the Sprocket team and authorized personnel.</p>
+<p><strong>Do Not Share</strong>:
+- Connection strings
+- Credentials
+- API tokens
+- Internal IPs
+- Proprietary architecture details</p>
+<p><strong>OK to Share</strong>:
+- General architecture patterns
+- Lessons learned
+- Best practices
+- Problem-solving approaches</p>
+<hr />
+<p><strong>Documentation Package Version</strong>: 1.0
+<strong>Created</strong>: November 8, 2025
+<strong>Status</strong>: ✅ Complete and Production-Ready
+<strong>Next Review</strong>: February 2026</p>
+<hr />
+<p><em>Happy deploying! 🚀</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../../../..", "features": [], "search": "../../../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+    
+  </body>
+</html>
